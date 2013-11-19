@@ -9,7 +9,7 @@ Author URI: http://www.hitsteps.com/
 */ 
  
 
-add_action('admin_menu', 'hs_admin_menu');
+add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
 add_action('wp_head', 'hitst3eps');
 hitsteps_admin_warnings();
@@ -19,7 +19,7 @@ function hitsteps() {
 
 global $_SERVER,$_COOKIE,$hitsteps_tracker;
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 $option['code']=str_replace("\r",'',str_replace("\n",'',str_replace(" ","",trim(html_entity_decode($option['code'])))));
 
 	if( round($option['iga'])==1 && current_user_can("manage_options") ) {
@@ -256,7 +256,7 @@ $hitsteps_tracker=1;
 
 function hitsteps_admin_warnings() {
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 
 
 
@@ -282,9 +282,9 @@ $option=get_hs_conf();
 
 
 
-function get_hs_conf(){
+function get_hst_conf(){
 
-$option=get_option('hs_setting');
+$option=get_option('hst_setting');
 
 if (round($option['wgd'])==0) $option['wgd']=1;
 if (round($option['wgl'])==0) $option['wgl']=2;
@@ -308,25 +308,25 @@ return $option;
 
 }
 
-function set_hs_conf($conf){update_option('hs_setting',$conf);}
+function set_hst_conf($conf){update_option('hst_setting',$conf);}
 
 
 
 
 
-function hs_admin_menu(){
+function hst_admin_menu(){
 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 
-	add_options_page('Hitsteps Options', 'Hitsteps', 9, __FILE__, 'hs_optionpage');
+	add_options_page('Hitsteps Options', 'Hitsteps', 9, __FILE__, 'hst_optionpage');
 
 }
 
 
 
-function hs_optionpage(){
+function hst_optionpage(){
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 
 $option['code']=html_entity_decode($option['code']);
 
@@ -476,7 +476,7 @@ $codes=explode(":",$hcresult);
 
 $option['code']=$codes[1];
 
-set_hs_conf($option);
+set_hst_conf($option);
 
 $saved=1;
 
@@ -506,7 +506,7 @@ $_POST['wgl']=$option['wgl'];
 
 			$option['code']=htmlentities(str_replace(" ","",stripslashes($option['code'])));
 
-            set_hs_conf($option);
+            set_hst_conf($option);
 
 			$saved=1;
 		}
@@ -1120,7 +1120,7 @@ If you have a normal website then all you have to do is input the tracking code 
 
 function hitsteps_dashboard_map_widget_function() {
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 $purl='http://www.';
 
 if ($_SERVER["HTTPS"]=='on'){
@@ -1181,7 +1181,7 @@ You need get your free Hitsteps account to get an API key.</td>
 
 
 function hitsteps_dashboard_widget_function() {
-	$option=get_hs_conf();
+	$option=get_hst_conf();
 
 $purl='http://www.';
 if ($_SERVER["HTTPS"]=='on'){
@@ -1242,7 +1242,7 @@ You need get your free Hitsteps account to get an API key.</td>
 
 
 function hitsteps_minidashboard_widget_function() {
-	$option=get_hs_conf();
+	$option=get_hst_conf();
 
 $purl='http://www.';
 if ($_SERVER["HTTPS"]=='on'){
@@ -1294,7 +1294,7 @@ You need get your free Hitsteps account to get an API key.</td>
 
 function hitsteps_add_dashboard_widgets() {
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 
 
 if ($option['wgd']!=2){
@@ -1332,15 +1332,15 @@ if (class_exists('WP_Widget')){
 
 /**
 
- * HS_SUPPORT Class
+ * hst_SUPPORT Class
 
  */
 
-class HS_SUPPORT extends WP_Widget {
+class hst_SUPPORT extends WP_Widget {
 
     /** constructor */
 
-    function HS_SUPPORT() {
+    function hst_SUPPORT() {
 
         parent::WP_Widget(false, $name = 'Hitsteps Live Chat Support');	
 
@@ -1356,7 +1356,7 @@ class HS_SUPPORT extends WP_Widget {
 
     
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 
 $option['code']=substr(str_replace("\r",'',str_replace("\n",'',str_replace(" ","",trim(html_entity_decode($option['code']))))),0,32);
 
@@ -1435,7 +1435,7 @@ document.write('<div id="hs-live-chat-pos"></div>');(function(){var hschatc=docu
 
     function form($instance) {
 
-    $option=get_hs_conf();		
+    $option=get_hst_conf();		
 
      if ($option['code']!=''){
 
@@ -1479,9 +1479,9 @@ document.write('<div id="hs-live-chat-pos"></div>');(function(){var hschatc=docu
 
 
 
-function get_hs_conf(){
+function get_hst_conf(){
 
-$option=get_option('hs_setting');
+$option=get_option('hst_setting');
 
 if (round($option['wgd'])==0) $option['wgd']=1;
 
@@ -1508,21 +1508,21 @@ return $option;
 
 
 
-} // class HS_SUPPORT
-add_action('widgets_init', create_function('', 'return register_widget("HS_SUPPORT");'));
+} // class hst_SUPPORT
+add_action('widgets_init', create_function('', 'return register_widget("hst_SUPPORT");'));
 
 
 /**
 
- * HS_SUPPORT Class
+ * hst_SUPPORT Class
 
  */
 
-class HS_STATS extends WP_Widget {
+class hst_STATS extends WP_Widget {
 
     /** constructor */
 
-    function HS_STATS() {
+    function hst_STATS() {
 
         parent::WP_Widget(false, $name = 'Hitsteps Statistics');	
 
@@ -1538,7 +1538,7 @@ class HS_STATS extends WP_Widget {
 
     
 
-$option=get_hs_conf();
+$option=get_hst_conf();
 
 $option['code']=substr(str_replace("\r",'',str_replace("\n",'',str_replace(" ","",trim(html_entity_decode($option['code']))))),0,32);
 $purl='http://www.';
@@ -1634,7 +1634,7 @@ text-decoration: underline;
 
     function form($instance) {	
 
-    $option=get_hs_conf();		
+    $option=get_hst_conf();		
 
      if ($option['code']!=''){  	
 
@@ -1725,9 +1725,9 @@ text-decoration: underline;
 
 
 
-function get_hs_conf(){
+function get_hst_conf(){
 
-$option=get_option('hs_setting');
+$option=get_option('hst_setting');
 
 if (round($option['wgd'])==0) $option['wgd']=1;
 if (round($option['wgl'])==0) $option['wgl']=2;
@@ -1751,13 +1751,13 @@ return $option;
 
 
 
-} // class HS_STATS
+} // class hst_STATS
 
 
 
-// register HS_STATS widget
+// register hst_STATS widget
 
-add_action('widgets_init', create_function('', 'return register_widget("HS_STATS");'));
+add_action('widgets_init', create_function('', 'return register_widget("hst_STATS");'));
 
 
 }}
