@@ -7,7 +7,7 @@ Author: hitsteps.com
 Version: 1.00
 Author URI: http://www.hitsteps.com/
 */ 
-
+ 
 
 add_action('admin_menu', 'hs_admin_menu');
 add_action('wp_footer', 'hitsteps');
