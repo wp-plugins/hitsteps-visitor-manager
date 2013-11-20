@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.00
+Version: 1.01
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -40,7 +40,7 @@ $htssl='';
       }
   }
 
-?><!-- hitsteps TRACKING CODE<?php echo $htssl; ?> v2.8.2 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.01 - DO NOT CHANGE --><?php
 
 
 
@@ -951,7 +951,7 @@ clear: both;
 
 
 <?php if ($option['code']!=''){ ?><a target="_blank" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>"><?php }else{ ?><a target="_blank" href="http://www.hitsteps.com/features.php"><?php } ?>
-<img border="0" src="<?php echo $x; ?>screenshot-1.png" style="margin:5px;margin-left: 30px;" width="169" height="100" align="right"></a>
+<img border="0" src="<?php echo $x; ?>hitsteps.jpg" style="margin:5px;margin-left: 30px;" width="169" height="100" align="right"></a>
 
 
 <p style="margin: 0; padding: 0px;">Hitsteps real time visitor activity tracker and analytics, allows you to be aware what is going in your wordpress blog and sites right now and has detailed archive for tracked visitor data. If you don't have an API code yet, you can get your free trial one at <a href="http://www.hitsteps.com/register.php?tag=wordpress-to-ht">hitsteps.com</a>.
