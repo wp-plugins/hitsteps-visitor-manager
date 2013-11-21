@@ -11,7 +11,7 @@ Author URI: http://www.hitsteps.com/
 
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
-add_action('wp_head', 'hitst3eps');
+add_action('wp_head', 'hitsteps');
 hitsteps_admin_warnings();
 
 
