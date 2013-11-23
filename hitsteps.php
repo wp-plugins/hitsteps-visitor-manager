@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.03
+Version: 1.04
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -40,7 +40,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.01 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.04 - DO NOT CHANGE --><?php
 
 
 
@@ -238,7 +238,7 @@ htssc.parentNode.insertBefore(hstc, htssc);
 
 <?php } ?>
 
-<!-- hitsteps TRACKING CODE<?php echo $htssl; ?><?php if (round($hitsteps_tracker==0)){ ?> - Header Code<?php }else{ ?> - Footer Code<?php } ?> - DO NOT CHANGE --><?php 
+<!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?><?php if (round($hitsteps_tracker==0)){ ?> - Header Code<?php }else{ ?> - Footer Code<?php } ?> - DO NOT CHANGE --><?php 
 
 
 
@@ -1093,11 +1093,11 @@ If you have a normal website then all you have to do is input the tracking code 
 
 <p class="submit">Website Code:<br>
 
-<textarea rows="6" name="wcode" cols="100" readonly><!-- hitsteps TRACKING CODE - DO NOT CHANGE -->
+<textarea rows="6" name="wcode" cols="100" readonly><!-- HITSTEPS TRACKING CODE - DO NOT CHANGE -->
 <script src="http://www.hitsteps.com/track.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
 <noscript><a href="http://www.hitsteps.com/">
 <img src="http://www.hitsteps.com/track.php?mode=img&code=<?php echo substr($option['code'],0,32); ?>" alt="Realtime website statistics" />realtime web visitor analytics chat support</a></noscript>
-<!-- hitsteps TRACKING CODE - DO NOT CHANGE --></textarea></p><?php } ?>
+<!-- HITSTEPS TRACKING CODE - DO NOT CHANGE --></textarea></p><?php } ?>
 
 <input type="hidden" name="action" value="do">
 
@@ -1397,9 +1397,9 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- hitsteps ONLINE SUPPORT CODE v2.8.2 - DO NOT CHANGE --><script type="text/javascript">
+<!-- HITSTEPS ONLINE SUPPORT CODE v1.04 - DO NOT CHANGE --><script type="text/javascript">
 document.write('<div id="hs-live-chat-pos"></div>');(function(){var hschatc=document.createElement('script');var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatc.src=document.location.protocol+'//'+hschatcs+'hitsteps.com/online2.php?code=<?php echo $option['code']; ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';hschatc.async=true;var htsscc = document.getElementById('hs-live-chat-pos');htsscc.appendChild(hschatc);})();
-</script><!-- hitsteps ONLINE SUPPORT CODE - DO NOT CHANGE -->
+</script><!-- HITSTEPS ONLINE SUPPORT CODE - DO NOT CHANGE -->
 </div>
 
                   <?php echo $widget_comments_title; ?>
