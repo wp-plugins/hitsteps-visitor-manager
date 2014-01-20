@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.29
+Version: 1.30
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -40,7 +40,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.24 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.30 - DO NOT CHANGE --><?php
 
 
 
@@ -1397,8 +1397,8 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- HITSTEPS ONLINE SUPPORT CODE v1.24 - DO NOT CHANGE --><script type="text/javascript">
-document.write('<div id="hs-live-chat-pos"></div>');(function(){var hschatc=document.createElement('script');var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatc.src=document.location.protocol+'//'+hschatcs+'hitsteps.com/online2.php?code=<?php echo $option['code']; ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';hschatc.async=true;var htsscc = document.getElementById('hs-live-chat-pos');htsscc.appendChild(hschatc);})();
+<!-- HITSTEPS ONLINE SUPPORT CODE v1.30 - DO NOT CHANGE --><script type="text/javascript">
+document.write('<div id="hs-live-chat-pos"></div>');(function(){var hschatc=document.createElement('script');var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatc.src=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';hschatc.async=true;var htsscc = document.getElementById('hs-live-chat-pos');htsscc.appendChild(hschatc);})();
 </script><!-- HITSTEPS ONLINE SUPPORT CODE - DO NOT CHANGE -->
 </div>
 
