@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.32
+Version: 1.33
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -12,7 +12,7 @@ Author URI: http://www.hitsteps.com/
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
 add_action('wp_head', 'hitsteps');
-hitsteps_admin_warnings();
+
 
 
 function hitsteps(){
@@ -40,7 +40,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.30 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.33 - DO NOT CHANGE --><?php
 
 
 
@@ -252,36 +252,7 @@ $hitsteps_tracker=1;
 
 
 
-
-
-function hitsteps_admin_warnings() {
-
-$option=get_hst_conf();
-
-
-
-	if ( $option['code']=='' && $_POST['action']!='do' && $_REQUEST['hitmagic']!='do' ) {
-
-		function hitsteps_warning() {
-
-			echo "
-
-			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('hitsteps is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
-
-			";
-
-		}
-
-		add_action('admin_notices', 'hitsteps_warning');
-
-		return;
-
-	}
-
-}
-
-
-
+if (!function_exists("get_hst_conf")){
 function get_hst_conf(){
 
 $option=get_option('hst_setting');
@@ -307,13 +278,14 @@ if (round($option['wpdash'])==0) $option['wpdash']=2;
 return $option;
 
 }
-
+}
+if (!function_exists("set_hst_conf")){
 function set_hst_conf($conf){update_option('hst_setting',$conf);}
+}
 
 
 
-
-
+if (!function_exists("hst_admin_menu")){
 function hst_admin_menu(){
 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
@@ -321,9 +293,41 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 	add_options_page('Hitsteps Options', 'Hitsteps', 9, __FILE__, 'hst_optionpage');
 
 }
+}
 
 
 
+
+if (!function_exists("hitsteps_admin_warnings")){
+function hitsteps_admin_warnings() {
+
+$option=get_hst_conf();
+
+
+
+	if ( $option['code']=='' && $_POST['action']!='do' && $_REQUEST['hitmagic']!='do' ) {
+
+		function hitsteps_warning() {
+
+			echo "
+
+			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('hitsteps is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
+
+			";
+
+		}
+
+		add_action('admin_notices', 'hitsteps_warning');
+
+		return;
+
+	}
+
+}
+hitsteps_admin_warnings();
+}
+
+if (!function_exists("hst_optionpage")){
 function hst_optionpage(){
 
 $option=get_hst_conf();
@@ -1114,10 +1118,10 @@ If you have a normal website then all you have to do is input the tracking code 
 <?php
 
 }
+}
 
 
-
-
+if (!function_exists("hitsteps_dashboard_map_widget_function")){
 function hitsteps_dashboard_map_widget_function() {
 
 $option=get_hst_conf();
@@ -1177,9 +1181,9 @@ You need get your free Hitsteps account to get an API key.</td>
 }
 
 }
+}
 
-
-
+if (!function_exists("hitsteps_dashboard_widget_function")){
 function hitsteps_dashboard_widget_function() {
 	$option=get_hst_conf();
 
@@ -1236,11 +1240,11 @@ You need get your free Hitsteps account to get an API key.</td>
 }
 
 }
+}
 
 
 
-
-
+if (!function_exists("hitsteps_minidashboard_widget_function")){
 function hitsteps_minidashboard_widget_function() {
 	$option=get_hst_conf();
 
@@ -1288,10 +1292,10 @@ You need get your free Hitsteps account to get an API key.</td>
 }
 
 }
+}
 
 
-
-
+if (!function_exists("hitsteps_add_dashboard_widgets")){
 function hitsteps_add_dashboard_widgets() {
 
 $option=get_hst_conf();
@@ -1325,8 +1329,11 @@ if ($option['wpdash']!=1){
 }
 
 
-add_action('wp_dashboard_setup', 'hitsteps_add_dashboard_widgets' );
 
+add_action('wp_dashboard_setup', 'hitsteps_add_dashboard_widgets' );
+}
+
+if (!class_exists('hst_SUPPORT')){
 if (function_exists('class_exists')){
 if (class_exists('WP_Widget')){
 
@@ -1769,7 +1776,7 @@ add_action('widgets_init', create_function('', 'return register_widget("hst_STAT
 
 
 }}
-
+}
 	# add "Settings" link to plugin on plugins page
 	add_filter('plugin_action_links', 'hitsteps_settingsLink', 0, 2);
 	function hitsteps_settingsLink($actionLinks, $file) {
