@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.45
+Version: 1.50
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -232,10 +232,9 @@ htssc.parentNode.insertBefore(hstc, htssc);
 <?php } ?>
 
 </script>
-<?php if (round($option['allowchat'])!=2){ ?>
-<script src="<?php echo $purl; ?>hitsteps.com/onlinefloat.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
+<?php if (round($option['allowfloat'])!=2){ ?>
+<script src="<?php echo $purl; ?>hitsniffer.com/onlinefloat.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
 <?php } ?>
-
 <?php }else{ ?>
 
 <noscript><a href="http://www.hitsteps.com/"><img src="<?php echo $purl; ?>hitsteps.com/track.php?mode=img&amp;code=<?php echo substr($option['code'],0,32); ?><?php echo $htmlpar; ?>" alt="<?php echo $keyword[$kwid]; ?>" border='0' /><?php echo $keyword[$kwid]; ?></a></noscript>
@@ -269,6 +268,7 @@ if (round($option['tkn'])==0) $option['tkn']=1;
 if (round($option['iga'])==0) $option['iga']=0;
 
 if (round($option['allowchat'])==0) $option['allowchat']=1;
+if (round($option['allowfloat'])==0) $option['allowfloat']=2;
 
 if (round($option['xtheme'])==0) $option['xtheme']=2;
 
@@ -343,6 +343,8 @@ $option['wgd']=html_entity_decode($option['wgd']);
 $option['wgl']=html_entity_decode($option['wgl']);
 
 $option['allowchat']=html_entity_decode($option['allowchat']);
+$option['allowfloat']=html_entity_decode($option['allowfloat']);
+
 
 $option['xtheme']=html_entity_decode($option['xtheme']);
 
@@ -1045,6 +1047,12 @@ if (current_user_can('manage_options')){
 <p><input type="radio" value="1" name="allowchat"  style="width: 22px; height: 20px;" <?php if ($option['allowchat']!=2) echo "checked"; ?> checked>Yes&nbsp;
 
 <input type="radio" value="2" name="allowchat"  style="width: 22px; height: 20px;" <?php if ($option['allowchat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable "chat with your visitors feature"
+
+</p>
+
+<p><input type="radio" value="1" name="allowfloat"  style="width: 22px; height: 20px;" <?php if ($option['allowfloat']!=2) echo "checked"; ?> checked>Yes&nbsp;
+
+<input type="radio" value="2" name="allowfloat"  style="width: 22px; height: 20px;" <?php if ($option['allowfloat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable floating chat widget on bottom right of site
 
 </p>
 
@@ -1756,6 +1764,7 @@ if (round($option['tkn'])==0) $option['tkn']=1;
 if (round($option['iga'])==0) $option['iga']=2;
 
 if (round($option['allowchat'])==0) $option['allowchat']=1;
+if (round($option['allowfloat'])==0) $option['allowfloat']=2;
 
 if (round($option['xtheme'])==0) $option['xtheme']=2;
 
