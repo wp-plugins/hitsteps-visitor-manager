@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.68
+Version: 1.69
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -233,7 +233,7 @@ htssc.parentNode.insertBefore(hstc, htssc);
 
 </script>
 <?php if (round($option['allowfloat'])!=2){ ?>
-<script src="<?php echo $purl; ?>hitsniffer.com/onlinefloat.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
+<script src="<?php echo $purl; ?>hitsteps.com/onlinefloat.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
 <?php } ?>
 <?php }else{ ?>
 
