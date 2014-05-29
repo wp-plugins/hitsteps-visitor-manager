@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.84
+Version: 1.85
 Author URI: http://www.hitsteps.com/
 */ 
  
@@ -272,6 +272,7 @@ if (round($option['allowfloat'])==0) $option['allowfloat']=2;
 
 if (round($option['xtheme'])==0) $option['xtheme']=2;
 
+if (!isset($option['stats'])) $option['stats']=2;
 if (round($option['stats'])==0) $option['stats']=2;
 
 if (round($option['wpmap'])==0) $option['wpmap']=2;
@@ -294,7 +295,7 @@ function hst_admin_menu(){
 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 
-	add_options_page('Hitsteps Options', 'Hitsteps', 9, __FILE__, 'hst_optionpage');
+	add_options_page('Hitsteps Options', 'Hitsteps', 'manage_options', __FILE__, 'hst_optionpage');
 
 }
 }
@@ -406,108 +407,10 @@ $magicable=0;
 
 }
 
-if ($_REQUEST['hitmagic']=='do'){
-
-if ($magicable==1){
-
-$murl = 'http://www.hitsteps.com/wp-register.php';
 
 
 
-$lang=get_bloginfo('language');
-
-if (strpos($lang,"-")>0){
-
-$splitlang=explode("-",$lang);
-
-$lang=$lang[0];
-
-}
-
-if ($lang=='') $lang='en';
-
-
-
-$mdata = array(
-
-            'ip'=>urlencode($_SERVER['REMOTE_ADDR']),
-
-            'fname'=>urlencode($current_user->user_firstname),
-
-            'lname'=>urlencode($current_user->user_lastname),
-
-            'email'=>urlencode($current_user->user_email),
-
-            'nick'=>urlencode($current_user->display_name),
-
-            'name'=>urlencode(get_bloginfo('name')),
-
-            'summary'=>urlencode(get_bloginfo('description')),
-
-            'site'=>str_replace("hit","hit",urlencode(get_bloginfo('home'))),
-
-            'lang'=>urlencode($lang),
-
-            'refhow'=>urlencode("wpmagic")
-
-        );
-
-foreach($mdata as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-
-rtrim($fields_string,'&');
-
-$ch = curl_init();
-
-
-
-curl_setopt($ch,CURLOPT_URL,$murl);
-
-curl_setopt($ch,CURLOPT_POST,count($fields));
-
-curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-
-$hcresult = curl_exec($ch);
-
-//echo $result;
-
-curl_close($ch);
-
-
-
-
-
-
-
-if (strpos(" ".$hcresult." ","YourAPI")){
-
-$codes=explode(":",$hcresult);
-
-$option['code']=$codes[1];
-
-set_hst_conf($option);
-
-$saved=1;
-
-$magiced=1;
-
-}
-
-
-
-
-
-}
-
-
-
-}
-
-
-
-
-		if ($_POST['action']=='do'){
+		if (isset($_POST['action'])&&$_POST['action']=='do'){
 		
 if (!current_user_can('manage_options')){
 $_POST['wgl']=$option['wgl'];
@@ -538,7 +441,7 @@ select{ width: 100%; }
 
 <?php
 
-if ($saved==1){
+if (isset($saved)&&$saved==1){
 
 ?>
 
@@ -587,7 +490,7 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 
 <form method="POST" action="<?php echo str_replace('&hitmagic=do','',$_SERVER['REQUEST_URI']); ?>">
 
-<?php if ($hcresult!=''){
+<?php if (isset($hcresult)&&$hcresult!=''){
 
 if (strpos(" ".$hcresult." ","YourAPI")){
 
