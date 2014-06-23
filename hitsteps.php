@@ -4,16 +4,13 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.92
+Version: 1.93
 Author URI: http://www.hitsteps.com/
 */ 
- 
 
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
 add_action('wp_head', 'hitsteps');
-
-
 
 function hitsteps(){
 global $_SERVER,$_COOKIE,$hitsteps_tracker;
@@ -39,7 +36,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.76 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v1.93 - DO NOT CHANGE --><?php
 
 
 
@@ -198,7 +195,7 @@ $keyword[5]='Live website statistics';
 $kwid=mt_rand(0,5);
 //$kwid=mt_rand(0,35);
 
-
+$stats_widget="";
 if ($option['stats']!=2){
 //$stats_widget="publish=1&";
 }
@@ -263,21 +260,30 @@ function get_hst_conf(){
 
 $option=get_option('hst_setting');
 
+//remove PHP Notices
+if (!isset($option['code'])) $option['code']='';
+if (!isset($option['wgd'])) $option['wgd']=1;
+if (!isset($option['wgl'])) $option['wgl']=2;
+if (!isset($option['tkn'])) $option['tkn']=1;
+if (!isset($option['iga'])) $option['iga']=0;
+if (!isset($option['allowchat'])) $option['allowchat']=1;
+if (!isset($option['allowfloat'])) $option['allowfloat']=2;
+if (!isset($option['xtheme'])) $option['xtheme']=2;
+if (!isset($option['stats'])) $option['stats']=2;
+if (!isset($option['stats'])) $option['stats']=2;
+if (!isset($option['wpmap'])) $option['wpmap']=2;
+if (!isset($option['wpdash'])) $option['wpdash']=2;
+
+//define pre-defined values.
 if (round($option['wgd'])==0) $option['wgd']=1;
 if (round($option['wgl'])==0) $option['wgl']=2;
-
 if (round($option['tkn'])==0) $option['tkn']=1;
-
 if (round($option['iga'])==0) $option['iga']=0;
-
 if (round($option['allowchat'])==0) $option['allowchat']=1;
 if (round($option['allowfloat'])==0) $option['allowfloat']=2;
-
 if (round($option['xtheme'])==0) $option['xtheme']=2;
-
 if (!isset($option['stats'])) $option['stats']=2;
 if (round($option['stats'])==0) $option['stats']=2;
-
 if (round($option['wpmap'])==0) $option['wpmap']=2;
 if (round($option['wpdash'])==0) $option['wpdash']=2;
 
@@ -311,16 +317,14 @@ function hitsteps_admin_warnings() {
 
 $option=get_hst_conf();
 
-
+if (!isset($option['code'])) $option['code']='';
+if (!isset($_POST['action'])) $_POST['action']='';
+if (!isset($_REQUEST['hitmagic'])) $_REQUEST['hitmagic']='';
 
 	if ( $option['code']=='' && $_POST['action']!='do' && $_REQUEST['hitmagic']!='do' ) {
-
 		function hitsteps_warning() {
-
 			echo "
-
 			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('hitsteps is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
-
 			";
 
 		}
@@ -340,23 +344,17 @@ function hst_optionpage(){
 
 $option=get_hst_conf();
 
+
+
 $option['code']=html_entity_decode($option['code']);
-
 $option['wgd']=html_entity_decode($option['wgd']);
-
 $option['wgl']=html_entity_decode($option['wgl']);
-
 $option['allowchat']=html_entity_decode($option['allowchat']);
 $option['allowfloat']=html_entity_decode($option['allowfloat']);
-
-
 $option['xtheme']=html_entity_decode($option['xtheme']);
-
 $option['stats']=html_entity_decode($option['stats']);
-
 $option['wpmap']=html_entity_decode($option['wpmap']);
 $option['wpdash']=html_entity_decode($option['wpdash']);
-
 
 $magicable=0; //temporary disable magic feature
 
@@ -452,9 +450,7 @@ if (isset($saved)&&$saved==1){
 
 <br>
 
-<div id='hitsteps-saved' class='updated fade' ><p><strong>Hitsteps plugin setting have been saved.</strong> <?php if ($option['code']!=''){ ?><?php if (round($magiced)==0){ ?>We have started tracking your visitors. <?php } ?><?php if (round($magiced)==0){ ?><a href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
-
-	You can monitor your visitor activity in real time here, but hey! Please wait until we track some visitors first!</a><?php }else{ ?>We have started tracking your visitors.<?php }}else{ ?>Please get your hitsteps API code to enable us to start tracking your site visitors, for you.<?php } ?></p></div>
+<div id='hitsteps-saved' class='updated fade' ><p><strong>Hitsteps plugin setting have been saved.</strong> <?php if ($option['code']!=''){ ?><?php { ?>We have started tracking your visitors.<?php }}else{ ?>Please get your hitsteps API code to enable us to start tracking your site visitors, for you.<?php } ?></p></div>
 
 		<br>	
 
@@ -1322,7 +1318,7 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- HITSTEPS ONLINE SUPPORT CODE v1.76 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
+<!-- HITSTEPS ONLINE SUPPORT CODE v1.93 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
 
 var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
 document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'ipt>');
@@ -1708,7 +1704,5 @@ add_action('widgets_init', create_function('', 'return register_widget("hst_STAT
 
 		return $actionLinks;
 	}
-
-
 
 ?>

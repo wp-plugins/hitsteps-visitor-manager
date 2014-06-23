@@ -3,7 +3,7 @@ Contributors: Hitsteps
 Tags: hitsteps, analytics, visitors, counter, track, heatmap, chat, support, live, tracking, stat,stats, statscounter, google analytics,woopra, clicky, analytics,statistics,monitor,tracker,activity,hits,hit,pageview,returning,seo,rio,map,heat,click,free,secure,widget,realtime
 Requires at least: 1.5
 Tested up to: 3.9.1
-Stable tag: 1.92
+Stable tag: 1.93
 
 Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 
@@ -48,3 +48,9 @@ http://www.hitsteps.com/features.php
 
 = 1.61 =
 + Heatmap service added.
+
+= 1.90 =
+Updated tags
+
+= 1.93 =
+* Fixed php notice errors when WP_DEBUG is enabled.
