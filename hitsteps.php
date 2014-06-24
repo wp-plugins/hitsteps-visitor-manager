@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 1.93
+Version: 1.94
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -312,16 +312,23 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 
 
 
+
+
 if (!function_exists("hitsteps_admin_warnings")){
 function hitsteps_admin_warnings() {
 
 $option=get_hst_conf();
 
 if (!isset($option['code'])) $option['code']='';
-if (!isset($_POST['action'])) $_POST['action']='';
 if (!isset($_REQUEST['hitmagic'])) $_REQUEST['hitmagic']='';
 
-	if ( $option['code']=='' && $_POST['action']!='do' && $_REQUEST['hitmagic']!='do' ) {
+if (isset($_POST['action'])){
+$postaction=$_POST['action'];
+}else{
+$postaction='';
+}
+
+	if ( $option['code']=='' && $postaction!='do' && $_REQUEST['hitmagic']!='do' ) {
 		function hitsteps_warning() {
 			echo "
 			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('hitsteps is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
@@ -338,6 +345,15 @@ if (!isset($_REQUEST['hitmagic'])) $_REQUEST['hitmagic']='';
 }
 hitsteps_admin_warnings();
 }
+
+
+
+
+
+
+
+
+
 
 if (!function_exists("hst_optionpage")){
 function hst_optionpage(){
@@ -1247,6 +1263,7 @@ if ($option['wpdash']!=1){
 add_action('wp_dashboard_setup', 'hitsteps_add_dashboard_widgets' );
 }
 
+
 if (!class_exists('hst_SUPPORT')){
 if (function_exists('class_exists')){
 if (class_exists('WP_Widget')){
@@ -1692,6 +1709,8 @@ add_action('widgets_init', create_function('', 'return register_widget("hst_STAT
 
 }}
 }
+
+/*
 	# add "Settings" link to plugin on plugins page
 	add_filter('plugin_action_links', 'hitsteps_settingsLink', 0, 2);
 	function hitsteps_settingsLink($actionLinks, $file) {
@@ -1704,5 +1723,6 @@ add_action('widgets_init', create_function('', 'return register_widget("hst_STAT
 
 		return $actionLinks;
 	}
+*/
 
 ?>
