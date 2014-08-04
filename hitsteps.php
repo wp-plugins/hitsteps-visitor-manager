@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 2.08
+Version: 2.09
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -237,7 +237,7 @@ htssc.parentNode.insertBefore(hstc, htssc);
 <?php } ?>
 <?php }else{ ?>
 
-<noscript><a href="http://www.hitsteps.com/"><img src="<?php echo $purl; ?>hitsteps.com/track.php?mode=img&amp;code=<?php echo substr($option['code'],0,32); ?><?php echo $htmlpar; ?>" alt="<?php echo $keyword[$kwid]; ?>" border='0' /><?php echo $keyword[$kwid]; ?></a></noscript>
+<noscript><a href="http://www.hitsteps.com/"><img src="<?php echo $purl; ?>hitsteps.com/track.php?mode=img&amp;code=<?php echo substr($option['code'],0,32); ?><?php echo $htmlpar; ?>" alt="<?php echo $keyword[$kwid]; ?>" border='0' width='1' height='1' /><?php echo $keyword[$kwid]; ?></a></noscript>
 
 <?php } ?>
 
@@ -1030,7 +1030,7 @@ If you have a normal website then all you have to do is input the tracking code 
 <textarea rows="6" name="wcode" cols="100" readonly><!-- HITSTEPS TRACKING CODE - DO NOT CHANGE -->
 <script src="http://www.hitsteps.com/track.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
 <noscript><a href="http://www.hitsteps.com/">
-<img src="http://www.hitsteps.com/track.php?mode=img&code=<?php echo substr($option['code'],0,32); ?>" alt="Realtime website statistics" />realtime web visitor analytics chat support</a></noscript>
+<img src="http://www.hitsteps.com/track.php?mode=img&code=<?php echo substr($option['code'],0,32); ?>" alt="Realtime website statistics" border="0" height="0" width="0" />realtime web visitor analytics chat support</a></noscript>
 <!-- HITSTEPS TRACKING CODE - DO NOT CHANGE --></textarea></p><?php } ?>
 
 <input type="hidden" name="action" value="do">

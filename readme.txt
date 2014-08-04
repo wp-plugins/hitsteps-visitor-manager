@@ -3,7 +3,7 @@ Contributors: Hitsteps
 Tags: manager, visitors, visit, steps, footprint, live,stats, statistics,hits,hit, web, visitor, monitor, visitors, monitoring, log, blog, tracking,track,tracker, activity, pageview,ssl,https,seo,counter,visit,analytics,website,free,,visitor tracker,page,links,analytic,dashboard,widget,gadget,wordpress,graph,site,realtime,daily,label, chat, live, support
 Requires at least: 1.5
 Tested up to: 3.9.1
-Stable tag: 2.08
+Stable tag: 2.09
 
 Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 
@@ -68,3 +68,6 @@ Updated tags
 * Live chat: More clear msg to notify agent is offline
 * Live chat: After sending a new message in ticket, focus on textbox is lost
 * Live chat: Closing a ticket, will notify webmaster as a new message
+
+= 2.09 =
+* SEO improvement for tracking code.
