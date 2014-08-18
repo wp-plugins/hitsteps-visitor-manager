@@ -3,7 +3,7 @@ Contributors: Hitsteps
 Tags: hitsteps, analytics, visitors, counter, track, heatmap, chat, support, live, tracking ,stats, statscounter, google analytics,woopra, clicky, analytics,statistics,tracker,activity,hits,pageview,map,heat,click,widget,realtime
 Requires at least: 1.5
 Tested up to: 3.9.2
-Stable tag: 2.13
+Stable tag: 2.14
 
 Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 
