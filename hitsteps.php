@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 2.19
+Version: 2.20
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -70,18 +70,18 @@ $htmlpar.='&MySearch='.urlencode(addslashes(get_search_query()));
 
 	function hitsteps_gc( name ) {
 
-		var ca = document.cookie.split(';');
-
-		for( var i in ca ) {
-
-			if( ca[i].indexOf( name+'=' ) != -1 )
-
-				return decodeURIComponent( ca[i].split('=')[1] );
-
+		if (document.cookie){
+		var hs_cookie_split = document.cookie.split(';');
+		if (hs_cookie_split){
+		for( var i in hs_cookie_split ) {
+		if (typeof hs_cookie_split[i] == "undefined"){}else{
+			if( hs_cookie_split[i].indexOf( name+'=' ) != -1 )
+				return decodeURIComponent( hs_cookie_split[i].split('=')[1] );
 		}
-
+		}
+		}
+		}
 		return '';
-
 	}
 
 
