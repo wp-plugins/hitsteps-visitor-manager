@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 2.23
+Version: 2.24
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -36,7 +36,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v2.06 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v2.24 - DO NOT CHANGE --><?php
 
 
 
@@ -50,26 +50,15 @@ if (round($hitsteps_tracker)==0){
 
 }
 
-
-
 $htmlpar.='&MySearch='.urlencode(addslashes(get_search_query()));
-
-
 
 } ?><?php
 
-
-
-
-
 	if( $option['tkn']!=2 ) {
-
 ?><?php if (round($hitsteps_tracker)==0){ ?>
 
 	<script type='text/javascript'>
-
 	function hitsteps_gc( name ) {
-
 		if (document.cookie){
 		var hs_cookie_split = document.cookie.split(';');
 		if (hs_cookie_split){
@@ -100,10 +89,6 @@ global $current_user;
 
 ?>';
 
-
-
-
-
 		ipnames=hitsteps_gc( 'comment_author_<?php echo md5( get_option("siteurl") ); ?>' );
 
 		if (ipnames!='') ipname=ipnames;
@@ -119,9 +104,7 @@ $ipname=$_COOKIE['comment_author_'.md5( get_option("siteurl"))];
 $ipname='';
 }
 
-
-
-if ($ipname=='') @$ipname=$current_user->user_login;
+if ($ipname=='') {@$ipname=$current_user->user_login;}
 
 
 
