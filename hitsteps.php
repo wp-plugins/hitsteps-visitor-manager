@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 2.26
+Version: 2.27
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -36,7 +36,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v2.24 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v2.27 - DO NOT CHANGE --><?php
 
 
 
@@ -1101,6 +1101,7 @@ function hitsteps_dashboard_widget_function() {
 	$option=get_hst_conf();
 
 $purl='http://www.';
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="off";
 if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
@@ -1162,6 +1163,7 @@ function hitsteps_minidashboard_widget_function() {
 	$option=get_hst_conf();
 
 $purl='http://www.';
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="off";
 if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
@@ -1286,7 +1288,7 @@ $option['code']=substr(str_replace("\r",'',str_replace("\n",'',str_replace(" ","
 
 
 $purl='http://www.';
-
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="off";
 if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 
 $purl='https://';
@@ -1471,6 +1473,7 @@ $option=get_hst_conf();
 
 $option['code']=substr(str_replace("\r",'',str_replace("\n",'',str_replace(" ","",trim(html_entity_decode($option['code']))))),0,32);
 $purl='http://www.';
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="off";
 if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
