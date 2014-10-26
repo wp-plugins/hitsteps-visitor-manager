@@ -4,12 +4,13 @@ Plugin Name: Hitsteps Visitor Manager
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps.com
-Version: 2.31
+Version: 2.32
 Author URI: http://www.hitsteps.com/
 */ 
 
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
+
 add_action('wp_head', 'hitsteps');
 
 function hitsteps(){
@@ -130,12 +131,14 @@ $htmlpar.='&amp;title='.urlencode(addslashes(wp_title('',false)));
 
 
 /*
+
 $keyword[0]='Realtime Web Statistics';
 $keyword[1]='website statistics';
 $keyword[2]='website tracking software';
 $keyword[3]='website tracking';
 $keyword[4]='blog statistics';
 $keyword[5]='blog tracking';
+
 $keyword[6]='Realtime website statistics';
 $keyword[7]='Realtime website tracking software';
 $keyword[8]='Realtime website tracking';
@@ -166,6 +169,7 @@ $keyword[32]='web statistics';
 $keyword[33]='web stats';
 $keyword[34]='web stats';
 $keyword[35]='web stats';
+
 */
 $keyword[0]='web stats';
 $keyword[1]='website statistics';
@@ -362,6 +366,7 @@ global $current_user;
 if(function_exists('get_currentuserinfo')){
 
 get_currentuserinfo();
+
 
 }
 
