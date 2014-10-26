@@ -1,9 +1,12 @@
 === Hitsteps Visitor Manager ===
 Contributors: hitsteps
-Tags: analytics, stats, statistics, chat, live, dashboard, stat, counter, hit, monitor, visitor, visit, pageview
+Tags: analytics, analytic, free, stats, statistics, chat, live, dashboard, stat, counter, hit, monitor, visitor, visit, pageview, click, heatmap, support, online, track, tracker
 Requires at least: 1.5
 Tested up to: 4.0
 Stable tag: 2.33
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Donate link: http://www.hitsteps.com/features.php#price
 
 Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 
@@ -75,5 +78,9 @@ Updated tags
 = 2.20 =
 * Fixed a bug with cookie script.
 
-= 2.27 =
+= 2.34 =
 * Fixed PHP notice bug
+
+== Frequently Asked Questions ==
+
+You'll find updated FAQs on [Support page](http://www.hitsteps.com/support.php).
