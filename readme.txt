@@ -1,4 +1,4 @@
-=== Hitsteps Visitor Manager ===
+=== Hitsteps Analytics ===
 Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online
 Requires at least: 1.5
