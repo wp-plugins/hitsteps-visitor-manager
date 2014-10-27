@@ -8,7 +8,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
 
-Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
+Hitsteps Analytics is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 
 == Description ==
 
