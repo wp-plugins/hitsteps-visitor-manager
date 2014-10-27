@@ -1,6 +1,6 @@
 === Hitsteps Visitor Manager ===
 Contributors: hitsteps
-Tags: analytics, analytic, free, stats, statistics, chat, live, dashboard, stat, counter, hit, monitor, visitor, visit, pageview, click, heatmap, support, online, track, tracker
+Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online
 Requires at least: 1.5
 Tested up to: 4.0
 Stable tag: 2.33
