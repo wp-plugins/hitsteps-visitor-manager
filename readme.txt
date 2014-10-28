@@ -1,4 +1,4 @@
-=== Hitsteps Analytics ===
+=== Hitsteps Real-time Analytics ===
 Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity, pageview, seo, counter, visitor tracker, analytic, widget, graph, realtime, daily, label
 Requires at least: 1.5
