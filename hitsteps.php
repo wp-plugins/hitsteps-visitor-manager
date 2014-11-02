@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: Hitsteps  Real-time Analytics
+Plugin Name: Hitsteps Advanced Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 2.33
+Version: 2.34
 Author URI: http://www.hitsteps.com/
 */ 
 
