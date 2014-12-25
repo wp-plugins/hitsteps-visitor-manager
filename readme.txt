@@ -26,6 +26,10 @@ All that you have to do is: open an account via the hitsteps website, add your s
 View The Features That hitsteps Offers:
 http://www.hitsteps.com/features.php
 
+== Screenshots ==
+
+1. Hitsteps dashboard.
+
 == Changelog ==
 
 = 1.00 =
