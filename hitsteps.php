@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Advanced Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 2.43
+Version: 3.00
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -1122,7 +1122,7 @@ if (round($option['xtheme'])==2){
 <?php 
 }else{
 ?>
-	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-compact" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp-2.php?code=<?php echo $option['code']; ?>">	
+	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-compact" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp3.2.php?code=<?php echo $option['code']; ?>">	
 <?php } ?>
 
 		<p align="center">
