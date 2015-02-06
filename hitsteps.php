@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 3.19
+Version: 3.20
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -130,15 +130,12 @@ $htmlpar.='&amp;title='.urlencode(addslashes(wp_title('',false)));
 
 
 
-/*
-
 $keyword[0]='Realtime Web Statistics';
 $keyword[1]='website statistics';
 $keyword[2]='website tracking software';
 $keyword[3]='website tracking';
 $keyword[4]='blog statistics';
 $keyword[5]='blog tracking';
-
 $keyword[6]='Realtime website statistics';
 $keyword[7]='Realtime website tracking software';
 $keyword[8]='Realtime website tracking';
@@ -153,34 +150,24 @@ $keyword[16]='website analytics';
 $keyword[17]='blog analytics';
 $keyword[18]='visitor analytics';
 $keyword[19]='web stats';
-$keyword[20]='web stats';
-$keyword[21]='web stats';
-$keyword[22]='web stats';
-$keyword[23]='web stats';
-$keyword[24]='web stats';
-$keyword[25]='web stats';
+$keyword[20]='web analytics';
+$keyword[21]='real time web stats';
+$keyword[22]='real time web analytics';
+$keyword[23]='track web visitors';
+$keyword[24]='website visitor tracker';
+$keyword[25]='wordpress analytics';
 $keyword[26]='web statistics';
-$keyword[27]='web statistics';
-$keyword[28]='web statistics';
-$keyword[29]='web statistics';
-$keyword[30]='web statistics';
-$keyword[31]='web statistics';
-$keyword[32]='web statistics';
-$keyword[33]='web stats';
-$keyword[34]='web stats';
-$keyword[35]='web stats';
+$keyword[27]='joomla analytics';
+$keyword[28]='wordpress blog analytics';
+$keyword[29]='joomla cms analytics';
+$keyword[30]='how track web site visitors';
+$keyword[31]='analytics';
+$keyword[32]='seo tracker';
+$keyword[33]='website traffic analytics';
+$keyword[34]='website traffic tracker';
+$keyword[35]='web seo keyword';
 
-*/
-$keyword[0]='web stats';
-$keyword[1]='website statistics';
-$keyword[2]='Website analytics';
-$keyword[3]='Website analytics tool';
-$keyword[4]='Website analytics software';
-$keyword[5]='Live website statistics';
-
-
-$kwid=mt_rand(0,5);
-//$kwid=mt_rand(0,35);
+$kwid=mt_rand(0,35);
 
 $stats_widget="";
 if ($option['stats']!=2){
