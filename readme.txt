@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity, pageview, seo, counter, visitor tracker, analytic, widget, graph, realtime, daily, label
 Requires at least: 1.5
 Tested up to: 4.1.1
-Stable tag: 3.33
+Stable tag: 3.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -91,6 +91,9 @@ Updated tags
 
 = 3.06 =
 * Introducing free license plan for lite bloggers
+
+= 3.34 =
+* Introducing multi language widgets
 
 == Frequently Asked Questions ==
 

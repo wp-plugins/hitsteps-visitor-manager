@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 3.33
+Version: 3.34
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -1314,7 +1314,7 @@ $htssl=" - SSL";
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
 <!-- HITSTEPS ONLINE SUPPORT CODE v3.07 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
 
-var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
+var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&lang=<?php echo urlencode($instance['lang']); ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
 document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'ipt>');
 
 
@@ -1345,6 +1345,7 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
 
 	$instance['widget_title'] = strip_tags($new_instance['title']);
 	$instance['widget_comments_title'] = strip_tags($new_instance['comment']);
+	$instance['lang'] = strip_tags($new_instance['lang']);
 	$instance['wd_img'] = strip_tags($new_instance['img']);
 	$instance['wd_off'] = strip_tags($new_instance['off']);
 
@@ -1364,6 +1365,7 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
 
         $title = esc_attr($instance['widget_title']);
         $widget_comments_title = esc_attr($instance['widget_comments_title']);
+        $widget_lang = esc_attr($instance['lang']);
         $img = esc_attr($instance['wd_img']);
         $off = esc_attr($instance['wd_off']);
 
@@ -1372,6 +1374,16 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
             <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
 
             <p><label for="<?php echo $this->get_field_id('comment'); ?>"><?php _e('Your Comment:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('comment'); ?>" name="<?php echo $this->get_field_name('comment'); ?>" type="text" value="<?php echo $widget_comments_title; ?>" /></label></p>
+
+            <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
+				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>>Auto-Detect</option>
+				<option value="en"<?php if ($widget_lang=='en'){ echo " selected"; } ?>>English</option>
+				<option value="es"<?php if ($widget_lang=='es'){ echo " selected"; } ?>>Español</option>
+				<option value="de"<?php if ($widget_lang=='de'){ echo " selected"; } ?>>Deutsch</option>
+				<option value="ru"<?php if ($widget_lang=='ru'){ echo " selected"; } ?>>Русский</option>
+				<option value="fa"<?php if ($widget_lang=='fa'){ echo " selected"; } ?>>فارسی</option>
+				<option value="tr"<?php if ($widget_lang=='tr'){ echo " selected"; } ?>>Türkçe</option>
+            </select></label></p>
 
             <p><label for="<?php echo $this->get_field_id('img'); ?>"><?php _e('Custom Online Icon: (optional)'); ?> <input class="widefat" id="<?php echo $this->get_field_id('img'); ?>" name="<?php echo $this->get_field_name('img'); ?>" type="text" value="<?php echo $img; ?>" /></label></p>
 
@@ -1485,7 +1497,7 @@ if ($option['code']!=''){
                         echo $before_title . $title . $after_title; ?>
 
 
-<script src="//www.hitsteps.com/api/widget_stats.php?code=<?php echo $option['code']; ?><?php if (!$instance['hitsteps_online']) { ?>&online=yes<?php } ?><?php if (!$instance['hitsteps_visit']) { ?>&visit=yes<?php } ?><?php if (!$instance['hitsteps_pageview']) { ?>&pageview=yes<?php } ?><?php if (!$instance['hitsteps_unique']) { ?>&unique=yes<?php } ?><?php if (!$instance['hitsteps_returning']) { ?>&returning=yes<?php } ?><?php if (!$instance['hitsteps_new_visit']) { ?>&new_visit=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_visit']) { ?>&yesterday_visit=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_pageview']) { ?>&yesterday_pageview=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_unique']) { ?>&yesterday_unique=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_return']) { ?>&yesterday_return=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_new_visit']) { ?>&yesterday_new_visit=yes<?php } ?><?php if (!$instance['hitsteps_total_visit']) { ?>&total_visit=yes<?php } ?><?php if (!$instance['hitsteps_total_pageview']) { ?>&total_pageview=yes<?php } ?>"></script>
+<script src="//www.hitsteps.com/api/widget_stats.php?code=<?php echo $option['code']; ?>&lang=<?php echo $instance['lang']; ?><?php if (!$instance['hitsteps_online']) { ?>&online=yes<?php } ?><?php if (!$instance['hitsteps_visit']) { ?>&visit=yes<?php } ?><?php if (!$instance['hitsteps_pageview']) { ?>&pageview=yes<?php } ?><?php if (!$instance['hitsteps_unique']) { ?>&unique=yes<?php } ?><?php if (!$instance['hitsteps_returning']) { ?>&returning=yes<?php } ?><?php if (!$instance['hitsteps_new_visit']) { ?>&new_visit=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_visit']) { ?>&yesterday_visit=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_pageview']) { ?>&yesterday_pageview=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_unique']) { ?>&yesterday_unique=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_return']) { ?>&yesterday_return=yes<?php } ?><?php if (!$instance['hitsteps_yesterday_new_visit']) { ?>&yesterday_new_visit=yes<?php } ?><?php if (!$instance['hitsteps_total_visit']) { ?>&total_visit=yes<?php } ?><?php if (!$instance['hitsteps_total_pageview']) { ?>&total_pageview=yes<?php } ?>"></script>
 
 
 
@@ -1564,6 +1576,7 @@ text-decoration: underline;
 
         $title = esc_attr($instance['widget_title']);
         $widget_comments_title = esc_attr($instance['widget_comments_title']);
+        $widget_lang = esc_attr($instance['lang']);
         $hitsteps_online = round(esc_attr($instance['hitsteps_online']));
         $hitsteps_visit = round(esc_attr($instance['hitsteps_visit']));
         $hitsteps_pageview = round(esc_attr($instance['hitsteps_pageview']));
@@ -1626,7 +1639,18 @@ text-decoration: underline;
 ---              
             <p><input type="radio" value="0" name="<?php echo $this->get_field_name('use_theme'); ?>"  style="width: 22px; height: 20px;" <?php if ($use_theme==0) echo "checked"; ?> checked>Yes&nbsp;
                <input type="radio" value="1" name="<?php echo $this->get_field_name('use_theme'); ?>"  style="width: 22px; height: 20px;" <?php if ($use_theme==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Use Custom Theme?</p>
-            
+---            
+             <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
+				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>>Auto-Detect</option>
+				<option value="en"<?php if ($widget_lang=='en'){ echo " selected"; } ?>>English</option>
+				<option value="es"<?php if ($widget_lang=='es'){ echo " selected"; } ?>>Español</option>
+				<option value="de"<?php if ($widget_lang=='de'){ echo " selected"; } ?>>Deutsch</option>
+				<option value="ru"<?php if ($widget_lang=='ru'){ echo " selected"; } ?>>Русский</option>
+				<option value="fa"<?php if ($widget_lang=='fa'){ echo " selected"; } ?>>فارسی</option>
+				<option value="tr"<?php if ($widget_lang=='tr'){ echo " selected"; } ?>>Türkçe</option>
+            </select></label></p>
+ 
+ 
  
       <?php 
 
