@@ -2,8 +2,8 @@
 Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity, pageview, seo, counter, visitor tracker, analytic, widget, graph, realtime, daily, label
 Requires at least: 1.5
-Tested up to: 4.2.1
-Stable tag: 3.74
+Tested up to: 4.2.2
+Stable tag: 3.95
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -97,6 +97,14 @@ Updated tags
 
 = 3.37 =
 * Added Spanish Language to Dashboard Interface
+
+= 3.90 =
+* Hitsteps plugin is more user-friendly. Plugin GUI has been redesigned from scratch.
+
+= 3.95 =
+* Updated API Key installation guide.
++ Added new shortcut button to open hitsteps dashboard in WordPress Admin header.
+
 
 == Frequently Asked Questions ==
 

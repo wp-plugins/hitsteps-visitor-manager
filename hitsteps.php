@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 3.74
+Version: 3.95
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -37,7 +37,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v3.61 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v3.90 - DO NOT CHANGE --><?php
 
 
 
@@ -229,6 +229,43 @@ $hitsteps_tracker=1;
 
 
 
+
+if (!function_exists("hst_clean_cache")){
+function hst_clean_cache(){
+
+
+	if(function_exists('wp_cache_clean_cache')){
+	global $file_prefix;
+	wp_cache_clean_cache($file_prefix);
+	}
+	
+	if (defined('W3TC')) {
+	
+	if(function_exists('w3tc_flush_all')){
+	w3tc_flush_all();
+	do_action('w3tc_flush_all');
+	}
+	
+	if (function_exists('w3tc_pgcache_flush')) {
+	w3tc_pgcache_flush();
+	do_action('w3tc_pgcache_flush');
+	}
+	
+	
+	}
+
+	
+
+
+}
+}
+
+
+
+
+
+
+
 if (!function_exists("get_hst_conf")){
 function get_hst_conf(){
 
@@ -288,6 +325,80 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 
 
 
+if (!function_exists("hitsteps_admin_bar_head")){
+		function hitsteps_admin_bar_head() {
+			add_action( 'admin_bar_menu', 'hitsteps_admin_bar_menu', 1000 );
+			?>
+
+			<style type='text/css'>
+				#wpadminbar .quicklinks li#wp-admin-bar-hitstepsbtn {
+					height: 28px
+				}
+
+				#wpadminbar .quicklinks li#wp-admin-bar-hitstepsbtn a {
+					height: 28px;
+					padding: 0
+				}
+
+				#wpadminbar .quicklinks li#wp-admin-bar-hitstepsbtn a img {
+					padding: 4px 5px;
+					height: 20px;
+					width: 99px;
+				}
+			</style>
+		<?php
+		}
+	}	
+		
+		
+		
+		
+	if (!function_exists("hitsteps_admin_bar_menu")){
+		function hitsteps_admin_bar_menu( &$wp_admin_bar ) {
+		
+		if (current_user_can('manage_options')){
+		
+			$option=get_hst_conf();
+			if (!isset($option['code'])) $option['code']='';
+			
+			if ( $option['code']!=''){		
+			$url = 'http://www.hitsteps.com/login-code.php?code=' . $option['code'];
+			}else{
+			$url =  get_site_url().'/wp-admin/options-general.php?page=hitsteps-visitor-manager/hitsteps.php';
+			}
+
+			$title = __('Hitsteps Analytics');
+
+			$menu = array(
+				'id'    => 'hitstepsbtn',
+				'title' => "<img width='90' height='20' src='" . WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)). "logo.png' alt='" . $title . "' title='" . $title . "' />",
+				'href'  => $url
+			);
+
+			$wp_admin_bar->add_menu( $menu );
+		}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if (!function_exists("hitsteps_admin_warnings")){
 function hitsteps_admin_warnings() {
 
@@ -305,7 +416,12 @@ $postaction='';
 	if ( $option['code']=='' && $postaction!='do' && $_REQUEST['hitmagic']!='do' ) {
 		function hitsteps_warning() {
 			echo "
-			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('hitsteps is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
+			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('Hitsteps Analytics is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
+			
+			<script type=\"text/javascript\">setTimeout(function(){jQuery('#hitsteps-warning').slideUp('slow');}, 11000);</script>
+
+			
+			
 			";
 
 		}
@@ -318,6 +434,13 @@ $postaction='';
 
 }
 hitsteps_admin_warnings();
+$option=get_hst_conf();
+if ($option['wgd']!=2){
+
+add_action( 'wp_head', 'hitsteps_admin_bar_head' );
+
+}
+
 }
 
 
@@ -346,7 +469,7 @@ $option['stats']=html_entity_decode($option['stats']);
 $option['wpmap']=html_entity_decode($option['wpmap']);
 $option['wpdash']=html_entity_decode($option['wpdash']);
 
-$magicable=0; //temporary disable magic feature
+$magicable=0;  //todo
 
 global $current_user;
 
@@ -357,10 +480,12 @@ get_currentuserinfo();
 
 }
 
+
+
+
+
 if ($current_user->user_email==''){
-
 $magicable=0;
-
 }
 
 if ($current_user->display_name==''){
@@ -385,7 +510,6 @@ $current_user->user_firstname=$current_user->display_name;
 if ($current_user->display_name==''){
 
 $magicable=0;
-
 }
 
 if(!function_exists('get_bloginfo')){
@@ -398,6 +522,108 @@ if(!function_exists('curl_init')){
 $magicable=0;
 
 }
+
+
+
+if ($_REQUEST['hitmagic']=='do'){
+
+if ($magicable==1){
+
+$murl = 'http://www.hitsteps.com/wp-register.php';
+
+
+
+$lang=get_bloginfo('language');
+
+if (strpos($lang,"-")>0){
+
+$splitlang=explode("-",$lang);
+
+$lang=$lang[0];
+
+}
+
+if ($lang=='') $lang='en';
+
+
+
+$mdata = array(
+
+            'ip'=>urlencode($_SERVER['REMOTE_ADDR']),
+
+            'fname'=>urlencode($current_user->user_firstname),
+
+            'lname'=>urlencode($current_user->user_lastname),
+
+            'email'=>urlencode($current_user->user_email),
+
+            'nick'=>urlencode($current_user->display_name),
+
+            'name'=>urlencode(get_bloginfo('name')),
+
+            'summary'=>urlencode(get_bloginfo('description')),
+
+            'site'=>str_replace("hit","hit",urlencode(get_bloginfo('home'))),
+
+            'lang'=>urlencode($lang),
+
+            'refhow'=>urlencode("wpmagic")
+
+        );
+
+foreach($mdata as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+
+rtrim($fields_string,'&');
+
+$ch = curl_init();
+
+
+
+curl_setopt($ch,CURLOPT_URL,$murl);
+
+curl_setopt($ch,CURLOPT_POST,count($fields));
+
+curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+
+$hcresult = curl_exec($ch);
+
+//echo $result;
+
+curl_close($ch);
+
+
+
+
+
+
+
+if (strpos(" ".$hcresult." ","YourAPI")){
+
+$codes=explode(":",$hcresult);
+
+$option['code']=$codes[1];
+
+set_hst_conf($option);
+
+$saved=1;
+
+$magiced=1;
+
+}
+
+
+
+
+
+}
+
+
+}
+
+
+
 
 
 
@@ -421,14 +647,11 @@ $_POST['wgl']=$option['wgl'];
 
 <div class="wrap">
 
+
 <style>
-
-input{ width: 99%; }
-
-textarea{ width: 99%; }
-
-select{ width: 100%; }
-
+.clear{
+clear: both;
+}
 </style>
 
 <?php
@@ -443,6 +666,11 @@ if (isset($saved)&&$saved==1){
 
 <div id='hitsteps-saved' class='updated fade' ><p><strong>Hitsteps plugin setting have been saved.</strong> <?php if ($option['code']!=''){ ?><?php { ?>We have started tracking your visitors.<?php }}else{ ?>Please get your hitsteps API code to enable us to start tracking your site visitors, for you.<?php } ?></p></div>
 
+<script type="text/javascript">setTimeout(function(){jQuery('#hitsteps-saved').slideUp('slow');}, 11000);</script>
+
+
+
+
 		<br>	
 
 
@@ -452,14 +680,7 @@ if (isset($saved)&&$saved==1){
 
 
 
-
-if(function_exists('wp_cache_clean_cache')){
-
-global $file_prefix;
-
-wp_cache_clean_cache($file_prefix);
-
-}
+hst_clean_cache();
 
 
 
@@ -470,15 +691,17 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 ?>
 
 
-
+<div style="max-width: 1300px; margin:auto;">
 <h2>
+
+
 
 
 <img src="<?php echo $x; ?>favicon.png" style="vertical-align: middle; padding-right: 3px; " />
 
-<a target="_blank" href="http://www.hitsteps.com/?tag=wordpress-to-homepage">Hitsteps - an eye on your site</a></h2>
-
-<form method="POST" action="<?php echo str_replace('&hitmagic=do','',$_SERVER['REQUEST_URI']); ?>">
+<a target="_blank" href="http://www.hitsteps.com/?tag=wordpress-to-homepage" style="color: #000; text-decoration: none;   font-weight: lighter;">Hitsteps - Ultimate Realtime Web Analytics</a></h2>
+</div>
+<br>
 
 <?php if (isset($hcresult)&&$hcresult!=''){
 
@@ -521,437 +744,176 @@ $magicable=0;
  
  
  
-<center>
-<a class='btn' style="margin-bottom: 15px;padding: 10px;" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Monitor your visitor activity, Click to open your real time dashboard.</a>
-</center>
+<div style="max-width:1300px; margin-left: auto; margin-right: auto;">
+<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px;" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Click here to open your Hitsteps dashboard.</a>
+</div>
 <?php } 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 ?>
 
-<div class="tdhdr">
-<div class="tdhdrw">
-
-
 
 <style>
-.lcd{
-
-background-color: #496b9a;
-background-image: 	-webkit-gradient(linear, left top, left bottom, 
-					from(#889ab4), 
-					color-stop(0.5, #6380a9), 
-					color-stop(0.5, #486a98), 
-					to(#496b9a));
-					
-background-image:  -moz-linear-gradient(top,
-					#889ab4, 
-					#6380a9 50%, 
-					#486a98 50%, 
-					#496b9a); 
-
-background-image: -o-linear-gradient(
-    center bottom,
-    rgb(48, 69, 96) 60%,
-    rgb(96, 122, 149) 65%
-);
-
-background-image: linear-gradient(
-    center bottom,
-    rgb(48, 69, 96) 60%,
-    rgb(96, 122, 149) 65%
-);
-
-
-box-shadow: 0px 0px 1px #2E445C, 0px 2px 3px #2E445C;
-border-radius: 3px;
--moz-border-radius: 3px;
--webkit-border-radius: 3px;
-
-width: 106px;
-height: 95px;
-color: #fff;
-text-align: center;
-float: left;
-margin-right: 12px;
-font-family: Trebuchet MS;
-text-shadow: 0px -1px 1px #fff, 0px 1px 1px #000;
-cursor: default;
-
-
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF889ab4, endColorstr=#FF496b9a);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF889ab4, endColorstr=#FF496b9a)";
-
+.postbox {
+  margin: 0 20px 20px 0;
 }
-
-.lcdcolor{
-margin-top: 1px;
-padding: 5px;
-background-color: #2E445C;
-background-image: 	-webkit-gradient(linear, left top, left bottom, 
-					from(#889ab4), 
-					color-stop(0.5, #6380a9), 
-					color-stop(0.5, #486a98), 
-					to(#496b9a));
-					
-background-image:  -moz-linear-gradient(top,
-					#889ab4, 
-					#6380a9 50%, 
-					#486a98 50%, 
-					#496b9a); 
-
-background-image: -o-linear-gradient(
-    center bottom,
-    rgb(48, 69, 96) 60%,
-    rgb(96, 122, 149) 65%
-);
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF889ab4, endColorstr=#FF496b9a);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF889ab4, endColorstr=#FF496b9a)";
-
-
-box-shadow: 0px 0px 1px #2E445C, 0px 2px 3px #2E445C;
-border-radius: 2px;
-height: 15px;
-overflow: hidden;
-color: #fff;
-text-align: left;
-font-family: Trebuchet MS;
-text-shadow: 0px -1px 1px #fff, 0px 1px 1px #000;
-
-}
-.lcdcolor a{
-color: #fff;
-text-decoration: none;
-}
-.lcdcolor a:hover{
-text-decoration: underline;
-}
-
-.lcdd{
-margin: 5px;
-font-size: 10pt;
-}
-.lcdx{
-margin: 5px;
-font-size: 36pt;
-font-weight: 700;
-}
-
-
-.tipmsg{
-border-radius: 4px;
--moz-border-radius: 4px;
--webkit-border-radius: 4px;
-outline:none;
-
-
-border: 5px solid #A4C1DF;
-box-shadow:0 0 8px #A4C1DF;
--moz-box-shadow:0 0 8px #A4C1DF;
--webkit-box-shadow:0 0 8px #A4C1DF;
-padding: 10px;
-
-background-color: rgb(245,245,245); 
-background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0, rgb(241,241,241)),
-    color-stop(1, rgb(250,250,250))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(241,241,241) 0%,
-    rgb(250,250,250) 100%
-);
-
-background-image: -o-linear-gradient(
-       top,
-       rgb(250,250,250) 48%,
-       rgb(241,241,241) 52%
-);
-
-text-shadow: rgba(255,255, 255, 1) 0px 1px;
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFF1F1F1);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFF1F1F1)";
-
-}
-
-.tdhdr{
-	-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px; border: 1px solid #bbb;background-color: #ffffff;padding: 10px;
-	background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0, rgb(241,241,241)),
-    color-stop(1, rgb(250,250,250))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(241,241,241) 0%,
-    rgb(250,250,250) 100%
-);
-
-background-image: -o-linear-gradient(
-       top,
-       rgb(250,250,250) 48%,
-       rgb(241,241,241) 52%
-);
-
-
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFDFDFD, endColorstr=#FFF1F1F1);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFDFDFD, endColorstr=#FFF1F1F1)";
-
-
-
-}
-.tdhdrw{
-	-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px; border: 1px solid #bbb;background-color: #ffffff;padding: 10px;
-	background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0, rgb(248,248,248)),
-    color-stop(1, rgb(255,255,255))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(248,248,248) 0%,
-    rgb(255,255,255) 100%
-);
-background-image: -o-linear-gradient(
-       top,
-       rgb(255,255,255) 48%,
-       rgb(248,248,248) 52%
-);
-
-
-
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFF8F8F8);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFF8F8F8)";
-}
-.btn,button,.button{
-transition:border linear .3s,box-shadow linear .3s;-moz-transition:border linear .3s,-moz-box-shadow linear .3s;-webkit-transition:border linear .3s,-webkit-box-shadow linear .3s;
-
-display: inline-block;
-width: auto;
-background-color: #f5f5f5; 
-background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.48, rgb(241,241,241)),
-    color-stop(0.52, rgb(250,250,250))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(241,241,241) 48%,
-    rgb(250,250,250) 52%
-);
-background-image: -o-linear-gradient(
-       top,
-       rgb(250,250,250) 48%,
-       rgb(241,241,241) 52%
-);
-
-
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFDFDFD, endColorstr=#FFF1F1F1);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFDFDFD, endColorstr=#FFF1F1F1)";
-
-
-color: #777777;
-font-weight: bold;
-text-decoration: none;
-padding: 6px;
-padding-left: 10px;
-padding-right: 10px;
-border: 1px solid #dddddd;
--moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;
-text-shadow: rgba(255, 255, 255, 1) 0px 1px;
-font-size: 9pt;
-white-space: nowrap;
-cursor: pointer;
-}
-
-.btn:hover,button:hover,.button:hover{
-color: #000;
-text-decoration: none;
-border: 1px solid #939393;
-background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.48, rgb(241,241,241)),
-    color-stop(0.52, rgb(255,255,255))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(241,241,241) 48%,
-    rgb(255,255,255) 52%
-);
-background-image: -o-linear-gradient(
-       top,
-       rgb(255,255,255) 48%,
-       rgb(241,241,241) 52%
-);
-
-
-
-outline: 0;
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFF1F1F1);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFF1F1F1)";
-}
-.btn:active,button:active,.button:active{
-
-
-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.2);
-outline: 0;
-background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.48, rgb(255,255,255)),
-    color-stop(0.52, rgb(241,241,241))
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(255,255,255) 48%,
-    rgb(241,241,241) 52%
-);
-background-image: -moz-linear-gradient(
-    center bottom,
-    rgb(255,255,255) 48%,
-    rgb(241,241,241) 52%
-);
-/* For Internet Explorer 5.5 - 7 */
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFF1F1F1, endColorstr=#FFFFFFFF);
-/* For Internet Explorer 8 */
--ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFF1F1F1, endColorstr=#FFFFFFFF)";
-
-}
-
-.clear{
-clear: both;
+.form-field input[type=email], .form-field input[type=number], .form-field input[type=password], .form-field input[type=search], .form-field input[type=tel], .form-field input[type=text], .form-field input[type=url], .form-field textarea {
+  width: 100%;
+  padding:6px;
 }
 </style>
+<div style="max-width:1300px; margin-left: auto; margin-right: auto;">
+<div class="postbox-container" style="width:70%;">
+					<div class="metabox-holder">
+						<div class="meta-box-sortables">
+							
+
+<?php if ($magicable==1){
+ if ($option['code']=='') { 
+ ?>
+
+
+
+<div class="postbox">
+				<h3 class="hndle"><span>Hitsteps Auto Registration</span></h3>
+
+				<div class="inside form-field">
 
 
 
 
 
 
-<?php if ($option['code']!=''){ ?><a target="_blank" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>"><?php }else{ ?><a target="_blank" href="http://www.hitsteps.com/features.php"><?php } ?>
-<img border="0" src="<?php echo $x; ?>hitsteps.jpg" style="margin:5px;margin-left: 30px;" width="169" height="100" align="right"></a>
 
 
-<p style="margin: 0; padding: 0px;">Hitsteps real time visitor activity tracker and analytics, allows you to be aware what is going in your wordpress blog and sites right now and has detailed archive for tracked visitor data. If you don't have an API code yet, you can get your free trial one at <a href="http://www.hitsteps.com/register.php?tag=wordpress-to-ht">hitsteps.com</a>.
+<form method="POST" >
+<input type="hidden" name="hitmagic" value="do">
+<input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="Sign up & API Key Installation">
 
-<div class="clear"></div>
+
+<small>Sign-up and get this website's API key automatically. by clicking this button, you agree <a href="http://www.hitsteps.com/terms.php" target="_blank">hitsteps's terms.</a> this will create a hitsteps account with email address of <?php echo $current_user->user_email; ?>, if email is wrong, please update it in wordpress user management before clicking this button.</small>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+<?php } } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form method="POST" action="<?php echo str_replace('&hitmagic=do','',$_SERVER['REQUEST_URI']); ?>">
+
+
+
+<div class="postbox">
+				<h3 class="hndle"><span>Hitsteps API Code</span></h3>
+
+				<div class="inside  form-field">
+
+
+
+
+<table width="100%"><tr><td>
+
+	<input type="text" name="code" size="20" placeholder="Enter your website's Hitsteps API Key here" value="<?php echo $option['code']; ?>">
+	
+	</td><td width="100">
+	
+	<a href="http://www.hitsteps.com/register.php?tag=wp-getyourcodebtn" class="button" target="_blank">Get your API Key</a>
+	</td></tr></table>
+	
+	<?php if ($option['code']==''){ ?><br>
+	<?php if ($magicable==1){ ?>You can use quick auto registration form above to get your API key. Alternatively you can manually enter your API key here. <br><?php } ?>
+	<a href="http://www.hitsteps.com/register.php?tag=wp-getyourcode" target="_blank">Register a hitsteps account if you haven't and add your website to your account</a>, Go to your user homepage on Hitsteps and click "Settings" under the name of the domain, you will find the API Key under Tracking code. Each website has its own API Code. It looks like this 3defb4a2e4426642ea...
+<?php } ?>
+
+
+
+</div>
 </div>
 
 
 
-<?php if ($magicable==1){ ?>
-
-<h2>One Click Install:</h2>
-
-<div id="magicbox"><center>
 
 
 
-<input type="hidden" name="hitmagic" value="yes">
+<div class="postbox">
+				<h3 class="hndle"><span>Advanced Settings</span></h3>
+
+				<div class="inside  form-field">
 
 
 
 
 
-<input type="button" onclick="hitstepsmagic();" style="width: 500px; height: 60px; font-size: 16px; font: Trebuchet MS, Arial; letter-spacing: -1px;" value="Get Your API Code">
-
-<br><small>by clicking this button, you agree <a href="http://www.hitsteps.com/live%20website%20statistics%20terms%20of%20use.php" target="_blank">hitsteps's terms.</a> this will create/update your hitsteps account with email of <?php echo $current_user->user_email; ?>, if email is wrong, please update it in wordpress user management before clicking this button.</small></center></div><br><br>
-
-<script>
-
-function hitstepsmagic(){
-
-window.location.href="<?php echo str_replace('&hitmagic=do','',$_SERVER['REQUEST_URI']); ?>&hitmagic=do";
-
-}
-
-</script>
 
 
+<p><input type="radio" value="1" name="wgd" <?php if ($option['wgd']!=2) echo "checked"; ?>>Yes&nbsp;
 
-
-
-<?php } ?>
-
-<div class="tdhdr" style="margin-top: 10px;">
-
-
-<strong>Hitsteps API Code:</strong> ( <a href="http://www.hitsteps.com/register.php?tag=wp-getyourcode" target="_blank">Get your code<?php if ($magicable){ ?><?php } ?></a> ) <br>
-
-	<input type="text" name="code" size="20" value="<?php echo $option['code']; ?>"><br>Each site has its own API Code. It looks something like this 3defb4a2e4426642ea... and can be found in your settings page on hitsteps.com</p>
-
-
-
-<div class="tdhdrw">
-<b>Advanced Settings:</b><br>
-
-
-<p><input type="radio" value="1" name="wgd" style="width: 22px; height: 20px;" <?php if ($option['wgd']!=2) echo "checked"; ?>>Yes&nbsp;
-
-<input type="radio" value="2" name="wgd" style="width: 22px; height: 20px;" <?php if ($option['wgd']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show Hitsteps quick summary in Wordpress dashboard?
+<input type="radio" value="2" name="wgd" <?php if ($option['wgd']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show Hitsteps quick summary in Wordpress dashboard?
 
 </p>
 <?php 
 if (current_user_can('manage_options')){
 ?>
-<p><input type="radio" value="2" name="wgl"  style="width: 22px; height: 20px;" <?php if ($option['wgl']==2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="2" name="wgl"  <?php if ($option['wgl']==2) echo "checked"; ?> checked>Yes&nbsp;
 
-<input type="radio" value="1" name="wgl"  style="width: 22px; height: 20px;" <?php if ($option['wgl']!=2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable Dashboard widget for administrators only ( recommended for security )
+<input type="radio" value="1" name="wgl"  <?php if ($option['wgl']!=2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable Dashboard widget for administrators only ( recommended for security )
 
 </p>
 <?php } ?>
-<p><input type="radio" value="1" name="tkn" style="width: 22px; height: 20px;" <?php if ($option['tkn']!=2) echo "checked"; ?>>Yes&nbsp;
+<p><input type="radio" value="1" name="tkn" <?php if ($option['tkn']!=2) echo "checked"; ?>>Yes&nbsp;
 
-<input type="radio" value="2" name="tkn" style="width: 22px; height: 20px;" <?php if ($option['tkn']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Track visitors name ( using name they enter when commenting )?
-
-</p>
-
-<p><input type="radio" value="1" name="iga" style="width: 22px; height: 20px;" <?php if (round($option['iga'])==1) echo "checked"; ?>>Yes&nbsp;
-
-<input type="radio" value="2" name="iga" style="width: 22px; height: 20px;" <?php if (round($option['iga'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Ignore admin visits?
+<input type="radio" value="2" name="tkn" <?php if ($option['tkn']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Track visitors name ( using name they enter when commenting )?
 
 </p>
 
-<p><input type="radio" value="1" name="allowchat"  style="width: 22px; height: 20px;" <?php if ($option['allowchat']!=2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="1" name="iga" <?php if (round($option['iga'])==1) echo "checked"; ?>>Yes&nbsp;
 
-<input type="radio" value="2" name="allowchat"  style="width: 22px; height: 20px;" <?php if ($option['allowchat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable "chat with your visitors feature"
-
-</p>
-
-<p><input type="radio" value="1" name="allowfloat"  style="width: 22px; height: 20px;" <?php if ($option['allowfloat']!=2) echo "checked"; ?> checked>Yes&nbsp;
-
-<input type="radio" value="2" name="allowfloat"  style="width: 22px; height: 20px;" <?php if ($option['allowfloat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable floating chat widget on bottom right of site
+<input type="radio" value="2" name="iga" <?php if (round($option['iga'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Ignore admin visits?
 
 </p>
 
-<p><input type="radio" value="2" name="xtheme"  style="width: 22px; height: 20px;" <?php if ($option['xtheme']==2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="1" name="allowchat"  <?php if ($option['allowchat']!=2) echo "checked"; ?> checked>Yes&nbsp;
 
-<input type="radio" value="1" name="xtheme"  style="width: 22px; height: 20px;" <?php if ($option['xtheme']!=2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Use the compact Theme for wordpress dashboard widget?
+<input type="radio" value="2" name="allowchat"  <?php if ($option['allowchat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable "chat with your visitors feature"
+
+</p>
+
+<p><input type="radio" value="1" name="allowfloat"  <?php if ($option['allowfloat']!=2) echo "checked"; ?> checked>Yes&nbsp;
+
+<input type="radio" value="2" name="allowfloat"  <?php if ($option['allowfloat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable floating chat widget on bottom right of site
+
+</p>
+
+<p><input type="radio" value="2" name="xtheme"  <?php if ($option['xtheme']==2) echo "checked"; ?> checked>Yes&nbsp;
+
+<input type="radio" value="1" name="xtheme"  <?php if ($option['xtheme']!=2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Use the compact Theme for wordpress dashboard widget?
 
 </p>
 
@@ -959,70 +921,280 @@ if (current_user_can('manage_options')){
 
 
 
-<input type="radio" value="2" name="wpdash"  style="width: 22px; height: 20px;" <?php if ($option['wpdash']==2) echo "checked"; ?>>Yes&nbsp;
-<input type="radio" value="1" name="wpdash"  style="width: 22px; height: 20px;" <?php if ($option['wpdash']==1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show mini hitsteps dashboard (Recent visitors) in wordpress admin dashboard?
+<input type="radio" value="2" name="wpdash"  <?php if ($option['wpdash']==2) echo "checked"; ?>>Yes&nbsp;
+<input type="radio" value="1" name="wpdash"  <?php if ($option['wpdash']==1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show mini hitsteps dashboard (Recent visitors) in wordpress admin dashboard?
 </p>
 
 <p>
 Show Visitor Map in wordpress admin dashboard?
 <br>
-<input type="radio" value="1" name="wpmap"  style="width: 22px; height: 20px;" <?php if ($option['wpmap']==1) echo "checked"; ?>>Online Visitors&nbsp;&nbsp;
-<input type="radio" value="2" name="wpmap"  style="width: 22px; height: 20px;" <?php if ($option['wpmap']==2) echo "checked"; ?>>Today&nbsp;&nbsp;
-<input type="radio" value="3" name="wpmap"  style="width: 22px; height: 20px;" <?php if ($option['wpmap']==3) echo "checked"; ?>>Disable Map Widget in admin dashboard&nbsp;&nbsp;
+<input type="radio" value="1" name="wpmap"  <?php if ($option['wpmap']==1) echo "checked"; ?>>Online Visitors&nbsp;&nbsp;
+<input type="radio" value="2" name="wpmap"  <?php if ($option['wpmap']==2) echo "checked"; ?>>Today&nbsp;&nbsp;
+<input type="radio" value="3" name="wpmap"  <?php if ($option['wpmap']==3) echo "checked"; ?>>Disable Map Widget in admin dashboard&nbsp;&nbsp;
 </p>
 
 
 	
 
-</div>
-	<input type="submit" value="Save Changes" style="width: 170px; padding: 10px; margin-top: 10px;" class="btn">
+
+
+
+
+
+
+
+
+
+
+
 </div>
 </div>
 
+<div style="  margin: 0 20px 20px 0;">
+	<input type="submit" value="Save Changes" class='button button-primary button-large' style="width:100%; margin-bottom: 15px; font-size: 13pt; height: 50px;  line-height: 50px; " >
+</div>
+
+
+
+
+
+<input type="hidden" name="action" value="do">
+
+
+
+				</form>		
+				
+				
 
 
 <?php if ($option['code']==''){ ?>
 
-<div style="margin-top: 15px;" class="tipmsg">
-<p style="margin: 0px; padding:0px;"><h2 style="margin: 0px; padding:0px;">How to setup Hitsteps on Wordpress<?php if ($magicable){ ?><?php } ?>?</h2><br>Just <a href="http://www.hitsteps.com/register.php?tag=wordpress-to-ht-reg">Just sign up for a Hitsteps account</a> and follow our extremely simple instructions.<br><br>
 
-Login to your Hitsteps account, add your website address to your Hitsteps account.<br>Then in the hitsteps.com settings page, you will find your Hitsteps API code.<br>
 
-Copy and paste the API code into the specified field above and click save changes. That is all!<br>All your visitor information will be tracked and logged in real-time and you can monitor the data live in your hitsteps.com dashboard.</p>
+
+
+
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>How to setup Hitsteps on Wordpress?</span></h3>
+
+<div class="inside">
+
+<a href="http://www.hitsteps.com/register.php?tag=wordpress-to-ht-reg">Simply sign up for a Hitsteps account</a> and follow our <a href="http://www.hitsteps.com/plugin/?type=api" target="_blank">extremely simple instructions to get your API Key</a>.<br><br>
+
+Login to your Hitsteps account and add your website address to your Hitsteps account.<br>Then in the hitsteps.com settings page, you will find your Hitsteps API code.<br>
+
+Copy and paste the API code into the specified field above and click save changes. That is all!<br>All your visitor information will be tracked and logged in real-time and you can monitor the data realtime in your hitsteps.com dashboard.
+
 
 </div>
+</div>	
 
-<?php } ?>
 
-	<br><p  style="margin: 0px; padding:0px;"><a href="http://www.hitsteps.com/features.php" target="_blank">View the features of hitsteps</a></p>
-<br>
-<p  style="margin: 0px; padding:0px;">hitsteps also supports normal websites ( non wordpress pages ).<?php if ($option['code']!=''){ ?><br>
 
-If you have a normal website then all you have to do is input the tracking code on each page of your website, a header of footer page is ideal for this.</p>
 
-<p class="submit">Website Code:<br>
+<?php 
+}
+if ($option['code']!=''){ ?>
 
-<textarea rows="6" name="wcode" cols="100" readonly><!-- HITSTEPS TRACKING CODE - DO NOT CHANGE -->
+
+
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>Tracking non-Wordpress pages?</span></h3>
+
+<div class="inside">
+
+If you have a normal website then all you have to do is input the tracking code on each page of your website, ideally at footer of your page.</p>
+
+<p class="submit">Javascript Tracking Code:<br>
+
+<textarea rows="6" name="wcode" style="width:100%;" readonly><!-- HITSTEPS TRACKING CODE - DO NOT CHANGE -->
 <script src="http://www.hitsteps.com/track.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
 <noscript><a href="http://www.hitsteps.com/">
 <img src="http://www.hitsteps.com/track.php?mode=img&code=<?php echo substr($option['code'],0,32); ?>" alt="Realtime website statistics" border="0" height="0" width="0" />realtime web visitor analytics chat support</a></noscript>
-<!-- HITSTEPS TRACKING CODE - DO NOT CHANGE --></textarea></p><?php } ?>
+<!-- HITSTEPS TRACKING CODE - DO NOT CHANGE --></textarea></p>
 
-<input type="hidden" name="action" value="do">
 
-</div>
 
-</form>
+
 
 
 
 </div>
+</div>	
+
+<?php } ?>
+				
+				
+				
+				
+				
+					
+							
+						</div>
+					</div>
+				</div>
+
+<div class="postbox-container" style="width:30%;">
+					<div class="metabox-holder">
+						<div class="meta-box-sortables">
+							
+							
+							
+								
+<?php if ($option['code']!=''){ ?>
+
+
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>Your Hitsteps</span></h3>
+
+<div class="inside">
+
+<a target="_blank" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
+<img border="0" src="<?php echo $x; ?>hitsteps.jpg"  width="169" ><br>Click to see your dashboard</a>
+
+
+</div>
+</div>
+
+
+<?php }else{ ?>
+
+
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>What is Hitsteps?</span></h3>
+
+<div class="inside">
+
+Hitsteps Analytics is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.<br><br>
+
+<a target="_blank" href="http://www.hitsteps.com/features.php">
+<img border="0" src="<?php echo $x; ?>hitsteps.jpg"width="169"><br>Click here to see features</a>
+
+
+</div>
+</div>
+
+
+<?php } ?>
+
+
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>Want more of Hitsteps?</span></h3>
+
+<div class="inside">
+
+<ul><li><a href="https://chrome.google.com/webstore/detail/hitsteps-visitor-manager/faidpebiglhmilmbidibmepbhpojkkoc?hl=en" target="_blank">Install Hitsteps Google Chrome Extension.</a></li><li><a href="http://www.hitsteps.com/plugin/" target="_blank">Use it on other CMS and platforms</a></li>
+<li><a href="http://www.hitsteps.com/wl/" target="_blank">Join our Whitelabel program.</a></li>
+<li><a href="http://www.hitsteps.com/contact.php" target="_blank">Contact Hitsteps team or Provide feedback.</a></li>
+</ul>
+
+
+</div>
+</div>	
+
+					
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>Like Hitsteps?</span></h3>
+
+<div class="inside">
+<p>Why not do help us to spread the word:</p><ul><li><a href="http://www.hitsteps.com/features.php" target="_blank">Link to us so other can know about it.</a></li><li><a href="https://wordpress.org/support/view/plugin-reviews/hitsteps-visitor-manager?rate=5#postform" target="_blank">Give it a 5 star rating on WordPress.org.</a></li><li><a href="http://www.hitsteps.com/stats/aff.php" target="_blank">Join Hitsteps affiliate team.</a></li></ul>
+
+
+</div>
+</div>					
+							
+	
+					
+<div id="hitsteps_features" class="postbox">
+<h3 class="hndle"><span>Follow us</span></h3>
+
+<div class="inside">
+
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=220184274667129";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="fb-like" data-href="https://www.facebook.com/Hitsteps/" data-width="150" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+
+
+
 
 <br>
+<br>
 
-<?php
 
-}
+<a class="twitter-follow-button"
+  href="https://twitter.com/hitsteps"
+  data-show-count="true"
+  data-size="large"
+  data-width="150px"
+  data-lang="en">
+Follow @hitsteps
+</a>
+<script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
+
+
+
+<br>
+<br>
+
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<!-- Place this tag where you want the widget to render. -->
+<div class="g-follow" data-annotation="bubble" data-height="24" data-href="//plus.google.com/u/0/101169046710574166491" data-rel="publisher"></div>
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>					
+								
+							
+							
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				
+				
+				
+				
+</div>
+
+<div style="clear:both;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<?php 
+
+
+} 
 }
 
 
@@ -1209,8 +1381,10 @@ $option=get_hst_conf();
 
 
 if ($option['wgd']!=2){
+
     if (function_exists('wp_add_dashboard_widget')){
     if (current_user_can('manage_options')||$option['wgl']!=2) {
+
       wp_add_dashboard_widget('hitsteps_dashboard_widget', 'Hitsteps - Your Analytics Summary', 'hitsteps_dashboard_widget_function');	
     }
     }
@@ -1312,7 +1486,7 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- HITSTEPS ONLINE SUPPORT CODE v3.07 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
+<!-- HITSTEPS ONLINE SUPPORT CODE v3.90 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
 
 var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&lang=<?php echo urlencode($instance['lang']); ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
 document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'ipt>');
@@ -1608,37 +1782,37 @@ text-decoration: underline;
             
             <p>This widget allow you to show your visitors statistics in your sidebar for public.</p>
             
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_online==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_online==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Online Counts</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Visits Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Pageviews Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_unique==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_unique==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visitors Count for Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_returning==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_returning==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Returning Visitors Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_new_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_new_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visits % Today</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  <?php if ($hitsteps_online==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  <?php if ($hitsteps_online==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Online Counts</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  <?php if ($hitsteps_visit==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  <?php if ($hitsteps_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Visits Today</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  <?php if ($hitsteps_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  <?php if ($hitsteps_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Pageviews Today</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  <?php if ($hitsteps_unique==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  <?php if ($hitsteps_unique==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visitors Count for Today</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  <?php if ($hitsteps_returning==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  <?php if ($hitsteps_returning==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Returning Visitors Today</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  <?php if ($hitsteps_new_visit==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  <?php if ($hitsteps_new_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visits % Today</p>
 ---
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Vists Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Pageviews Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_unique==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_unique==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visitors Count for Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_return==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_return==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Returning Visitors Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_new_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_yesterday_new_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visits % Yesterday</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  <?php if ($hitsteps_yesterday_visit==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  <?php if ($hitsteps_yesterday_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Vists Yesterday</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  <?php if ($hitsteps_yesterday_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  <?php if ($hitsteps_yesterday_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Pageviews Yesterday</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  <?php if ($hitsteps_yesterday_unique==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  <?php if ($hitsteps_yesterday_unique==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visitors Count for Yesterday</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  <?php if ($hitsteps_yesterday_return==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  <?php if ($hitsteps_yesterday_return==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Returning Visitors Yesterday</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  <?php if ($hitsteps_yesterday_new_visit==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  <?php if ($hitsteps_yesterday_new_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visits % Yesterday</p>
 ---
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_total_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_total_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Total Pageviews</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_total_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  style="width: 22px; height: 20px;" <?php if ($hitsteps_total_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Total Visits</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  <?php if ($hitsteps_total_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  <?php if ($hitsteps_total_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Total Pageviews</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  <?php if ($hitsteps_total_visit==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  <?php if ($hitsteps_total_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Total Visits</p>
 ---              
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('use_theme'); ?>"  style="width: 22px; height: 20px;" <?php if ($use_theme==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('use_theme'); ?>"  style="width: 22px; height: 20px;" <?php if ($use_theme==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Use Custom Theme?</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('use_theme'); ?>"  <?php if ($use_theme==0) echo "checked"; ?> checked>Yes&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('use_theme'); ?>"  <?php if ($use_theme==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Use Custom Theme?</p>
 ---            
              <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
 				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>>Auto-Detect</option>
