@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 3.95
+Version: 4.00
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -37,7 +37,7 @@ $htssl='';
       }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v3.90 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.00 - DO NOT CHANGE --><?php
 
 
 
@@ -449,6 +449,73 @@ add_action( 'wp_head', 'hitsteps_admin_bar_head' );
 
 
 
+if (!function_exists("hitsteps_call")){
+	function hitsteps_call($post){
+		$hitsteps_api_receiver="http://www.hitsteps.com/api/wp-register.php";
+		$post['v']=1;
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_USERAGENT, "Hitsteps API Agent");
+		 
+		 //Set the URL to work with
+		 curl_setopt($ch, CURLOPT_URL, $hitsteps_api_receiver);
+		
+		 // ENABLE HTTP POST
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		
+		 //Set the post parameters
+		 curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($post));
+		
+		//return answer as string
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+		//execute the request (the login)
+		$result = curl_exec($ch);
+
+		$arr=array();
+		
+		if ($result=='db_down_for_maintaince'){
+		$arr['error']=99;
+		$arr['msg']="Hitstep's internal database error";
+		curl_close($ch);
+		return $arr;
+		}
+		if(curl_errno($ch))
+		{
+		$arr['error']=98;
+		$arr['msg']="CURL connection error #".curl_errno($ch).": ".curl_error($ch);
+		curl_close($ch);
+		return $arr;	
+		}
+		curl_close($ch);
+		
+
+
+		$arr=(array) json_decode($result, true);
+		
+		
+		//var_dump($arr);
+
+		return $arr;
+		
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -469,7 +536,7 @@ $option['stats']=html_entity_decode($option['stats']);
 $option['wpmap']=html_entity_decode($option['wpmap']);
 $option['wpdash']=html_entity_decode($option['wpdash']);
 
-$magicable=0;  //todo
+$magicable=1;
 
 global $current_user;
 
@@ -525,94 +592,94 @@ $magicable=0;
 
 
 
-if ($_REQUEST['hitmagic']=='do'){
+if (isset($_REQUEST['hitmagic'])&&$_REQUEST['hitmagic']=='do'){
 
 if ($magicable==1){
 
-$murl = 'http://www.hitsteps.com/wp-register.php';
+//check data
+$magic_error=1;
+$error_msg=array();
 
+if ($_POST['hitmode']=='new'){
 
+$magic_error=0;
+$email=$_POST['magic']['email'];
+$password=$_POST['magic']['password'];
+$nickname=$_POST['magic']['nickname'];
+$refhow=$_POST['magic']['refhow'];
+$wname=$_POST['magic']['wname'];
+$summary=$_POST['magic']['summary'];
+$site=$_POST['magic']['site'];
+$fname=$_POST['magic']['fname'];
+$lname=$_POST['magic']['lname'];
+$lang=$_POST['magic']['lang'];
 
-$lang=get_bloginfo('language');
-
-if (strpos($lang,"-")>0){
-
-$splitlang=explode("-",$lang);
-
-$lang=$lang[0];
+if ($site==''){$magic_error=1;$error_msg[]='Cannot find your website address';}
+if ($wname==''){$magic_error=1;$error_msg[]='Cannot find your website name';}
+if ($email==''){$magic_error=1;$error_msg[]='Email cannot be empty';}
+if ($password==''){$magic_error=1;$error_msg[]='Password cannot be empty';}
+if ($nickname==''){$magic_error=1;$error_msg[]='Nickname cannot be empty';}
 
 }
 
-if ($lang=='') $lang='en';
+
+if ($_POST['hitmode']=='loyal'){
+
+$magic_error=0;
+$email=$_POST['magic']['email'];
+$password=$_POST['magic']['password'];
+$nickname="";
+$refhow="";
+$wname=$_POST['magic']['wname'];
+$summary=$_POST['magic']['summary'];
+$site=$_POST['magic']['site'];
+$fname="";
+$lname="";
+$lang="";
+
+if ($site==''){$magic_error=1;$error_msg[]='Cannot find your website address';}
+if ($wname==''){$magic_error=1;$error_msg[]='Cannot find your website name';}
+
+}
 
 
+if ($magic_error==0){
 
 $mdata = array(
-
-            'ip'=>urlencode($_SERVER['REMOTE_ADDR']),
-
-            'fname'=>urlencode($current_user->user_firstname),
-
-            'lname'=>urlencode($current_user->user_lastname),
-
-            'email'=>urlencode($current_user->user_email),
-
-            'nick'=>urlencode($current_user->display_name),
-
-            'name'=>urlencode(get_bloginfo('name')),
-
-            'summary'=>urlencode(get_bloginfo('description')),
-
-            'site'=>str_replace("hit","hit",urlencode(get_bloginfo('home'))),
-
-            'lang'=>urlencode($lang),
-
-            'refhow'=>urlencode("wpmagic")
+            'ip'=>$_SERVER['REMOTE_ADDR'],
+            'fname'=>$fname,
+            'lname'=>$lname,
+            'password'=>$password,
+            'email'=>$email,
+            'nick'=>$nickname,
+            'name'=>$wname,
+            'summary'=>$summary,
+            'site'=>$site,
+            'lang'=>$lang,
+            'refhow'=>$refhow,
+            'mode'=>$_POST['hitmode']
 
         );
+        
 
-foreach($mdata as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+$hcresult=hitsteps_call($mdata);
 
-rtrim($fields_string,'&');
-
-$ch = curl_init();
-
-
-
-curl_setopt($ch,CURLOPT_URL,$murl);
-
-curl_setopt($ch,CURLOPT_POST,count($fields));
-
-curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-
-$hcresult = curl_exec($ch);
-
-//echo $result;
-
-curl_close($ch);
-
-
-
-
-
-
-
-if (strpos(" ".$hcresult." ","YourAPI")){
-
-$codes=explode(":",$hcresult);
-
-$option['code']=$codes[1];
-
+if (isset($hcresult['error'])&&$hcresult['error']==0){
+$option['code']=$hcresult['code'];
 set_hst_conf($option);
-
 $saved=1;
-
 $magiced=1;
+$error_msg[]=$hcresult['msg'];
+$magicable=0;
+}else{
+$magic_error=1;
+if (!isset($hcresult['error'])) $hcresult['error']=9999;
+if (!isset($hcresult['msg'])) $hcresult['msg']='';
+$error_msg[]=$hcresult['msg']." (Err #".round($hcresult['error']).")";
 
 }
 
+}
 
 
 
@@ -703,35 +770,6 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 </div>
 <br>
 
-<?php if (isset($hcresult)&&$hcresult!=''){
-
-if (strpos(" ".$hcresult." ","YourAPI")){
-
-$magicable=0;
-
-?><?php
-
-
-
-}else{
-
-?>
-
-
-
-<div id='hitsteps-saved' class='updated fade'><p><strong>There is a error avoiding you to use one click install option. Please get your API Code manually at <a href="http://www.hitsteps.com/register.php?tag=magic-error">hitsteps website</a>.</strong><br><br>Your Error Code to <a href="http://www.hitsteps.com/contact.php">report</a> is:<br><?php echo $hcresult; ?></p></div>
-
-
-
-<?php }
-
-
-
-}
-
-
-
-?>
 
 <div>
 
@@ -745,7 +783,7 @@ $magicable=0;
  
  
 <div style="max-width:1300px; margin-left: auto; margin-right: auto;">
-<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px;" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Click here to open your Hitsteps dashboard.</a>
+<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px; text-align: center;" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Click here to open your Hitsteps dashboard.</a>
 </div>
 <?php } 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
@@ -765,35 +803,128 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 <div class="postbox-container" style="width:70%;">
 					<div class="metabox-holder">
 						<div class="meta-box-sortables">
+			
+			
+<?php 
+if (isset($error_msg))
+if (count($error_msg)>0){ 
+foreach($error_msg as $errmsg){
+?>
+<div class='updated fade hitsteps-msg' ><p><?php echo $errmsg; ?></p></div>
+
+<script type="text/javascript">setTimeout(function(){jQuery('.hitsteps-msg').slideUp('slow');}, 21000);</script>
+<?php }
+} ?>
+			
+			
+			
+			
+			
 							
 
 <?php if ($magicable==1){
  if ($option['code']=='') { 
+ 
+ 
+ 
+$lang=get_bloginfo('language');
+
+if (strpos($lang,"-")>0){
+$splitlang=explode("-",$lang);
+$lang=$splitlang[0];
+}
+
+
+
+
+if ($lang=='') $lang='en';
+ 
+ if (!isset($_POST['hitmode'])) $_POST['hitmode']='';
+ 
  ?>
 
 
 
+
+
 <div class="postbox">
-				<h3 class="hndle"><span>Hitsteps Auto Registration</span></h3>
-
-				<div class="inside form-field">
+				<h3 class="hndle" style="cursor: pointer;" onclick="jQuery('.hitmagicauto').slideToggle();"><span>Hitsteps Auto Registration</span></h3>
 
 
 
 
 
 
+				<div class="inside hitmagicauto-main form-field">
 
 
-<form method="POST" >
+
+
+
+
+
+
+<form method="POST" class="hitmagicauto" style="<?php if ($_POST['hitmode']=='loyal') { ?>display: none;<?php } ?>">
+
+<div >
+
+<div class="button" style="float: right;" onclick="jQuery('.hitmagicauto').hide();jQuery('.hitmagicloyal').fadeIn(500);">Already a hitsteps user? Login here.</div><br>
+
+<small>
+Email:<br><input type="email" name="magic[email]" value="<?php if (isset($_POST['magic']['email'])){echo $_POST['magic']['email'];}else{ echo $current_user->user_email;} ?>" /><br><br>
+Password:<br><input type="password" name="magic[password]" value="<?php if (isset($_POST['magic']['password'])){echo $_POST['magic']['password'];} ?>" /><br><br>
+Nickname:<br><input type="text" name="magic[nickname]" value="<?php if (isset($_POST['magic']['nickname'])){ echo $_POST['magic']['nickname']; }else{  echo $current_user->display_name; } ?>" /><br><br>
+How did you heard about Hitsteps:<br><input type="text" name="magic[refhow]" value="<?php  if (isset($_POST['magic']['refhow'])){echo $_POST['magic']['refhow'];} ?>" /><br><br>
+</small>
+
+
 <input type="hidden" name="hitmagic" value="do">
+<input type="hidden" name="hitmode" value="new">
+<input type="hidden" name="magic[wname]" value="<?php echo get_bloginfo('name'); ?>" />
+<input type="hidden" name="magic[summary]" value="<?php echo get_bloginfo('description'); ?>" />
+<input type="hidden" name="magic[site]" value="<?php echo get_bloginfo('url'); ?>" />
+<input type="hidden" name="magic[fname]" value="<?php echo $current_user->user_firstname; ?>" />
+<input type="hidden" name="magic[lname]" value="<?php echo $current_user->user_lastname; ?>" />
+<input type="hidden" name="magic[lang]" value="<?php echo $lang; ?>" />
+
+
+
 <input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="Sign up & API Key Installation">
 
 
-<small>Sign-up and get this website's API key automatically. by clicking this button, you agree <a href="http://www.hitsteps.com/terms.php" target="_blank">hitsteps's terms.</a> this will create a hitsteps account with email address of <?php echo $current_user->user_email; ?>, if email is wrong, please update it in wordpress user management before clicking this button.</small>
+<small>Sign-up and get this website's API key automatically from hitsteps servers. by clicking this button, you agree <a href="http://www.hitsteps.com/terms.php" target="_blank">hitsteps's terms.</a>.</small>
+
+
+</div>
+
 </form>
 
 
+
+<form method="POST" class="hitmagicloyal" style="<?php if ($_POST['hitmode']!='loyal') { ?>display: none;<?php } ?>">
+
+<div >
+
+<div class="button" style="float: right;" onclick="jQuery('.hitmagicloyal').hide();jQuery('.hitmagicauto').fadeIn(500);">New hitsteps user? Sign up here.</div><br>
+
+<small>
+Email:<br><input type="email" name="magic[email]" value="<?php if (isset($_POST['magic']['email'])){echo $_POST['magic']['email'];}else{ echo $current_user->user_email;} ?>" /><br><br>
+Password:<br><input type="password" name="magic[password]" value="<?php if (isset($_POST['magic']['password'])){echo $_POST['magic']['password'];} ?>" /><br><br>
+</small>
+
+
+<input type="hidden" name="hitmagic" value="do">
+<input type="hidden" name="hitmode" value="loyal">
+<input type="hidden" name="magic[wname]" value="<?php echo get_bloginfo('name'); ?>" />
+<input type="hidden" name="magic[summary]" value="<?php echo get_bloginfo('description'); ?>" />
+<input type="hidden" name="magic[site]" value="<?php echo get_bloginfo('url'); ?>" />
+
+
+<input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="Login & API Key Installation">
+
+</div>
+
+</form>
 
 
 
@@ -1486,7 +1617,7 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- HITSTEPS ONLINE SUPPORT CODE v3.90 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
+<!-- HITSTEPS ONLINE SUPPORT CODE v4.00 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
 
 var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&lang=<?php echo urlencode($instance['lang']); ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
 document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'ipt>');
