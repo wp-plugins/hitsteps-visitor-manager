@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: http://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.00
+Version: 4.01
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -129,45 +129,42 @@ $htmlpar.='&amp;title='.urlencode(addslashes(wp_title('',false)));
 
 
 
+$keyword=array();
+$keyword[]='real time web analytics';
+$keyword[]='realtime web analytics';
+$keyword[]='website tracking';
+$keyword[]='blog statistics';
+$keyword[]='blog tracking';
+$keyword[]='Realtime website statistics';
+$keyword[]='Realtime website tracking';
+$keyword[]='Realtime blog statistics';
+$keyword[]='Realtime blog tracking';
+$keyword[]='free website tracking';
+$keyword[]='visitor activity tracker';
+$keyword[]='visitor activity monitoring';
+$keyword[]='visitor activity monitor';
+$keyword[]='user activity tracking';
+$keyword[]='website analytics';
+$keyword[]='blog analytics';
+$keyword[]='visitor analytics';
+$keyword[]='web stats';
+$keyword[]='web analytics';
+$keyword[]='real time web stats';
+$keyword[]='real time web analytics';
+$keyword[]='track web visitors';
+$keyword[]='website visitor tracker';
+$keyword[]='wordpress analytics';
+$keyword[]='web statistics';
+$keyword[]='joomla analytics';
+$keyword[]='wordpress blog analytics';
+$keyword[]='joomla cms analytics';
+$keyword[]='how track web site visitors';
+$keyword[]='analytics';
+$keyword[]='website traffic analytics';
+$keyword[]='website traffic tracker';
+$keyword[]='live chat';
 
-$keyword[0]='Realtime Web Statistics';
-$keyword[1]='website statistics';
-$keyword[2]='website tracking software';
-$keyword[3]='website tracking';
-$keyword[4]='blog statistics';
-$keyword[5]='blog tracking';
-$keyword[6]='Realtime website statistics';
-$keyword[7]='Realtime website tracking software';
-$keyword[8]='Realtime website tracking';
-$keyword[9]='Realtime blog statistics';
-$keyword[10]='Realtime blog tracking';
-$keyword[11]='free website tracking';
-$keyword[12]='visitor activity tracker';
-$keyword[13]='visitor activity monitoring';
-$keyword[14]='visitor activity monitor';
-$keyword[15]='user activity tracking';
-$keyword[16]='website analytics';
-$keyword[17]='blog analytics';
-$keyword[18]='visitor analytics';
-$keyword[19]='web stats';
-$keyword[20]='web analytics';
-$keyword[21]='real time web stats';
-$keyword[22]='real time web analytics';
-$keyword[23]='track web visitors';
-$keyword[24]='website visitor tracker';
-$keyword[25]='wordpress analytics';
-$keyword[26]='web statistics';
-$keyword[27]='joomla analytics';
-$keyword[28]='wordpress blog analytics';
-$keyword[29]='joomla cms analytics';
-$keyword[30]='how track web site visitors';
-$keyword[31]='analytics';
-$keyword[32]='seo tracker';
-$keyword[33]='website traffic analytics';
-$keyword[34]='website traffic tracker';
-$keyword[35]='web seo keyword';
-
-$kwid=mt_rand(0,35);
+$kwid=mt_rand(0,count($keyword));
 
 $stats_widget="";
 if ($option['stats']!=2){
@@ -297,8 +294,6 @@ if (!isset($option['stats'])) $option['stats']=2;
 if (round($option['stats'])==0) $option['stats']=2;
 if (round($option['wpmap'])==0) $option['wpmap']=2;
 if (round($option['wpdash'])==0) $option['wpdash']=2;
-
-
 
 return $option;
 
