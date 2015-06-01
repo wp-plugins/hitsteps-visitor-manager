@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Hitsteps Ultimate Web Analytics
-Plugin URI: http://www.hitsteps.com/
+Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.09
+Version: 4.10
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -761,7 +761,7 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 
 <img src="<?php echo $x; ?>favicon.png" style="vertical-align: middle; padding-right: 3px; " />
 
-<a target="_blank" href="http://www.hitsteps.com/?tag=wordpress-to-homepage" style="color: #000; text-decoration: none;   font-weight: lighter;">Hitsteps - Ultimate Realtime Web Analytics</a></h2>
+<a target="_blank" href="https://www.hitsteps.com/?tag=wordpress-to-homepage" style="color: #000; text-decoration: none;   font-weight: lighter;">Hitsteps - Ultimate Realtime Web Analytics</a></h2>
 </div>
 <br>
 
@@ -778,7 +778,7 @@ $magicable=0;
  
  
 <div style="max-width:1300px; margin-left: auto; margin-right: auto;">
-<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px; text-align: center;" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Click here to open your Hitsteps dashboard.</a>
+<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px; text-align: center;" href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Click here to open your Hitsteps dashboard.</a>
 </div>
 <?php } 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
@@ -887,7 +887,7 @@ How did you heard about Hitsteps:<br><input type="text" name="magic[refhow]" val
 <input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="Sign up & API Key Installation">
 
 
-<small>Sign-up and get this website's API key automatically from hitsteps servers. by clicking this button, you agree <a href="http://www.hitsteps.com/terms.php" target="_blank">hitsteps's terms.</a>.</small>
+<small>Sign-up and get this website's API key automatically from hitsteps servers. by clicking this button, you agree <a href="https://www.hitsteps.com/terms.php" target="_blank">hitsteps's terms.</a>.</small>
 
 
 </div>
@@ -970,12 +970,12 @@ Password:<br><input type="password" name="magic[password]" value="<?php if (isse
 	
 	</td><td width="100">
 	
-	<a href="http://www.hitsteps.com/register.php?tag=wp-getyourcodebtn" class="button" target="_blank">Get your API Key</a>
+	<a href="https://www.hitsteps.com/register.php?tag=wp-getyourcodebtn" class="button" target="_blank">Get your API Key</a>
 	</td></tr></table>
 	
 	<?php if ($option['code']==''){ ?><br>
 	<?php if ($magicable==1){ ?>You can use quick auto registration form above to get your API key. Alternatively you can manually enter your API key here. <br><?php } ?>
-	<a href="http://www.hitsteps.com/register.php?tag=wp-getyourcode" target="_blank">Register a hitsteps account if you haven't and add your website to your account</a>, Go to your user homepage on Hitsteps and click "Settings" under the name of the domain, you will find the API Key under Tracking code. Each website has its own API Code. It looks like this 3defb4a2e4426642ea...
+	<a href="https://www.hitsteps.com/register.php?tag=wp-getyourcode" target="_blank">Register a hitsteps account if you haven't and add your website to your account</a>, Go to your user homepage on Hitsteps and click "Settings" under the name of the domain, you will find the API Key under Tracking code. Each website has its own API Code. It looks like this 3defb4a2e4426642ea...
 <?php } ?>
 
 
@@ -1105,7 +1105,7 @@ Show Visitor Map in wordpress admin dashboard?
 
 <div class="inside">
 
-<a href="http://www.hitsteps.com/register.php?tag=wordpress-to-ht-reg">Simply sign up for a Hitsteps account</a> and follow our <a href="http://www.hitsteps.com/plugin/?type=api" target="_blank">extremely simple instructions to get your API Key</a>.<br><br>
+<a href="https://www.hitsteps.com/register.php?tag=wordpress-to-ht-reg">Simply sign up for a Hitsteps account</a> and follow our <a href="https://www.hitsteps.com/plugin/?type=api" target="_blank">extremely simple instructions to get your API Key</a>.<br><br>
 
 Login to your Hitsteps account and add your website address to your Hitsteps account.<br>Then in the hitsteps.com settings page, you will find your Hitsteps API code.<br>
 
@@ -1134,9 +1134,9 @@ If you have a normal website then all you have to do is input the tracking code 
 <p class="submit">Javascript Tracking Code:<br>
 
 <textarea rows="6" name="wcode" style="width:100%;" readonly><!-- HITSTEPS TRACKING CODE - DO NOT CHANGE -->
-<script src="http://www.hitsteps.com/track.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
-<noscript><a href="http://www.hitsteps.com/">
-<img src="http://www.hitsteps.com/track.php?mode=img&code=<?php echo substr($option['code'],0,32); ?>" alt="Realtime website statistics" border="0" height="0" width="0" />realtime web visitor analytics chat support</a></noscript>
+<script src="https://www.hitsteps.com/track.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
+<noscript><a href="https://www.hitsteps.com/">
+<img src="https://www.hitsteps.com/track.php?mode=img&code=<?php echo substr($option['code'],0,32); ?>" alt="Realtime website statistics" border="0" height="0" width="0" />realtime web visitor analytics chat support</a></noscript>
 <!-- HITSTEPS TRACKING CODE - DO NOT CHANGE --></textarea></p>
 
 
@@ -1175,7 +1175,7 @@ If you have a normal website then all you have to do is input the tracking code 
 
 <div class="inside">
 
-<a target="_blank" href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
+<a target="_blank" href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
 <img border="0" src="<?php echo $x; ?>hitsteps.jpg"  width="169" ><br>Click to see your dashboard</a>
 
 
@@ -1193,7 +1193,7 @@ If you have a normal website then all you have to do is input the tracking code 
 
 Hitsteps Analytics is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.<br><br>
 
-<a target="_blank" href="http://www.hitsteps.com/features.php">
+<a target="_blank" href="https://www.hitsteps.com/features.php">
 <img border="0" src="<?php echo $x; ?>hitsteps.jpg"width="169"><br>Click here to see features</a>
 
 
@@ -1209,9 +1209,9 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 
 <div class="inside">
 
-<ul><li><a href="https://chrome.google.com/webstore/detail/hitsteps-visitor-manager/faidpebiglhmilmbidibmepbhpojkkoc?hl=en" target="_blank">Install Hitsteps Google Chrome Extension.</a></li><li><a href="http://www.hitsteps.com/plugin/" target="_blank">Use it on other CMS and platforms</a></li>
-<li><a href="http://www.hitsteps.com/wl/" target="_blank">Join our Whitelabel program.</a></li>
-<li><a href="http://www.hitsteps.com/contact.php" target="_blank">Contact Hitsteps team or Provide feedback.</a></li>
+<ul><li><a href="https://chrome.google.com/webstore/detail/hitsteps-visitor-manager/faidpebiglhmilmbidibmepbhpojkkoc?hl=en" target="_blank">Install Hitsteps Google Chrome Extension.</a></li><li><a href="https://www.hitsteps.com/plugin/" target="_blank">Use it on other CMS and platforms</a></li>
+<li><a href="https://www.hitsteps.com/wl/" target="_blank">Join our Whitelabel program.</a></li>
+<li><a href="https://www.hitsteps.com/contact.php" target="_blank">Contact Hitsteps team or Provide feedback.</a></li>
 </ul>
 
 
@@ -1223,7 +1223,7 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 <h3 class="hndle"><span>Like Hitsteps?</span></h3>
 
 <div class="inside">
-<p>Why not do help us to spread the word:</p><ul><li><a href="http://www.hitsteps.com/features.php" target="_blank">Link to us so other can know about it.</a></li><li><a href="https://wordpress.org/support/view/plugin-reviews/hitsteps-visitor-manager?rate=5#postform" target="_blank">Give it a 5 star rating on WordPress.org.</a></li><li><a href="http://www.hitsteps.com/stats/aff.php" target="_blank">Join Hitsteps affiliate team.</a></li></ul>
+<p>Why not do help us to spread the word:</p><ul><li><a href="https://www.hitsteps.com/features.php" target="_blank">Link to us so other can know about it.</a></li><li><a href="https://wordpress.org/support/view/plugin-reviews/hitsteps-visitor-manager?rate=5#postform" target="_blank">Give it a 5 star rating on WordPress.org.</a></li><li><a href="https://www.hitsteps.com/stats/aff.php" target="_blank">Join Hitsteps affiliate team.</a></li></ul>
 
 
 </div>
@@ -1349,7 +1349,7 @@ if ($mapmode==1) $mapmode="";
 	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-map" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="320" src="<?php echo $purl; ?>hitsteps.com/stats/wp-map.php?code=<?php echo $option['code']; echo $mapmode; ?>">	
 
 		<p align="center">
-		<a href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
+		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
 		<span><font face="Verdana" style="font-size: 12pt">Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually.</font></span></a></iframe></td>
 
 	</tr>
@@ -1411,7 +1411,7 @@ if (round($option['xtheme'])==2){
 <?php } ?>
 
 		<p align="center">
-		<a href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
+		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
 		<span>
 		<font face="Verdana" style="font-size: 12pt">Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually.</font></span></a></iframe></td>
 
@@ -1464,7 +1464,7 @@ $htssl=" - SSL";
 	<iframe name="hitsteps-stat-mini" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp-dashboard.php?code=<?php echo $option['code']; ?>">
 
 		<p align="center">
-		<a href="http://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
+		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
 		<span>
 		<font face="Verdana" style="font-size: 12pt">Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually by clicking here.</font></span></a></iframe></td>
 
@@ -1691,7 +1691,7 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
 
 		<p>What is this widget?</p><span>Hitsteps offers a built-in live chat feature. The widget shows an online support icon whenever you are online and shows a leave a message contact form icon when you are not online.</span>
 
-      <br><a target="_parent" href="http://www.hitsteps.com/widget/" target="_blank">Click here to open Hitsteps Widgets page.</a>
+      <br><a target="_parent" href="https://www.hitsteps.com/widget/" target="_blank">Click here to open Hitsteps Widgets page.</a>
       <p>With our Firefox addon, you can chat to your visitors direct from a firefox pop up window.
 
 </p><?php 
