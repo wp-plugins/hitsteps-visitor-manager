@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.11
+Version: 4.12
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -2028,4 +2028,5 @@ add_action('widgets_init', create_function('', 'return register_widget("hst_STAT
 
 include('api.payload.php');
 include('init.gravityform.php');
+include('init.cf7.php');
 ?>

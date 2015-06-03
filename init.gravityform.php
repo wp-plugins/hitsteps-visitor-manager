@@ -375,18 +375,25 @@ Label won't be visible to your visitors, it is just for your reference in this p
 }
 
 function _hits_gf_before_email($email){
-global $_POST;
+global $_POST, $_hs_uid_data_cache;
 
 if (round($_POST['_hs_uid_data'])>0){
+
+if (!isset($_hs_uid_data_cache[round($_POST['_hs_uid_data'])])) $_hs_uid_data_cache[round($_POST['_hs_uid_data'])]=='';
+if ($_hs_uid_data_cache[round($_POST['_hs_uid_data'])]==''){
+
+
 $input=array("input_UID"=>round($_POST['_hs_uid_data']),
 	"output_visitor_ip"=>round($_POST['_hs_data_output_visitor_ip']),
 	"output_visitor_path"=>round($_POST['_hs_data_output_visitor_path']),
 	"output_visitor_base"=>round($_POST['_hs_data_output_visitor_base']),
 	"output_visitor_link"=>round($_POST['_hs_data_output_visitor_link'])
 	);
+	$_hs_uid_data_cache[round($_POST['_hs_uid_data'])]=_hs_contact_form_query($input);
 
+}
 
-$email['message'].=_hs_contact_form_query($input);
+$email['message'].=$_hs_uid_data_cache[round($_POST['_hs_uid_data'])];
 }
 
 
@@ -395,7 +402,7 @@ return $email;
 
 
 function _hits_gf_after_submission( $entry, $form ) {
-global $_POST;
+global $_POST, $_hs_uid_data_cache;
 if (round($_POST['_hs_uid_data'])>0){
 
 //get hitstep's field input ID in gravity form
@@ -411,14 +418,20 @@ $inputID=0;
 //entry ID: $entry['id']
 //input ID: $inputID?
 
+if (!isset($_hs_uid_data_cache[round($_POST['_hs_uid_data'])])) $_hs_uid_data_cache[round($_POST['_hs_uid_data'])]=='';
+if ($_hs_uid_data_cache[round($_POST['_hs_uid_data'])]==''){
+
 $input=array("input_UID"=>round($_POST['_hs_uid_data']),
 	"output_visitor_ip"=>round($_POST['_hs_data_output_visitor_ip']),
 	"output_visitor_path"=>round($_POST['_hs_data_output_visitor_path']),
 	"output_visitor_base"=>round($_POST['_hs_data_output_visitor_base']),
 	"output_visitor_link"=>round($_POST['_hs_data_output_visitor_link'])
 	);
+	$_hs_uid_data_cache[round($_POST['_hs_uid_data'])]=_hs_contact_form_query($input);
 
-$success = GFAPI::update_entry_field( $entry['id'],  $inputID, _hs_contact_form_query($input) );
+}
+
+$success = GFAPI::update_entry_field( $entry['id'],  $inputID, $_hs_uid_data_cache[round($_POST['_hs_uid_data'])] );
 
 
 
