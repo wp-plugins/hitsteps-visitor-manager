@@ -1,9 +1,9 @@
 === Hitsteps Ultimate Web Analytics ===
 Contributors: hitsteps
-Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity, pageview, seo, counter, visitor tracker, analytic, widget, graph, realtime, daily, label
-Requires at least: 1.5
+Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity, pageview, seo, counter, visitor tracker, analytic, widget, graph, realtime, daily, gravity forms
+Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.10
+Stable tag: 4.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -15,6 +15,7 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 Hitsteps Analytics is a powerful real time visitor management and live chat tool. 
 It allows you to view your visitors stream and follow each visitors to know more about each pages they see. It allow you to engage with your visitors using live chat tool. You'll be provided with detailed information about each visitor such as geolocation, their first visit on your site, referer to your site, their browser, OS and device and much more!
 Advantages over Google analytics includes but not limited to Detailed information of each and all visitors, ability to engage with visitors using live chat tool, heatmap for each pages, carefully pre-generated and categorized reports, real-time analytics on all reports and much more...
+It also integrate analytics with gravity forms and allow you to know more of your visitors on their incoming emails.
 
 Read More:
 http://www.hitsteps.com/features.php
@@ -108,6 +109,9 @@ Updated tags
 = 4.00 =
 + Quick Registration for new users.
 + Quick API Key retrieval for current users.
+
+= 4.11 =
++ We have integrated hitsteps analytics with Gravity forms: receive your visitors full details when they contact you!
 
 
 == Frequently Asked Questions ==
