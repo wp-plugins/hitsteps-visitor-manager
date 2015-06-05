@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, dashboard, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity, pageview, seo, counter, visitor tracker, analytic, widget, graph, realtime, daily, gravity forms,contact form 7
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.12
+Stable tag: 4.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -115,6 +115,9 @@ Updated tags
 
 = 4.12 =
 + We have integrated hitsteps analytics with Contact form 7: receive your visitors full details when they contact you!
+
+= 4.13 =
+* Fixed an issue with WP Super Cache plugin.
 
 
 == Frequently Asked Questions ==
