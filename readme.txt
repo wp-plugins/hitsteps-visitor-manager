@@ -1,9 +1,9 @@
 === Hitsteps Ultimate Web Analytics ===
 Contributors: hitsteps
-Tags: analytics, free, stats, statistics, chat, contact form analytics, dashboard, stat, visitor, visit, heatmap, support
+Tags: analytics, free, stats, statistics, chat, contact form analytics, dashboard, stat, visitor, visit, heatmap, woocommerce
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.14
+Stable tag: 4.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -16,6 +16,7 @@ Hitsteps Analytics is a powerful real time visitor management and live chat tool
 It allows you to view your visitors stream and follow each visitors to know more about each pages they see. It allow you to engage with your visitors using live chat tool. You'll be provided with detailed information about each visitor such as geolocation, their first visit on your site, referer to your site, their browser, OS and device and much more!
 Advantages over Google analytics includes but not limited to Detailed information of each and all visitors, ability to engage with visitors using live chat tool, heatmap for each pages, carefully pre-generated and categorized reports, real-time analytics on all reports and much more...
 Contact form analytics feature of it also integrate analytics with Gravity Forms, Contact Form 7 and Ninja Forms plugins and allow you to know more of your visitors on their incoming emails.
+Integration with WooCommerce as Analytics allows you to receive your customers detail and pageview path within "New Order" emails
 
 Read More:
 http://www.hitsteps.com/features.php
@@ -31,6 +32,7 @@ http://www.hitsteps.com/features.php
 == Screenshots ==
 
 1. Hitsteps dashboard.
+2. Woocommerce New Order Email (similiar integration for Contact form 7, Ninja Forms and Gravity Forms).
 
 == Changelog ==
 
@@ -122,6 +124,8 @@ Updated tags
 = 4.14 =
 + We have integrated hitsteps analytics with Ninja Forms: receive your visitors full details when they contact you!
 
+= 4.15 =
++ Integration with WooCommerce as Analytics allows you to receive your customers detail and pageview path within "New Order" emails
 
 == Frequently Asked Questions ==
 

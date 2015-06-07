@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.14
+Version: 4.15
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -277,6 +277,7 @@ if (!isset($option['wgd'])) $option['wgd']=1;
 if (!isset($option['wgl'])) $option['wgl']=2;
 if (!isset($option['tkn'])) $option['tkn']=1;
 if (!isset($option['iga'])) $option['iga']=0;
+if (!isset($option['woo'])) $option['woo']=1;
 if (!isset($option['allowchat'])) $option['allowchat']=1;
 if (!isset($option['allowfloat'])) $option['allowfloat']=2;
 if (!isset($option['xtheme'])) $option['xtheme']=2;
@@ -290,6 +291,7 @@ if (round($option['wgd'])==0) $option['wgd']=1;
 if (round($option['wgl'])==0) $option['wgl']=2;
 if (round($option['tkn'])==0) $option['tkn']=1;
 if (round($option['iga'])==0) $option['iga']=0;
+if (round($option['woo'])==0) $option['woo']=1;
 if (round($option['allowchat'])==0) $option['allowchat']=1;
 if (round($option['allowfloat'])==0) $option['allowfloat']=2;
 if (round($option['xtheme'])==0) $option['xtheme']=2;
@@ -527,6 +529,7 @@ $option=get_hst_conf();
 $option['code']=html_entity_decode($option['code']);
 $option['wgd']=html_entity_decode($option['wgd']);
 $option['wgl']=html_entity_decode($option['wgl']);
+$option['woo']=html_entity_decode($option['woo']);
 $option['allowchat']=html_entity_decode($option['allowchat']);
 $option['allowfloat']=html_entity_decode($option['allowfloat']);
 $option['xtheme']=html_entity_decode($option['xtheme']);
@@ -1053,6 +1056,17 @@ if (current_user_can('manage_options')){
 <input type="radio" value="2" name="wpdash"  <?php if ($option['wpdash']==2) echo "checked"; ?>>Yes&nbsp;
 <input type="radio" value="1" name="wpdash"  <?php if ($option['wpdash']==1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show mini hitsteps dashboard (Recent visitors) in wordpress admin dashboard?
 </p>
+
+
+<p><input type="radio" value="1" name="woo"  <?php if ($option['woo']!=2) echo "checked"; ?> checked>Yes&nbsp;
+
+<input type="radio" value="2" name="woo"  <?php if ($option['woo']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Integrate with WooCommerce: Receive buyer detail and pageview path within "New Order" emails
+
+</p>
+
+
+
+
 
 <p>
 Show Visitor Map in wordpress admin dashboard?
@@ -1731,6 +1745,8 @@ if (round($option['iga'])==0) $option['iga']=2;
 
 if (round($option['allowchat'])==0) $option['allowchat']=1;
 
+if (round($option['woo'])==0) $option['woo']=1;
+
 if (round($option['xtheme'])==0) $option['xtheme']=2;
 
 if (round($option['stats'])==0) $option['stats']=2;
@@ -1987,6 +2003,7 @@ if (round($option['tkn'])==0) $option['tkn']=1;
 
 if (round($option['iga'])==0) $option['iga']=2;
 
+if (round($option['woo'])==0) $option['woo']=1;
 if (round($option['allowchat'])==0) $option['allowchat']=1;
 if (round($option['allowfloat'])==0) $option['allowfloat']=2;
 
@@ -2033,4 +2050,5 @@ include('api.payload.php');
 include('init.gravityform.php');
 include('init.cf7.php');
 include('init.ninjaform.php');
+include('init.woocommerce.php');
 ?>
