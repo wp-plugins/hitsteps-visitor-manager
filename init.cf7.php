@@ -13,7 +13,6 @@ function contact_form_7_hitsteps_fields() {
 	} 
 }
 
-
 /* Shortcode handler */
 function wpcf7_hitsteps_cf7_shortcode_handler( $tag ) {
 
@@ -156,7 +155,6 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 	}
 	
 		$array['body'] = str_replace('[hitsteps_analytics]', $_hs_tracking_info, $array['body']);
-
 		return $array;
 	
 	}

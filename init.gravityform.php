@@ -122,10 +122,6 @@ Label won't be visible to your visitors, it is just for your reference in this p
         
         
         
-        
-        
-        
-        
 		/**
          * Add hitsteps 'Visitor IP' field, displayed in Gravity Forms emails 
          */
@@ -432,8 +428,6 @@ $input=array("input_UID"=>round($_POST['_hs_uid_data']),
 }
 
 $success = GFAPI::update_entry_field( $entry['id'],  $inputID, $_hs_uid_data_cache[round($_POST['_hs_uid_data'])] );
-
-
 
 }
     

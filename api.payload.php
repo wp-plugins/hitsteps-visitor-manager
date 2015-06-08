@@ -2,8 +2,6 @@
 
 $hitsteps_public_web_api_receiver="http://www.hitsteps.com/api/query.php";
 
-
-
 if (!function_exists("hitsteps_public_query")){
 	function hitsteps_public_query($post){
 		global $hitsteps_public_web_api_receiver;
@@ -24,8 +22,6 @@ if (!function_exists("hitsteps_public_query")){
 		
 		$arr=array();
 		
-
-		
 		if ( is_wp_error( $result ) )
 		{
 		$arr['error']=98;
@@ -33,9 +29,6 @@ if (!function_exists("hitsteps_public_query")){
 
 		return $arr;	
 		}
-
-
-
 
 		if ($result['body']=='db_down_for_maintaince'){
 		$arr['error']=99;
@@ -133,19 +126,9 @@ $render.="<div style='padding:5px; margin: 3px;margin-bottom:5px;background: #ff
 
 }
 
-
-
 $render.="</div>";
 }
 }
-
-
-
-
-
-
-
-
 
 
 if ($input['output_visitor_link']){
@@ -156,8 +139,6 @@ $render.="<a style='display:block; padding:10px; background: #23282D;color: #fff
 }
 
 
-
-
 $render.="</div>";
 
 
@@ -165,12 +146,7 @@ $render.="</div>";
 }
 
 
-
-
 return $render;
-
-
 }
-
 
 ?>

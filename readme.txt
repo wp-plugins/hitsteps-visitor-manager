@@ -1,9 +1,9 @@
 === Hitsteps Ultimate Web Analytics ===
 Contributors: hitsteps
-Tags: analytics, free, stats, statistics, chat, contact form analytics, dashboard, stat, visitor, visit, heatmap, woocommerce
+Tags: analytics, free, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity,  seo, counter, analytic, widget, graph, realtime, daily, gravity forms,contact form 7, ninja forms, woocommerce, email
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.15
+Stable tag: 4.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -15,7 +15,9 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 Hitsteps Analytics is a powerful real time visitor management and live chat tool. 
 It allows you to view your visitors stream and follow each visitors to know more about each pages they see. It allow you to engage with your visitors using live chat tool. You'll be provided with detailed information about each visitor such as geolocation, their first visit on your site, referer to your site, their browser, OS and device and much more!
 Advantages over Google analytics includes but not limited to Detailed information of each and all visitors, ability to engage with visitors using live chat tool, heatmap for each pages, carefully pre-generated and categorized reports, real-time analytics on all reports and much more...
+
 Contact form analytics feature of it also integrate analytics with Gravity Forms, Contact Form 7 and Ninja Forms plugins and allow you to know more of your visitors on their incoming emails.
+
 Integration with WooCommerce as Analytics allows you to receive your customers detail and pageview path within "New Order" emails
 
 Read More:
@@ -24,9 +26,9 @@ http://www.hitsteps.com/features.php
 == Installation ==
 
 It is extremely easy to install.
-All that you have to do is: open an account via the hitsteps website, add your site to your account and get your API Code to use the plugin.
+All you have to do is to open an account via the hitsteps website, add your site to your account and get your API Code to use the plugin.
  
-View The Features That hitsteps Offers:
+View features hitsteps offers:
 http://www.hitsteps.com/features.php
 
 == Screenshots ==
