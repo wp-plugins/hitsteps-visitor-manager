@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.16
+Version: 4.17
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -1165,11 +1165,6 @@ If you have a normal website then all you have to do is input the tracking code 
 
 <?php } ?>
 				
-				
-				
-				
-				
-					
 							
 						</div>
 					</div>
@@ -1180,8 +1175,6 @@ If you have a normal website then all you have to do is input the tracking code 
 						<div class="meta-box-sortables">
 							
 							
-							
-								
 <?php if ($option['code']!=''){ ?>
 
 
