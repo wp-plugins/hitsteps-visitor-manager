@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity,  seo, counter, analytic, widget, graph, realtime, daily, gravity forms,contact form 7, ninja forms, woocommerce, email
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.17
+Stable tag: 4.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
