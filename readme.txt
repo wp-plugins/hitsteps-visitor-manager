@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity,  seo, counter, analytic, widget, web, realtime, woocommerce, email
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.23
+Stable tag: 4.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -131,6 +131,9 @@ Updated tags
 
 = 4.22 =
 * Contact form 7 update compatibility and bug fix for form generator button. Updated form editor to be compatible with Contact form 7 v4.2
+
+= 4.24 =
+* Major fix to contact form and woocomerce analytics compatibility
 
 == Frequently Asked Questions ==
 

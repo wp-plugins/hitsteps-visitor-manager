@@ -331,15 +331,32 @@ Label won't be visible to your visitors, it is just for your reference in this p
                 <script>
                 //Load hitsteps script once page fully loaded.
                 function _hs_data_uid_auto_fill_func(){
+                _hs_uidset=0;
+                var _hs_uid_data_fields = document.getElementsByName('_hs_uid_data');
+                for (_hs_uid_data_i = 0; _hs_uid_data_i < _hs_uid_data_fields.length; _hs_uid_data_i++) {
+				if (_hs_uid_data_fields[_hs_uid_data_i].value !='') {_hs_uidset=1;}
+				}
+                if (_hs_uidset==0){
                 var hstc=document.createElement('script');
 				hstc.src='//www.hitsteps.com/api/getUID.php?code=".$option['code']."';
-				hstc.async=true;
 				var htssc = document.getElementsByTagName('script')[0];
-				htssc.parentNode.insertBefore(hstc, htssc);                
+				htssc.parentNode.insertBefore(hstc, htssc);        
+				}        
                 }
+                //load it after 1 second
 				(function(){
 				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 1000);
 				})();
+                //load it after 5 second
+				(function(){
+				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 5000);
+				})();
+				//load it after 10 second
+				(function(){
+				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 10000);
+				})();
+				//load it now first, maybe user is already registered.
+				_hs_data_uid_auto_fill_func();
                 </script>";
                 $content.= "<input type='hidden' name='_hs_data_output_visitor_ip' value='".$vi."' />";
                 $content.= "<input type='hidden' name='_hs_data_output_visitor_path' value='".$vp."' />";
