@@ -8,7 +8,6 @@ add_filter( 'woocommerce_after_order_notes', 'add_hitsteps_analytics_woo_checkou
 $option=get_hst_conf();
 if ($option['woo']!=2){
 
-
 if ($option['code'] !='') {
 
 echo  "<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
