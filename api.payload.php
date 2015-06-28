@@ -10,9 +10,10 @@ if (!function_exists("hitsteps_public_query")){
 		
 		if ($hs_option['code']!=''){
 		
+		
 		$arg=array(
 		'method'=>'POST',
-		'timeout'=>45,
+		'timeout'=>18,
 		'redirection'=>5,
 		'body'=>$post		
 		);
