@@ -30,13 +30,13 @@ echo  "<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_f
 				(function(){
 				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 1000);
 				})();
-                //load it after 5 second
+                //load it after 3 second
 				(function(){
-				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 5000);
+				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 3000);
 				})();
-				//load it after 10 second
+				//load it after 9 second
 				(function(){
-				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 10000);
+				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 9000);
 				})();
 				//load it now first, maybe user is already registered.
 				_hs_data_uid_auto_fill_func();
