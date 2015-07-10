@@ -64,6 +64,11 @@ if (!function_exists("hitsteps_public_query")){
 function _hs_contact_form_query($input){
 $render='';
 $input['action']='contact_form_data_1';
+
+//visitor data
+$input['user_ip']=_hitsteps_get_ip();
+$input['user_agent']=$_SERVER['HTTP_USER_AGENT'];
+
 $data=hitsteps_public_query($input);
 $hs_option=get_hst_conf();
 if ($hs_option['code']!=''){
@@ -149,5 +154,16 @@ $render.="</div>";
 
 return $render;
 }
+
+
+	 function _hitsteps_get_ip()
+    {
+			$ip=$_SERVER["HTTP_CF_CONNECTING_IP"];
+			if ($ip=='') {$ip=$_SERVER["HTTP_X_FORWARDED"];}
+			if ($ip=='') {$ip=$_SERVER["HTTP_FORWARDED_FOR"];}
+			if ($ip=='') {$ip=$_SERVER["HTTP_CLIENT_IP"];}
+			if ($ip=='') {$ip=$_SERVER["REMOTE_ADDR"];}
+			return $ip;
+	}
 
 ?>

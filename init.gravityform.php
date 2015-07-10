@@ -326,7 +326,8 @@ Label won't be visible to your visitors, it is just for your reference in this p
            if (isset($field['hitsteps_field_visitor_link'])&&!$field['hitsteps_field_visitor_link']) $vl=0;
             
             
-                $content = "<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
+                $content = "<input type='hidden' name='_hs_post_data' value='1' />
+                <input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
 
                 <script>
                 //Load hitsteps script once page fully loaded.
@@ -390,7 +391,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
 function _hits_gf_before_email($email){
 global $_POST, $_hs_uid_data_cache;
 
-if (round($_POST['_hs_uid_data'])>0){
+if (round($_POST['_hs_post_data'])>0){
 
 if (!isset($_hs_uid_data_cache[round($_POST['_hs_uid_data'])])) $_hs_uid_data_cache[round($_POST['_hs_uid_data'])]=='';
 if ($_hs_uid_data_cache[round($_POST['_hs_uid_data'])]==''){

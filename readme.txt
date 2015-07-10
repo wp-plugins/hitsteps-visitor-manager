@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, free, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity,  seo, counter, analytic, widget, web, realtime, woocommerce, email
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 4.37
+Stable tag: 4.38
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -137,6 +137,10 @@ Updated tags
 
 = 4.29 =
 * minor fix to contact form analytics on iOS devices
+
+= 4.38 =
++ Added detection for Windows 10 and Microsoft Edge and Opera new versions
+* Major fix to contact form analytics on iOS devices for all plugins (woocommerce, contact form 7, gravityform and ninjaform)
 
 == Frequently Asked Questions ==
 

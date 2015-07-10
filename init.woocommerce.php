@@ -10,7 +10,8 @@ if ($option['woo']!=2){
 
 if ($option['code'] !='') {
 
-echo  "<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
+echo  "<input type='hidden' name='_hs_post_data' value='1' />
+<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
     <script>
                 //Load hitsteps script once page fully loaded.
                 function _hs_data_uid_auto_fill_func(){
@@ -62,7 +63,7 @@ $html='';
 
  if ($option['code']!=''){
 	
-	if (round($_POST['_hs_uid_data'])>0){
+	if (round($_POST['_hs_post_data'])>0){
 	$input=array("input_UID"=>round($_POST['_hs_uid_data']),	"output_visitor_ip"=>1,	"output_visitor_path"=>1,	"output_visitor_base"=>1,	"output_visitor_link"=>1
 	);
 

@@ -44,7 +44,8 @@ function wpcf7_hitsteps_cf7_shortcode_handler( $tag ) {
     
     $option=get_hst_conf();
 	if ($option['code'] !='') {
-    $html .= "<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
+    $html .= "<input type='hidden' name='_hs_post_data' value='1' />
+    <input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
     <script>
                 //Load hitsteps script once page fully loaded.
                 function _hs_data_uid_auto_fill_func(){
@@ -165,7 +166,10 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 	 if(wpautop($array['body']) == $array['body']){
 	 
 	if ($option['code']!=''){
-	if (round($_POST['_hs_uid_data'])>0){
+	if (round($_POST['_hs_post_data'])>0){
+	
+	
+	
 	$input=array("input_UID"=>round($_POST['_hs_uid_data']),
 	"output_visitor_ip"=>round($_POST['_hs_data_output_visitor_ip']),
 	"output_visitor_path"=>round($_POST['_hs_data_output_visitor_path']),
