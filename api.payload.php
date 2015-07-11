@@ -61,6 +61,119 @@ if (!function_exists("hitsteps_public_query")){
 }
 
 
+
+
+
+
+
+
+
+
+function _hs_contact_form_query_plain($input){
+$render='';
+$input['action']='contact_form_data_1';
+
+//visitor data
+$input['user_ip']=_hitsteps_get_ip();
+$input['user_agent']=$_SERVER['HTTP_USER_AGENT'];
+
+$data=hitsteps_public_query($input);
+$hs_option=get_hst_conf();
+if ($hs_option['code']!=''){
+if ($data['error']>0){
+$render="Hitsteps error #".$data['error'].": ".$data['msg']."";
+}else{
+
+$render.="\n--- Hitsteps Analytics ---\n";
+
+
+if ($input['output_visitor_ip']){
+if (is_array($data['visitor_ip'])){
+$devicetype="PC";
+if ($data['visitor_ip']['mobile']) $devicetype="Phone";
+if ($data['visitor_ip']['tablet']) $devicetype="Tablet";
+
+$render.="\nName: ".$data['visitor_ip']['name']."\nFrom: ".$data['visitor_ip']['city'].", ".$data['visitor_ip']['country_name']."\nOrg/ISP: ".$data['visitor_ip']['org']."\nDevice: ".$data['visitor_ip']['sw']."x".$data['visitor_ip']['sh']." ".$data['visitor_ip']['browser']." ".$data['visitor_ip']['browserv']." - ".$data['visitor_ip']['os']." - ".$devicetype." IP: ".$data['visitor_ip']['ip']."\n";
+
+}
+}
+
+
+
+if ($input['output_visitor_base']){
+if (is_array($data['visitor_base'])){
+
+$render.="
+\nFirst visited ".$data['visitor_base']['base']." from ". $data['visitor_base']['baseref'] ." landed on ".$data['visitor_base']['baseland']."\n";
+}
+}
+
+
+
+if ($input['output_visitor_path']){
+if (is_array($data['visitor_path'])){
+
+$totalview=$data['visitor_path']['hits'];
+$more='';
+if ($totalview>50){$totalview="more than 50";
+$more='more than ';
+}
+
+$render.="\nRecent pageviews are ".$totalview." pages, result in spending ".$more.round($data['visitor_path']['avg']/60,0)." minutes:\n";
+
+
+if (is_array($data['visitor_path']['pages'])){
+
+$count=20;
+
+foreach ($data['visitor_path']['pages'] as $pg){
+$count--;
+if ($count>0){
+$pg['refname']=$pg['ref'];
+$pg['reflink']="href='".$pg['ref']."'";
+if ($pg['ref']==''){$pg['refname']='Direct';$pg['reflink']='';}
+
+
+$render.="\nTo: ".$pg['name']." - visited ".$pg['short_date']."\nFrom: ".$pg['refname']."";
+
+}}
+
+}
+
+$render.="\n";
+}
+}
+
+
+if ($input['output_visitor_link']){
+if (isset($data['visitor_link'])){
+
+$render.="\nKnow more about this visitor: ".$data['visitor_link'];
+}
+}
+
+
+$render.="\n";
+
+
+}
+}
+
+
+return $render;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 function _hs_contact_form_query($input){
 $render='';
 $input['action']='contact_form_data_1';

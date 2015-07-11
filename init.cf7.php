@@ -163,7 +163,7 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 	
 	 $option=get_hst_conf();
 	 
-	 if(wpautop($array['body']) == $array['body']){
+
 	 
 	if ($option['code']!=''){
 	if (round($_POST['_hs_post_data'])>0){
@@ -178,20 +178,18 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 	);
 
 		if(wpautop($array['body']) == $array['body']) // The email is of HTML type
-			$lineBreak = "<br/>";
+			$_hs_tracking_info = _hs_contact_form_query($input);
 		else
-			$lineBreak = "\n";
+			$_hs_tracking_info = _hs_contact_form_query_plain($input);
 			
-		$_hs_tracking_info = _hs_contact_form_query($input);
+		
 	
 	}
 	}else{
 	$_hs_tracking_info="Please enable Hitsteps API code in WordPress setting page to enable Contact form Analytics.";
 	}
 	
-	}else{
-	$_hs_tracking_info="Hitsteps Analytics only support HTML content type emails, Please change this contact form to HTML.";
-	}
+
 	
 		$array['body'] = str_replace('[hitsteps_analytics]', $_hs_tracking_info, $array['body']);
 		return $array;

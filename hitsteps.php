@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.39
+Version: 4.40
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -281,6 +281,7 @@ if (!isset($option['wgl'])) $option['wgl']=2;
 if (!isset($option['tkn'])) $option['tkn']=1;
 if (!isset($option['iga'])) $option['iga']=0;
 if (!isset($option['woo'])) $option['woo']=1;
+if (!isset($option['jetpack'])) $option['jetpack']=1;
 if (!isset($option['allowchat'])) $option['allowchat']=1;
 if (!isset($option['allowfloat'])) $option['allowfloat']=2;
 if (!isset($option['xtheme'])) $option['xtheme']=2;
@@ -295,6 +296,7 @@ if (round($option['wgl'])==0) $option['wgl']=2;
 if (round($option['tkn'])==0) $option['tkn']=1;
 if (round($option['iga'])==0) $option['iga']=0;
 if (round($option['woo'])==0) $option['woo']=1;
+if (round($option['jetpack'])==0) $option['jetpack']=1;
 if (round($option['allowchat'])==0) $option['allowchat']=1;
 if (round($option['allowfloat'])==0) $option['allowfloat']=2;
 if (round($option['xtheme'])==0) $option['xtheme']=2;
@@ -533,6 +535,7 @@ $option['code']=html_entity_decode($option['code']);
 $option['wgd']=html_entity_decode($option['wgd']);
 $option['wgl']=html_entity_decode($option['wgl']);
 $option['woo']=html_entity_decode($option['woo']);
+$option['jetpack']=html_entity_decode($option['jetpack']);
 $option['allowchat']=html_entity_decode($option['allowchat']);
 $option['allowfloat']=html_entity_decode($option['allowfloat']);
 $option['xtheme']=html_entity_decode($option['xtheme']);
@@ -1068,6 +1071,19 @@ if (current_user_can('manage_options')){
 </p>
 
 
+
+<p><input type="radio" value="1" name="jetpack"  <?php if ($option['jetpack']!=2) echo "checked"; ?> checked>Yes&nbsp;
+
+<input type="radio" value="2" name="jetpack"  <?php if ($option['jetpack']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Integrate with Jetpack Contact form: Receive visitors full detail when they contact you.
+<small style="
+    display: block;
+    padding: 7px;
+    border: 1px solid #f0f0f0;
+    background: #f9f9f9;
+    margin-top: 10px;
+">We also do support: Contact form 7, Ninja Forms and Gravity forms (enable Hitsteps through their form builder)</small>
+
+</p>
 
 
 
@@ -2047,4 +2063,5 @@ include('init.gravityform.php');
 include('init.cf7.php');
 include('init.ninjaform.php');
 include('init.woocommerce.php');
+include('init.jetpack.php');
 ?>
