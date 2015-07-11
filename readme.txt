@@ -1,6 +1,6 @@
 === Hitsteps Ultimate Web Analytics ===
 Contributors: hitsteps
-Tags: analytics, free, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity,  seo, counter, analytic, widget, web, realtime, woocommerce, email
+Tags: analytics, free, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, hits, hit, tracking, track, tracker, activity,  seo, counter, analytic, widget, web, jetpack, woocommerce, email
 Requires at least: 2.7
 Tested up to: 4.2.2
 Stable tag: 4.40
@@ -16,7 +16,7 @@ Hitsteps Analytics is a powerful real time visitor management and live chat tool
 It allows you to view your visitors stream and follow each visitors to know more about each pages they see. It allow you to engage with your visitors using live chat tool. You'll be provided with detailed information about each visitor such as geolocation, their first visit on your site, referer to your site, their browser, OS and device and much more!
 Advantages over Google analytics includes but not limited to Detailed information of each and all visitors, ability to engage with visitors using live chat tool, heatmap for each pages, carefully pre-generated and categorized reports, real-time analytics on all reports and much more...
 
-Contact form analytics feature of it also integrate analytics with Gravity Forms, Contact Form 7 and Ninja Forms plugins and allow you to know more of your visitors on their incoming emails.
+Contact form analytics feature of it also integrate analytics with Jetpack Contact form, Gravity Forms, Contact Form 7 and Ninja Forms plugins and allow you to know more of your visitors on their incoming emails.
 
 Integration with WooCommerce as Analytics allows you to receive your customers detail and pageview path within "New Order" emails
 
