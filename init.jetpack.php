@@ -13,8 +13,7 @@ $option=get_hst_conf();
 if ($option['jetpack']!=2){
 if ($option['code'] !='') {
 $_hitsteps_jetpack_init=1;
-return  "<input type='hidden' name='_hs_post_data' value='1' />
-<input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
+return  "<input type='hidden' name='_hs_post_data' value='1' /><input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
     <script>
                 //Load hitsteps script once page fully loaded.
                 function _hs_data_uid_auto_fill_func(){
@@ -73,10 +72,8 @@ return $msg;
 
 function add_hitsteps_analytics_jetpack_field($fieldBlock, $fieldLabel, $postId){
 
-
 		$pageContactFormDetected   = false;
 		$widgetContactFormDetected = false;
-
 		if($pageContactFormDetected && $widgetContactFormDetected)
 			return $fieldBlock;
 
@@ -116,7 +113,6 @@ function add_hitsteps_analytics_jetpack_field($fieldBlock, $fieldLabel, $postId)
 				return $fieldBlock . _hitsteps_jetpack_form();
 			}
 		}
-
 		return $fieldBlock;
 }
 
