@@ -47,34 +47,11 @@ function wpcf7_hitsteps_cf7_shortcode_handler( $tag ) {
     $html .= "<input type='hidden' name='_hs_post_data' value='1' />
     <input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
     <script>
-                //Load hitsteps script once page fully loaded.
-                function _hs_data_uid_auto_fill_func(){
-                _hs_uidset=0;
-                var _hs_uid_data_fields = document.getElementsByName('_hs_uid_data');
-                for (_hs_uid_data_i = 0; _hs_uid_data_i < _hs_uid_data_fields.length; _hs_uid_data_i++) {
-				if (_hs_uid_data_fields[_hs_uid_data_i].value !='') {_hs_uidset=1;}
-				}
-                if (_hs_uidset==0){
-                var hstc=document.createElement('script');
-				hstc.src='//www.hitsteps.com/api/getUID.php?code=".$option['code']."';
-				var htssc = document.getElementsByTagName('script')[0];
-				htssc.parentNode.insertBefore(hstc, htssc);        
-				}        
-                }
-                //load it after 1 second
-				(function(){
-				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 1000);
-				})();
-                //load it after 5 second
-				(function(){
-				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 5000);
-				})();
-				//load it after 10 second
-				(function(){
-				setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 10000);
-				})();
-				//load it now first, maybe user is already registered.
-				_hs_data_uid_auto_fill_func();
+	//Load hitsteps script once page fully loaded.
+	function _hs_data_uid_auto_fill_func(){ _hs_uidset=0;var _hs_uid_data_fields = document.getElementsByName('_hs_uid_data');for (_hs_uid_data_i = 0; _hs_uid_data_i < _hs_uid_data_fields.length; _hs_uid_data_i++) {if (_hs_uid_data_fields[_hs_uid_data_i].value !='') {_hs_uidset=1;}}
+	if (_hs_uidset==0){var hstc=document.createElement('script');hstc.src='//www.hitsteps.com/api/getUID.php?code=".$option['code']."'; var htssc = document.getElementsByTagName('script')[0];htssc.parentNode.insertBefore(hstc, htssc);}}
+	(function(){setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 1000);setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 5000);setTimeout(function(){ _hs_data_uid_auto_fill_func(); }, 10000);})();
+	_hs_data_uid_auto_fill_func();
     </script>
                 
     ";
