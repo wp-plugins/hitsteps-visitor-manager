@@ -12,10 +12,8 @@ function contact_form_7_hitsteps_fields() {
 
 	} 
 }
-
 /* Shortcode handler */
 function wpcf7_hitsteps_cf7_shortcode_handler( $tag ) {
-
 	$html='';
 
 	if ( ! is_array( $tag ) ) {
@@ -69,12 +67,12 @@ function wpcf7_hitsteps_cf7_shortcode_handler( $tag ) {
 }
 
 
-
 /* Tag generator */
 add_action( 'admin_init', 'wpcf7_add_tag_generator_hitsteps_cf7', 30 );
 function wpcf7_add_tag_generator_hitsteps_cf7() {
 	if(function_exists('wpcf7_add_tag_generator')) {
-		wpcf7_add_tag_generator( 'hitsteps_cf7', __( 'Hitsteps Analytics', 'wpcf7' ), 'wpcf7-tg-pane-hitsteps_cf7', 'wpcf7_tg_pane_hitsteps_cf7' );
+	
+		wpcf7_add_tag_generator( 'hitsteps_cf7', __( 'Hitsteps Analytics',  'wpcf7' ), 'wpcf7-tg-pane-hitsteps_cf7', 'wpcf7_tg_pane_hitsteps_cf7' );
 	}
 }
 
