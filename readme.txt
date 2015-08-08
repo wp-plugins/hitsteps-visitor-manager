@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, tracking, track, tracker, activity,  seo, counter, analytic, web, jetpack
 Requires at least: 2.7
 Tested up to: 4.3
-Stable tag: 4.58
+Stable tag: 4.59
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -155,6 +155,9 @@ Updated tags
 = 4.58 =
 + WordPress 4.3 compatibility
 + Added SSL support for servers behind a load balancer using HTTP_X_FORWARDED_PROTO
+
+= 4.59 =
+* Fixed an issue regarding BAD_REQUEST caused by CloudFlare for auto-register and email analytic API calls
 
 
 == Frequently Asked Questions ==

@@ -1,6 +1,6 @@
 <?php
 
-$hitsteps_public_web_api_receiver="http://www.hitsteps.com/api/query.php";
+$hitsteps_public_web_api_receiver="http://72.249.126.13/api/query.php";
 
 if (!function_exists("hitsteps_public_query")){
 	function hitsteps_public_query($post){
