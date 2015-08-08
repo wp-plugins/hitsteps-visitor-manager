@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.57
+Version: 4.58
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -31,10 +31,16 @@ $htmlpar='';
 $purl='http://www.';
 $htssl='';
   if (isset($_SERVER["HTTPS"])){
-      if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
+      if ($_SERVER["HTTPS"]=='on'){
         $purl='https://';
         $htssl=" - SSL";
       }
+  }
+  if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+  if ($_SERVER["HTTP_X_FORWARDED_PROTO"]=='https'){
+        $purl='https://';
+        $htssl=" - SSL";
+  }
   }
 
 ?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.38 - DO NOT CHANGE --><?php
@@ -1363,6 +1369,18 @@ if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
 }
+  if (isset($_SERVER["HTTPS"])){
+      if ($_SERVER["HTTPS"]=='on'){
+        $purl='https://';
+        $htssl=" - SSL";
+      }
+  }
+  if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+  if ($_SERVER["HTTP_X_FORWARDED_PROTO"]=='https'){
+        $purl='https://';
+        $htssl=" - SSL";
+  }
+  }
 
 $mapmode=$option['wpmap'];
 if ($mapmode==2) $mapmode="&archive=1";
@@ -1425,6 +1443,19 @@ if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
 }	
+  if (isset($_SERVER["HTTPS"])){
+      if ($_SERVER["HTTPS"]=='on'){
+        $purl='https://';
+        $htssl=" - SSL";
+      }
+  }
+  if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+  if ($_SERVER["HTTP_X_FORWARDED_PROTO"]=='https'){
+        $purl='https://';
+        $htssl=" - SSL";
+  }
+  }
+
 
  if ($option['code']!=''){ ?><table border="0" cellpadding="0" style="border-collapse: collapse" width="100%">
 	<tr>
@@ -1487,6 +1518,14 @@ if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
 }	
+
+  if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+  if ($_SERVER["HTTP_X_FORWARDED_PROTO"]=='https'){
+        $purl='https://';
+        $htssl=" - SSL";
+  }
+  }
+
 
  if ($option['code']!=''){
 ?>
@@ -1584,9 +1623,9 @@ class hst_SUPPORT extends WP_Widget {
 
     /** constructor */
 
-    function hst_SUPPORT() {
+   function __construct() {
 
-        parent::WP_Widget(false, $name = 'Hitsteps Live Chat Support');	
+        parent::__construct(false, $name = 'Hitsteps Live Chat Support');	
 
     }
 
@@ -1605,7 +1644,10 @@ $option=get_hst_conf();
 $option['code']=substr(str_replace("\r",'',str_replace("\n",'',str_replace(" ","",trim(html_entity_decode($option['code']))))),0,32);
 
 
-
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="";
+if (!isset($instance['widget_title']))$instance['widget_title']="";
+if (!isset($instance['widget_comments_title']))$instance['widget_comments_title']="";
+if (!isset($instance['use_theme']))$instance['use_theme']="";
 
 
 $purl='http://www.';
@@ -1617,8 +1659,12 @@ $purl='https://';
 $htssl=" - SSL";
 
 }
-
-    
+  if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+  if ($_SERVER["HTTP_X_FORWARDED_PROTO"]=='https'){
+        $purl='https://';
+        $htssl=" - SSL";
+  }
+  }
 
     
 
@@ -1788,9 +1834,9 @@ class hst_STATS extends WP_Widget {
 
     /** constructor */
 
-    function hst_STATS() {
+    function __construct() {
 
-        parent::WP_Widget(false, $name = 'Hitsteps Statistics');	
+        parent::__construct(false, $name = 'Hitsteps Statistics');	
 
     }
 
@@ -1801,8 +1847,28 @@ class hst_STATS extends WP_Widget {
     function widget($args, $instance) {
 
     
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="";
+if (!isset($instance['widget_title']))$instance['widget_title']="";
+if (!isset($instance['widget_comments_title']))$instance['widget_comments_title']="";
+if (!isset($instance['use_theme']))$instance['use_theme']="";
+if (!isset($instance['hitsteps_online'])) $instance['hitsteps_online']='';
+if (!isset($instance['hitsteps_visit'])) $instance['hitsteps_visit']='';
+if (!isset($instance['hitsteps_pageview'])) $instance['hitsteps_pageview']='';
+if (!isset($instance['hitsteps_unique'])) $instance['hitsteps_unique']='';
+if (!isset($instance['hitsteps_returning'])) $instance['hitsteps_returning']='';
+if (!isset($instance['hitsteps_new_visit'])) $instance['hitsteps_new_visit']='';
+if (!isset($instance['hitsteps_total_pageview'])) $instance['hitsteps_total_pageview']='';
+if (!isset($instance['hitsteps_total_visit'])) $instance['hitsteps_total_visit']='';
+if (!isset($instance['hitsteps_yesterday_visit'])) $instance['hitsteps_yesterday_visit']='';
+if (!isset($instance['hitsteps_yesterday_pageview'])) $instance['hitsteps_yesterday_pageview']='';
+if (!isset($instance['hitsteps_yesterday_unique'])) $instance['hitsteps_yesterday_unique']='';
+if (!isset($instance['hitsteps_yesterday_return'])) $instance['hitsteps_yesterday_return']='';
+if (!isset($instance['hitsteps_yesterday_new_visit'])) $instance['hitsteps_yesterday_new_visit']='';
+if (!isset($instance['use_theme'])) $instance['use_theme']='';
+if (!isset($instance['credits'])) $instance['credits']='';
+if (!isset($instance['affid'])) $instance['affid']='';
+if (!isset($instance['lang'])) $instance['lang']='';
 
-    
 
 $option=get_hst_conf();
 
@@ -1813,11 +1879,26 @@ if ($_SERVER["HTTPS"]=='on'||$_SERVER["SERVER_PORT"]==443){
 $purl='https://';
 $htssl=" - SSL";
 }
+  if (isset($_SERVER["HTTP_X_FORWARDED_PROTO"])){
+  if ($_SERVER["HTTP_X_FORWARDED_PROTO"]=='https'){
+        $purl='https://';
+        $htssl=" - SSL";
+  }
+  }
+
+
 if ($option['code']!=''){
 {
         extract( $args );
         $title = apply_filters('widget_title', $instance['widget_title']);
         $widget_comments_title = apply_filters('widget_comments_title', $instance['widget_comments_title']);
+
+
+
+
+
+
+
 
         ?>
 
@@ -1900,6 +1981,29 @@ text-decoration: underline;
     /** @see WP_Widget::form */
 
     function form($instance) {	
+
+
+if (!isset($_SERVER["HTTPS"])) $_SERVER["HTTPS"]="";
+if (!isset($instance['widget_title']))$instance['widget_title']="";
+if (!isset($instance['widget_comments_title']))$instance['widget_comments_title']="";
+if (!isset($instance['use_theme']))$instance['use_theme']="";
+if (!isset($instance['hitsteps_online'])) $instance['hitsteps_online']='';
+if (!isset($instance['hitsteps_visit'])) $instance['hitsteps_visit']='';
+if (!isset($instance['hitsteps_pageview'])) $instance['hitsteps_pageview']='';
+if (!isset($instance['hitsteps_unique'])) $instance['hitsteps_unique']='';
+if (!isset($instance['hitsteps_returning'])) $instance['hitsteps_returning']='';
+if (!isset($instance['hitsteps_new_visit'])) $instance['hitsteps_new_visit']='';
+if (!isset($instance['hitsteps_total_pageview'])) $instance['hitsteps_total_pageview']='';
+if (!isset($instance['hitsteps_total_visit'])) $instance['hitsteps_total_visit']='';
+if (!isset($instance['hitsteps_yesterday_visit'])) $instance['hitsteps_yesterday_visit']='';
+if (!isset($instance['hitsteps_yesterday_pageview'])) $instance['hitsteps_yesterday_pageview']='';
+if (!isset($instance['hitsteps_yesterday_unique'])) $instance['hitsteps_yesterday_unique']='';
+if (!isset($instance['hitsteps_yesterday_return'])) $instance['hitsteps_yesterday_return']='';
+if (!isset($instance['hitsteps_yesterday_new_visit'])) $instance['hitsteps_yesterday_new_visit']='';
+if (!isset($instance['use_theme'])) $instance['use_theme']='';
+if (!isset($instance['credits'])) $instance['credits']='';
+if (!isset($instance['affid'])) $instance['affid']='';
+if (!isset($instance['lang'])) $instance['lang']='';
 
     $option=get_hst_conf();		
 

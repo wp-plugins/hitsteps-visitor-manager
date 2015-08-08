@@ -2,8 +2,8 @@
 Contributors: hitsteps
 Tags: analytics, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, tracking, track, tracker, activity,  seo, counter, analytic, web, jetpack
 Requires at least: 2.7
-Tested up to: 4.2.4
-Stable tag: 4.57
+Tested up to: 4.3
+Stable tag: 4.58
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -151,6 +151,11 @@ Updated tags
 = 4.56 =
 + WordPress 4.2.4 compatibility
 * Changed page header from <h2> to <h1> according to new changes in WordPress's core
+
+= 4.58 =
++ WordPress 4.3 compatibility
++ Added SSL support for servers behind a load balancer using HTTP_X_FORWARDED_PROTO
+
 
 == Frequently Asked Questions ==
 
