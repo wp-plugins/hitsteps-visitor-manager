@@ -108,15 +108,9 @@ function add_hitsteps_analytics_jetpack_field($fieldBlock, $fieldLabel, $postId)
 				return $fieldBlock . _hitsteps_jetpack_form();
 			}
 
-			if ( empty( $postId ) && preg_match( "/g([0-9]+)/", $arrNameParts[0], $matches ) && $arrNameParts[0] === $matches[0] ) {
-				$pageContactFormDetected = true;
-				return $fieldBlock . _hitsteps_jetpack_form();
-			}
+			if ( empty( $postId ) && preg_match( "/g([0-9]+)/", $arrNameParts[0], $matches ) && $arrNameParts[0] === $matches[0] ) { $pageContactFormDetected = true; return $fieldBlock . _hitsteps_jetpack_form();}
 		}
 		return $fieldBlock;
 }
-
-
-
 
 ?>

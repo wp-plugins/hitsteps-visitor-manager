@@ -3,6 +3,7 @@
 if (!class_exists('HITSTEPS_GF_hitsteps')) {
     class HITSTEPS_GF_hitsteps
     {
+    
 	private static $name = 'Gravity Forms - Hitsteps tracker';
     private static $slug = 'hitsteps_gf_hitsteps_field';
 	private static $version = '1.2.4';

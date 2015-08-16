@@ -4,20 +4,25 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.60
+Version: 4.61
 Author URI: http://www.hitsteps.com/
 */ 
 
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
-
 add_action('wp_head', 'hitsteps');
 
 function hitsteps(){
 global $_SERVER,$_COOKIE,$hitsteps_tracker;
 
 $option=get_hst_conf();
+
+if (!isset($option['code'])) $option['code']='';
+
 $option['code']=str_replace("\r",'',str_replace("\n",'',str_replace(" ","",trim(html_entity_decode($option['code'])))));
+
+if ( $option['code']!=''){
+if ( !strpos(strtolower($option['code']),"hitsteps") ){
 
 	if( round($option['iga'])==1 && current_user_can("manage_options") ) {
 
@@ -43,7 +48,7 @@ $htssl='';
   }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.59 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.61 - DO NOT CHANGE --><?php
 
 
 
@@ -228,7 +233,8 @@ htssc.parentNode.insertBefore(hstc, htssc);
 $hitsteps_tracker=1;
 
 
-
+}
+}
 }
 
 
