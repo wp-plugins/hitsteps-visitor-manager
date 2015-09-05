@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.64
+Version: 4.65
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -48,7 +48,7 @@ $htssl='';
   }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.63 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.65 - DO NOT CHANGE --><?php
 
 
 
@@ -292,6 +292,7 @@ if (!isset($option['wgd'])) $option['wgd']=1;
 if (!isset($option['wgl'])) $option['wgl']=2;
 if (!isset($option['tkn'])) $option['tkn']=1;
 if (!isset($option['iga'])) $option['iga']=0;
+if (!isset($option['igac'])) $option['igac']=0;
 if (!isset($option['woo'])) $option['woo']=1;
 if (!isset($option['jetpack'])) $option['jetpack']=1;
 if (!isset($option['allowchat'])) $option['allowchat']=1;
@@ -307,6 +308,7 @@ if (round($option['wgd'])==0) $option['wgd']=1;
 if (round($option['wgl'])==0) $option['wgl']=2;
 if (round($option['tkn'])==0) $option['tkn']=1;
 if (round($option['iga'])==0) $option['iga']=0;
+if (round($option['igac'])==0) $option['igac']=0;
 if (round($option['woo'])==0) $option['woo']=1;
 if (round($option['jetpack'])==0) $option['jetpack']=1;
 if (round($option['allowchat'])==0) $option['allowchat']=1;
@@ -1045,7 +1047,14 @@ if (current_user_can('manage_options')){
 
 <p><input type="radio" value="1" name="iga" <?php if (round($option['iga'])==1) echo "checked"; ?>>Yes&nbsp;
 
-<input type="radio" value="2" name="iga" <?php if (round($option['iga'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Ignore admin visits?
+<input type="radio" value="2" name="iga" <?php if (round($option['iga'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Ignore admin visits? (Don't put tracking code for admin)
+
+</p>
+
+
+<p><input type="radio" value="1" name="igac" <?php if (round($option['igac'])==1) echo "checked"; ?>>Yes&nbsp;
+
+<input type="radio" value="2" name="igac" <?php if (round($option['igac'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enforce ignoring admin visits via cookie method blocking in dashboard widget?
 
 </p>
 
@@ -1399,7 +1408,7 @@ if ($mapmode==1) $mapmode="";
 		<td>
 
 
-	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-map" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="320" src="<?php echo $purl; ?>hitsteps.com/stats/wp-map.php?code=<?php echo $option['code']; echo $mapmode; ?>">	
+	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-map" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="320" src="<?php echo $purl; ?>hitsteps.com/stats/wp-map.php?code=<?php echo $option['code']; echo $mapmode; ?><?php if( round($option['igac'])==1) { ?>&cookieblock=1<?php } ?>">	
 
 		<p align="center">
 		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
@@ -1469,11 +1478,11 @@ $htssl=" - SSL";
 <?php
 if (round($option['xtheme'])==2){
 ?>
-	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="400" src="<?php echo $purl; ?>hitsteps.com/stats/wp3.2.php?code=<?php echo $option['code']; ?>">	
+	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="400" src="<?php echo $purl; ?>hitsteps.com/stats/wp3.2.php?code=<?php echo $option['code']; ?><?php if( round($option['igac'])==1) { ?>&cookieblock=1<?php } ?>">	
 <?php 
 }else{
 ?>
-	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-compact" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp3.2.php?code=<?php echo $option['code']; ?>">	
+	<iframe scrollable='no' scrolling="no"  name="hitsteps-stat-compact" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp3.2.php?code=<?php echo $option['code']; ?><?php if( round($option['igac'])==1) { ?>&cookieblock=1<?php } ?>">	
 <?php } ?>
 
 		<p align="center">
@@ -1535,7 +1544,7 @@ $htssl=" - SSL";
 
  if ($option['code']!=''){
 ?>
-	<iframe name="hitsteps-stat-mini" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp-dashboard.php?code=<?php echo $option['code']; ?>">
+	<iframe name="hitsteps-stat-mini" frameborder="0" style="background-color: #fff; border: 1px solid #A4A2A3;" margin="0" padding="0" marginheight="0" marginwidth="0" width="100%" height="420" src="<?php echo $purl; ?>hitsteps.com/stats/wp-dashboard.php?code=<?php echo $option['code']; ?><?php if( round($option['igac'])==1) { ?>&cookieblock=1<?php } ?>">
 
 		<p align="center">
 		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
@@ -1806,6 +1815,7 @@ if (round($option['wgl'])==0) $option['wgl']=2;
 if (round($option['tkn'])==0) $option['tkn']=1;
 
 if (round($option['iga'])==0) $option['iga']=2;
+if (round($option['igac'])==0) $option['igac']=2;
 
 if (round($option['allowchat'])==0) $option['allowchat']=1;
 
@@ -2124,6 +2134,7 @@ if (round($option['wgl'])==0) $option['wgl']=2;
 if (round($option['tkn'])==0) $option['tkn']=1;
 
 if (round($option['iga'])==0) $option['iga']=2;
+if (round($option['igac'])==0) $option['igac']=2;
 
 if (round($option['woo'])==0) $option['woo']=1;
 if (round($option['allowchat'])==0) $option['allowchat']=1;
