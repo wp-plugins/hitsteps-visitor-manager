@@ -72,7 +72,7 @@ add_action( 'admin_init', 'wpcf7_add_tag_generator_hitsteps_cf7', 30 );
 function wpcf7_add_tag_generator_hitsteps_cf7() {
 	if(function_exists('wpcf7_add_tag_generator')) {
 	
-		wpcf7_add_tag_generator( 'hitsteps_cf7', __( 'Hitsteps Analytics',  'wpcf7' ), 'wpcf7-tg-pane-hitsteps_cf7', 'wpcf7_tg_pane_hitsteps_cf7' );
+		wpcf7_add_tag_generator( 'hitsteps_cf7', __( 'Hitsteps Analytics',  'hitsteps-visitor-manager' ), 'wpcf7-tg-pane-hitsteps_cf7', 'wpcf7_tg_pane_hitsteps_cf7' );
 	}
 }
 
@@ -93,10 +93,10 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 <table>
 
 
-<tr><td><input type="checkbox" name="disable_visitor_ip" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor IP, Name, ISP and Country information', 'contact-form-7' ) ); ?></td></tr>
-<tr><td><input type="checkbox" name="disable_visitor_path" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor Viewed Pages Path', 'contact-form-7' ) ); ?></td></tr>
-<tr><td><input type="checkbox" name="disable_visitor_link" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor More Information Link', 'contact-form-7' ) ); ?></td></tr>
-<tr><td><input type="checkbox" name="disable_visitor_base" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor Base Visits', 'contact-form-7' ) ); ?></td></tr>
+<tr><td><input type="checkbox" name="disable_visitor_ip" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor IP, Name, ISP and Country information', 'hitsteps-visitor-manager' ) ); ?></td></tr>
+<tr><td><input type="checkbox" name="disable_visitor_path" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor Viewed Pages Path', 'hitsteps-visitor-manager' ) ); ?></td></tr>
+<tr><td><input type="checkbox" name="disable_visitor_link" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor More Information Link', 'hitsteps-visitor-manager' ) ); ?></td></tr>
+<tr><td><input type="checkbox" name="disable_visitor_base" class="option" />&nbsp;<?php echo esc_html( __( 'Disable Visitor Base Visits', 'hitsteps-visitor-manager' ) ); ?></td></tr>
 
 </table>
 
@@ -109,12 +109,12 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 	<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
 
 	<div class="submitbox">
-	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
+	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'hitsteps-visitor-manager' ) ); ?>" />
 	</div>
 
 	<br class="clear" />
 
-	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag %s into the field on the Mail tab.", 'contact-form-7' ) ), '<strong>[hitsteps_analytics]</strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
+	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag %s into the field on the Mail tab.", 'hitsteps-visitor-manager' ) ), '<strong>[hitsteps_analytics]</strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
 </div>
 
 
@@ -161,7 +161,7 @@ function wpcf7_tg_pane_hitsteps_cf7( $type = 'hitsteps_cf7' ) {
 	
 	}
 	}else{
-	$_hs_tracking_info="Please enable Hitsteps API code in WordPress setting page to enable Contact form Analytics.";
+	$_hs_tracking_info=__("Please enable Hitsteps API code in WordPress setting page to enable Contact form Analytics.",'hitsteps-visitor-manager');
 	}
 	
 

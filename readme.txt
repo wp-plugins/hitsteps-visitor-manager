@@ -3,7 +3,7 @@ Contributors: hitsteps
 Tags: analytics, stats, statistics, chat, live, stat, visitor, visit, heatmap, support, online, visitors, tracking, track, tracker, activity,  seo, counter, analytic, web, jetpack
 Requires at least: 2.7
 Tested up to: 4.3
-Stable tag: 4.65
+Stable tag: 4.66
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://www.hitsteps.com/features.php#price
@@ -161,6 +161,9 @@ Updated tags
 
 = 4.65 =
 + Added don't count me cookie/session method directly in wordpress plugin for highest accuracy.
+
+= 4.66 =
++ Added multi-language support for plugin's interface.
 
 
 == Frequently Asked Questions ==

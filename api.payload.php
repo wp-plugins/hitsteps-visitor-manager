@@ -39,11 +39,11 @@ if (!function_exists("hitsteps_public_query")){
 		}
 		if (strpos(strtolower($result['body']),"cloudflare")){
 		$arr['error']=999;
-		$arr['msg']="Hitstep's webserver down at moment. connection couldn't established.";
+		$arr['msg']=__("Hitstep's webserver down at moment. connection couldn't established.",'hitsteps-visitor-manager');
 
 		return $arr;
 		}
-		
+	 
  
 
 		
@@ -54,7 +54,7 @@ if (!function_exists("hitsteps_public_query")){
 		
 		}else{
 		$arr['error']=120;
-		$arr['msg']="You need to install hitsteps API code in setting menu.";
+		$arr['msg']=__("You need to install hitsteps API code in setting menu.",'hitsteps-visitor-manager');
 		return $arr;
 		}
 	}
@@ -89,11 +89,11 @@ $render.="\n--- Hitsteps Analytics ---\n";
 
 if ($input['output_visitor_ip']){
 if (is_array($data['visitor_ip'])){
-$devicetype="PC";
-if ($data['visitor_ip']['mobile']) $devicetype="Phone";
-if ($data['visitor_ip']['tablet']) $devicetype="Tablet";
+$devicetype=__("PC",'hitsteps-visitor-manager');
+if ($data['visitor_ip']['mobile']) $devicetype=__("Phone",'hitsteps-visitor-manager');
+if ($data['visitor_ip']['tablet']) $devicetype=__("Tablet",'hitsteps-visitor-manager');
 
-$render.="\nName: ".$data['visitor_ip']['name']."\nFrom: ".$data['visitor_ip']['city'].", ".$data['visitor_ip']['country_name']."\nOrg/ISP: ".$data['visitor_ip']['org']."\nDevice: ".$data['visitor_ip']['sw']."x".$data['visitor_ip']['sh']." ".$data['visitor_ip']['browser']." ".$data['visitor_ip']['browserv']." - ".$data['visitor_ip']['os']." - ".$devicetype." IP: ".$data['visitor_ip']['ip']."\n";
+$render.="\n".__("Name",'hitsteps-visitor-manager').": ".$data['visitor_ip']['name']."\n".__("From",'hitsteps-visitor-manager').": ".$data['visitor_ip']['city'].", ".$data['visitor_ip']['country_name']."\n".__("Org/ISP",'hitsteps-visitor-manager').": ".$data['visitor_ip']['org']."\n".__("Device",'hitsteps-visitor-manager').": ".$data['visitor_ip']['sw']."x".$data['visitor_ip']['sh']." ".$data['visitor_ip']['browser']." ".$data['visitor_ip']['browserv']." - ".$data['visitor_ip']['os']." - ".$devicetype." ".__("IP",'hitsteps-visitor-manager').": ".$data['visitor_ip']['ip']."\n";
 
 }
 }
@@ -104,7 +104,7 @@ if ($input['output_visitor_base']){
 if (is_array($data['visitor_base'])){
 
 $render.="
-\nFirst visited ".$data['visitor_base']['base']." from ". $data['visitor_base']['baseref'] ." landed on ".$data['visitor_base']['baseland']."\n";
+\n".__("First visited",'hitsteps-visitor-manager')." ".$data['visitor_base']['base']." ". __("from",'hitsteps-visitor-manager')." ". $data['visitor_base']['baseref'] ." ". __("landed on",'hitsteps-visitor-manager')." ".$data['visitor_base']['baseland']."\n";
 }
 }
 
@@ -119,7 +119,7 @@ if ($totalview>50){$totalview="more than 50";
 $more='more than ';
 }
 
-$render.="\nRecent pageviews are ".$totalview." pages, result in spending ".$more.round($data['visitor_path']['avg']/60,0)." minutes:\n";
+$render.="\n". __("Recent pageviews are",'hitsteps-visitor-manager')." ".$totalview." ". __("pages, result in spending",'hitsteps-visitor-manager') ." ".$more.round($data['visitor_path']['avg']/60,0)." ". __("minutes",'hitsteps-visitor-manager').":\n";
 
 
 if (is_array($data['visitor_path']['pages'])){
@@ -131,10 +131,10 @@ $count--;
 if ($count>0){
 $pg['refname']=$pg['ref'];
 $pg['reflink']="href='".$pg['ref']."'";
-if ($pg['ref']==''){$pg['refname']='Direct';$pg['reflink']='';}
+if ($pg['ref']==''){$pg['refname']=__("Direct",'hitsteps-visitor-manager');$pg['reflink']='';}
 
 
-$render.="\nTo: ".$pg['name']." - visited ".$pg['short_date']."\nFrom: ".$pg['refname']."";
+$render.="\n". __("To",'hitsteps-visitor-manager').": ".$pg['name']." - ". __("visited",'hitsteps-visitor-manager')." ".$pg['short_date']."\n ". __("From",'hitsteps-visitor-manager').": ".$pg['refname']."";
 
 }}
 
@@ -148,7 +148,7 @@ $render.="\n";
 if ($input['output_visitor_link']){
 if (isset($data['visitor_link'])){
 
-$render.="\nKnow more about this visitor: ".$data['visitor_link'];
+$render.="\n". __("Know more about this visitor",'hitsteps-visitor-manager').": ".$data['visitor_link'];
 }
 }
 
@@ -189,7 +189,7 @@ if ($data['error']>0){
 $render="<small><i>Hitsteps error #".$data['error'].": ".$data['msg']."</i></small>";
 }else{
 
-$render.="<!--Hitsteps: You can hide this column --><div style='margin:15px;padding:5px;padding-bottom:0px;background: #23282D; border:1px solid #eee; font-family: Helvetica, arial, tahoma; font-size: 9pt;'><img src='" . WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)). "logo.png' width='90' height='20' alt='hitsteps analytics' />";
+$render.="<!-- ". __("Hitsteps: You can hide this column",'hitsteps-visitor-manager')." --><div style='margin:15px;padding:5px;padding-bottom:0px;background: #23282D; border:1px solid #eee; font-family: Helvetica, arial, tahoma; font-size: 9pt;'><img src='" . WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)). "logo.png' width='90' height='20' alt='hitsteps analytics' />";
 
 
 if ($input['output_visitor_ip']){
@@ -198,7 +198,7 @@ $devicetype="PC";
 if ($data['visitor_ip']['mobile']) $devicetype="Phone";
 if ($data['visitor_ip']['tablet']) $devicetype="Tablet";
 
-$render.="<div style='padding:10px;margin-bottom:5px;background: #efefef; '><img style='float: left; margin-right: 5px; margin-bottom:5px;border: #eee 1px solid;' src='http://www.hitsteps.com/responsive/flags/".strtoupper($data['visitor_ip']['country']).".png' width='74' height='50'>Name: ".$data['visitor_ip']['name']."<br>From: ".$data['visitor_ip']['city'].", ".$data['visitor_ip']['country_name']."<br>Org/ISP: ".$data['visitor_ip']['org']."<br>Device: ".$data['visitor_ip']['sw']."x".$data['visitor_ip']['sh']." ".$data['visitor_ip']['browser']." ".$data['visitor_ip']['browserv']." - ".$data['visitor_ip']['os']." - ".$devicetype." IP: ".$data['visitor_ip']['ip']."</div>";
+$render.="<div style='padding:10px;margin-bottom:5px;background: #efefef; '><img style='float: left; margin-right: 5px; margin-bottom:5px;border: #eee 1px solid;' src='http://www.hitsteps.com/responsive/flags/".strtoupper($data['visitor_ip']['country']).".png' width='74' height='50'>". __("Name",'hitsteps-visitor-manager').": ".$data['visitor_ip']['name']."<br>". __("From",'hitsteps-visitor-manager').": ".$data['visitor_ip']['city'].", ".$data['visitor_ip']['country_name']."<br>". __("Org/ISP",'hitsteps-visitor-manager').": ".$data['visitor_ip']['org']."<br>". __("Device",'hitsteps-visitor-manager').": ".$data['visitor_ip']['sw']."x".$data['visitor_ip']['sh']." ".$data['visitor_ip']['browser']." ".$data['visitor_ip']['browserv']." - ".$data['visitor_ip']['os']." - ".$devicetype." ". __("IP",'hitsteps-visitor-manager').": ".$data['visitor_ip']['ip']."</div>";
 
 }
 }
@@ -209,7 +209,7 @@ if ($input['output_visitor_base']){
 if (is_array($data['visitor_base'])){
 
 $render.="
-<div style='padding:10px;margin-bottom:5px;background: #efefef; '>First visited ".$data['visitor_base']['base']." from ". $data['visitor_base']['baseref'] ." landed on ".$data['visitor_base']['baseland']."</div>";
+<div style='padding:10px;margin-bottom:5px;background: #efefef; '>". __("First visited",'hitsteps-visitor-manager')." ".$data['visitor_base']['base']." ". __("First visited",'hitsteps-visitor-manager')." ". $data['visitor_base']['baseref'] ." ". __("landed on",'hitsteps-visitor-manager')." ".$data['visitor_base']['baseland']."</div>";
 }
 }
 
@@ -220,11 +220,11 @@ if (is_array($data['visitor_path'])){
 
 $totalview=$data['visitor_path']['hits'];
 $more='';
-if ($totalview>50){$totalview="more than 50";
-$more='more than ';
+if ($totalview>50){$totalview=__("more than 50",'hitsteps-visitor-manager');
+$more=__("more than",'hitsteps-visitor-manager').' ';
 }
 
-$render.="<div style='padding:10px;margin-bottom:5px;background: #efefef; '>Recent pageviews are ".$totalview." pages, result in spending ".$more.round($data['visitor_path']['avg']/60,0)." minutes:<br><br>";
+$render.="<div style='padding:10px;margin-bottom:5px;background: #efefef; '>". __("Recent pageviews are",'hitsteps-visitor-manager')." ".$totalview." ". __("pages, result in spending",'hitsteps-visitor-manager')." ".$more.round($data['visitor_path']['avg']/60,0)." ". __("minutes",'hitsteps-visitor-manager').":<br><br>";
 
 
 if (is_array($data['visitor_path']['pages'])){
@@ -239,7 +239,7 @@ $pg['reflink']="href='".$pg['ref']."'";
 if ($pg['ref']==''){$pg['refname']='Direct';$pg['reflink']='';}
 
 
-$render.="<div style='padding:5px; margin: 3px;margin-bottom:5px;background: #fff; line-height: 15pt;'>To: <a style='text-decoration: none;color: #666;' href='".$pg['url']."'>".$pg['name']."</a> - visited ".$pg['short_date']."<br><i style='text-decoration: none;color: #999;'>From: <a style='text-decoration: none;color: #999;' ".$pg['reflink'].">".$pg['refname']."</a></i></div>";
+$render.="<div style='padding:5px; margin: 3px;margin-bottom:5px;background: #fff; line-height: 15pt;'>To: <a style='text-decoration: none;color: #666;' href='".$pg['url']."'>".$pg['name']."</a> - ". __("visited",'hitsteps-visitor-manager')." ".$pg['short_date']."<br><i style='text-decoration: none;color: #999;'>". __("From",'hitsteps-visitor-manager').": <a style='text-decoration: none;color: #999;' ".$pg['reflink'].">".$pg['refname']."</a></i></div>";
 
 }}
 
@@ -253,7 +253,7 @@ $render.="</div>";
 if ($input['output_visitor_link']){
 if (isset($data['visitor_link'])){
 
-$render.="<a style='display:block; padding:10px; background: #23282D;color: #fff; text-decoration: none;' href='".$data['visitor_link']."'>Know more about this visitor</a>";
+$render.="<a style='display:block; padding:10px; background: #23282D;color: #fff; text-decoration: none;' href='".$data['visitor_link']."'>". __("Know more about this visitor",'hitsteps-visitor-manager')."</a>";
 }
 }
 

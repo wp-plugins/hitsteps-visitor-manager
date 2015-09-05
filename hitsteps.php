@@ -4,13 +4,52 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.65
+Version: 4.66
 Author URI: http://www.hitsteps.com/
 */ 
 
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
 add_action('wp_head', 'hitsteps');
+
+
+
+function hitsteps_load_plugin_textdomain() {
+	$domain = 'hitsteps-visitor-manager';
+	$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+	if ( $loaded = load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' ) ) {
+		return $loaded;
+	} else {
+		load_plugin_textdomain( $domain, FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
+}
+add_action( 'plugins_loaded', 'hitsteps_load_plugin_textdomain' );
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function hitsteps(){
 global $_SERVER,$_COOKIE,$hitsteps_tracker;
@@ -26,7 +65,7 @@ if ( !strpos(strtolower($option['code']),"hitsteps") ){
 
 	if( round($option['iga'])==1 && current_user_can("manage_options") ) {
 
-		echo "\n<!-- ".__("Hitsteps tracking code not shown because you're an administrator and you've configured Hitsteps plugin to ignore administrators.", 'hitsteps')." -->\n";
+		echo "\n<!-- ".__("Hitsteps tracking code not shown because you're an administrator and you've configured Hitsteps plugin to ignore administrators.", 'hitsteps-visitor-manager')." -->\n";
 
 		return;
 
@@ -334,7 +373,7 @@ function hst_admin_menu(){
 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 
-	add_options_page('Hitsteps Options', 'Hitsteps', 'manage_options', __FILE__, 'hst_optionpage');
+	add_options_page(__("Hitsteps Options",'hitsteps-visitor-manager'), __("Hitsteps",'hitsteps-visitor-manager'), 'manage_options', __FILE__, 'hst_optionpage');
 
 }
 }
@@ -386,7 +425,7 @@ if (!function_exists("hitsteps_admin_bar_head")){
 			$url =  get_site_url().'/wp-admin/options-general.php?page=hitsteps-visitor-manager/hitsteps.php';
 			}
 
-			$title = __('Hitsteps Analytics');
+			$title = __('Hitsteps Analytics','hitsteps-visitor-manager');
 
 			$menu = array(
 				'id'    => 'hitstepsbtn',
@@ -435,7 +474,7 @@ $postaction='';
 	if ( $option['code']=='' && $postaction!='do' && $_REQUEST['hitmagic']!='do' ) {
 		function hitsteps_warning() {
 			echo "
-			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('Hitsteps Analytics is almost ready.')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
+			<div id='hitsteps-warning' class='updated fade'><p><strong>".__('Hitsteps Analytics is almost ready.','hitsteps-visitor-manager')."</strong> ".sprintf(__('You must <a href="%1$s">enter your hitsteps API key</a> to start tracking your stats.','hitsteps-visitor-manager'), "options-general.php?page=hitsteps-visitor-manager/hitsteps.php")."</p></div>
 			
 			<script type=\"text/javascript\">setTimeout(function(){jQuery('#hitsteps-warning').slideUp('slow');}, 11000);</script>
 
@@ -635,11 +674,11 @@ $fname=$_POST['magic']['fname'];
 $lname=$_POST['magic']['lname'];
 $lang=$_POST['magic']['lang'];
 
-if ($site==''){$magic_error=1;$error_msg[]='Cannot find your website address';}
-if ($wname==''){$magic_error=1;$error_msg[]='Cannot find your website name';}
-if ($email==''){$magic_error=1;$error_msg[]='Email cannot be empty';}
-if ($password==''){$magic_error=1;$error_msg[]='Password cannot be empty';}
-if ($nickname==''){$magic_error=1;$error_msg[]='Nickname cannot be empty';}
+if ($site==''){$magic_error=1;$error_msg[]=__("Cannot find your website address",'hitsteps-visitor-manager');}
+if ($wname==''){$magic_error=1;$error_msg[]=__("Cannot find your website name",'hitsteps-visitor-manager');}
+if ($email==''){$magic_error=1;$error_msg[]=__("Email cannot be empty",'hitsteps-visitor-manager');}
+if ($password==''){$magic_error=1;$error_msg[]=__("Password cannot be empty",'hitsteps-visitor-manager');}
+if ($nickname==''){$magic_error=1;$error_msg[]=__("Nickname cannot be empty",'hitsteps-visitor-manager');}
 
 }
 
@@ -658,8 +697,8 @@ $fname="";
 $lname="";
 $lang="";
 
-if ($site==''){$magic_error=1;$error_msg[]='Cannot find your website address';}
-if ($wname==''){$magic_error=1;$error_msg[]='Cannot find your website name';}
+if ($site==''){$magic_error=1;$error_msg[]=__("Cannot find your website address",'hitsteps-visitor-manager');}
+if ($wname==''){$magic_error=1;$error_msg[]=__("Cannot find your website name",'hitsteps-visitor-manager');}
 
 }
 
@@ -752,7 +791,7 @@ if (isset($saved)&&$saved==1){
 
 <br>
 
-<div id='hitsteps-saved' class='updated fade' ><p><strong>Hitsteps plugin setting have been saved.</strong> <?php if ($option['code']!=''){ ?><?php { ?>We have started tracking your visitors.<?php }}else{ ?>Please get your hitsteps API code to enable us to start tracking your site visitors, for you.<?php } ?></p></div>
+<div id='hitsteps-saved' class='updated fade' ><p><strong><?php echo __("Hitsteps plugin setting have been saved.",'hitsteps-visitor-manager');?></strong> <?php if ($option['code']!=''){ ?><?php { ?><?php echo __("We have started tracking your visitors.",'hitsteps-visitor-manager');?><?php }}else{ ?><?php echo __("Please get your hitsteps API code to enable us to start tracking your site visitors, for you.",'hitsteps-visitor-manager');?><?php } ?></p></div>
 
 <script type="text/javascript">setTimeout(function(){jQuery('#hitsteps-saved').slideUp('slow');}, 11000);</script>
 
@@ -787,7 +826,7 @@ $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE
 
 <img src="<?php echo $x; ?>favicon.png" style="vertical-align: middle; padding-right: 3px; " />
 
-<a target="_blank" href="https://www.hitsteps.com/?tag=wordpress-to-homepage" style="color: #000; text-decoration: none;   font-weight: lighter;">Hitsteps - Ultimate Realtime Web Analytics</a></h1>
+<a target="_blank" href="https://www.hitsteps.com/?tag=wordpress-to-homepage" style="color: #000; text-decoration: none;   font-weight: lighter;"><?php echo __("Hitsteps - Ultimate Realtime Web Analytics",'hitsteps-visitor-manager');?></a></h1>
 </div>
 <br>
 
@@ -804,7 +843,7 @@ $magicable=0;
  
  
 <div style="max-width:1300px; margin-left: auto; margin-right: auto;">
-<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px; text-align: center;" href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank">Click here to open your Hitsteps dashboard.</a>
+<a class='button button-primary button-large' style="width:100%; margin-bottom: 15px;  height: 50px;  line-height: 50px; text-align: center;" href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>" target="_blank"><?php echo __("Click here to open your Hitsteps dashboard.",'hitsteps-visitor-manager');?></a>
 </div>
 <?php } 
 $x = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
@@ -869,7 +908,7 @@ if ($lang=='') $lang='en';
 
 
 <div class="postbox">
-				<h3 class="hndle" style="cursor: pointer;" onclick="jQuery('.hitmagicauto').slideToggle();"><span>Hitsteps Auto Registration</span></h3>
+				<h3 class="hndle" style="cursor: pointer;" onclick="jQuery('.hitmagicauto').slideToggle();"><span><?php echo __("Hitsteps Auto Registration",'hitsteps-visitor-manager');?></span></h3>
 
 
 
@@ -889,13 +928,13 @@ if ($lang=='') $lang='en';
 
 <div >
 
-<div class="button" style="float: right;" onclick="jQuery('.hitmagicauto').hide();jQuery('.hitmagicloyal').fadeIn(500);">Already a hitsteps user? Login here.</div><br>
+<div class="button" style="float: right;" onclick="jQuery('.hitmagicauto').hide();jQuery('.hitmagicloyal').fadeIn(500);"><?php echo __("Already a hitsteps user? Login here.",'hitsteps-visitor-manager');?></div><br>
 
 <small>
-Email:<br><input type="email" name="magic[email]" value="<?php if (isset($_POST['magic']['email'])){echo $_POST['magic']['email'];}else{ echo $current_user->user_email;} ?>" /><br><br>
-Password:<br><input type="password" name="magic[password]" value="<?php if (isset($_POST['magic']['password'])){echo $_POST['magic']['password'];} ?>" /><br><br>
-Nickname:<br><input type="text" name="magic[nickname]" value="<?php if (isset($_POST['magic']['nickname'])){ echo $_POST['magic']['nickname']; }else{  echo $current_user->display_name; } ?>" /><br><br>
-How did you heard about Hitsteps:<br><input type="text" name="magic[refhow]" value="<?php  if (isset($_POST['magic']['refhow'])){echo $_POST['magic']['refhow'];} ?>" /><br><br>
+<?php echo __("Email",'hitsteps-visitor-manager');?>:<br><input type="email" name="magic[email]" value="<?php if (isset($_POST['magic']['email'])){echo $_POST['magic']['email'];}else{ echo $current_user->user_email;} ?>" /><br><br>
+<?php echo __("Password",'hitsteps-visitor-manager');?>:<br><input type="password" name="magic[password]" value="<?php if (isset($_POST['magic']['password'])){echo $_POST['magic']['password'];} ?>" /><br><br>
+<?php echo __("Nickname",'hitsteps-visitor-manager');?>:<br><input type="text" name="magic[nickname]" value="<?php if (isset($_POST['magic']['nickname'])){ echo $_POST['magic']['nickname']; }else{  echo $current_user->display_name; } ?>" /><br><br>
+<?php echo __("How did you heard about Hitsteps",'hitsteps-visitor-manager');?>:<br><input type="text" name="magic[refhow]" value="<?php  if (isset($_POST['magic']['refhow'])){echo $_POST['magic']['refhow'];} ?>" /><br><br>
 </small>
 
 
@@ -913,7 +952,7 @@ How did you heard about Hitsteps:<br><input type="text" name="magic[refhow]" val
 <input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="Sign up & API Key Installation">
 
 
-<small>Sign-up and get this website's API key automatically from hitsteps servers. by clicking this button, you agree <a href="https://www.hitsteps.com/terms.php" target="_blank">hitsteps's terms.</a>.</small>
+<small><?php echo __("Sign-up and get this website's API key automatically from hitsteps servers. by clicking this button, you agree <a href=\"https://www.hitsteps.com/terms.php\" target=\"_blank\">hitsteps's terms.</a>.",'hitsteps-visitor-manager');?></small>
 
 
 </div>
@@ -926,11 +965,11 @@ How did you heard about Hitsteps:<br><input type="text" name="magic[refhow]" val
 
 <div >
 
-<div class="button" style="float: right;" onclick="jQuery('.hitmagicloyal').hide();jQuery('.hitmagicauto').fadeIn(500);">New hitsteps user? Sign up here.</div><br>
+<div class="button" style="float: right;" onclick="jQuery('.hitmagicloyal').hide();jQuery('.hitmagicauto').fadeIn(500);"><?php echo __("New hitsteps user? Sign up here.",'hitsteps-visitor-manager');?></div><br>
 
 <small>
-Email:<br><input type="email" name="magic[email]" value="<?php if (isset($_POST['magic']['email'])){echo $_POST['magic']['email'];}else{ echo $current_user->user_email;} ?>" /><br><br>
-Password:<br><input type="password" name="magic[password]" value="<?php if (isset($_POST['magic']['password'])){echo $_POST['magic']['password'];} ?>" /><br><br>
+<?php echo __("Email",'hitsteps-visitor-manager');?>:<br><input type="email" name="magic[email]" value="<?php if (isset($_POST['magic']['email'])){echo $_POST['magic']['email'];}else{ echo $current_user->user_email;} ?>" /><br><br>
+<?php echo __("Password",'hitsteps-visitor-manager');?>:<br><input type="password" name="magic[password]" value="<?php if (isset($_POST['magic']['password'])){echo $_POST['magic']['password'];} ?>" /><br><br>
 </small>
 
 
@@ -941,7 +980,7 @@ Password:<br><input type="password" name="magic[password]" value="<?php if (isse
 <input type="hidden" name="magic[site]" value="<?php echo get_bloginfo('url'); ?>" />
 
 
-<input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="Login & API Key Installation">
+<input type="submit" class='button button-primary button-large' style="width:100%; margin-bottom: 8px;  height: 40px;  padding-top:5px; padding-bottom:5px; font-size: 14pt;" value="<?php echo __("Login & API Key Installation",'hitsteps-visitor-manager');?>">
 
 </div>
 
@@ -983,7 +1022,7 @@ Password:<br><input type="password" name="magic[password]" value="<?php if (isse
 
 
 <div class="postbox">
-				<h3 class="hndle"><span>Hitsteps API Code</span></h3>
+				<h3 class="hndle"><span><?php echo __("Hitsteps API Code",'hitsteps-visitor-manager');?></span></h3>
 
 				<div class="inside  form-field">
 
@@ -996,12 +1035,12 @@ Password:<br><input type="password" name="magic[password]" value="<?php if (isse
 	
 	</td><td width="100">
 	
-	<a href="https://www.hitsteps.com/register.php?tag=wp-getyourcodebtn" class="button" target="_blank">Get your API Key</a>
+	<a href="https://www.hitsteps.com/register.php?tag=wp-getyourcodebtn" class="button" target="_blank"><?php echo __("Get your API Key",'hitsteps-visitor-manager');?></a>
 	</td></tr></table>
 	
 	<?php if ($option['code']==''){ ?><br>
-	<?php if ($magicable==1){ ?>You can use quick auto registration form above to get your API key. Alternatively you can manually enter your API key here. <br><?php } ?>
-	<a href="https://www.hitsteps.com/register.php?tag=wp-getyourcode" target="_blank">Register a hitsteps account if you haven't and add your website to your account</a>, Go to your user homepage on Hitsteps and click "Settings" under the name of the domain, you will find the API Key under Tracking code. Each website has its own API Code. It looks like this 3defb4a2e4426642ea...
+	<?php if ($magicable==1){ ?><?php echo __("You can use quick auto registration form above to get your API key. Alternatively you can manually enter your API key here.",'hitsteps-visitor-manager');?> <br><?php } ?>
+	<a href="https://www.hitsteps.com/register.php?tag=wp-getyourcode" target="_blank"><?php echo __("Register a hitsteps account if you haven't and add your website to your account",'hitsteps-visitor-manager');?></a>, <?php echo __("Go to your user homepage on Hitsteps and click \"Settings\" under the name of the domain, you will find the API Key under Tracking code. Each website has its own API Code. It looks like this 3defb4a2e4426642ea...",'hitsteps-visitor-manager');?>
 <?php } ?>
 
 
@@ -1015,7 +1054,7 @@ Password:<br><input type="password" name="magic[password]" value="<?php if (isse
 
 
 <div class="postbox">
-				<h3 class="hndle"><span>Advanced Settings</span></h3>
+				<h3 class="hndle"><span><?php echo __("Advanced Settings",'hitsteps-visitor-manager');?></span></h3>
 
 				<div class="inside  form-field">
 
@@ -1025,54 +1064,54 @@ Password:<br><input type="password" name="magic[password]" value="<?php if (isse
 
 
 
-<p><input type="radio" value="1" name="wgd" <?php if ($option['wgd']!=2) echo "checked"; ?>>Yes&nbsp;
+<p><input type="radio" value="1" name="wgd" <?php if ($option['wgd']!=2) echo "checked"; ?>><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="2" name="wgd" <?php if ($option['wgd']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show Hitsteps quick summary in Wordpress dashboard?
+<input type="radio" value="2" name="wgd" <?php if ($option['wgd']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Show Hitsteps quick summary in Wordpress dashboard?",'hitsteps-visitor-manager');?>
 
 </p>
 <?php 
 if (current_user_can('manage_options')){
 ?>
-<p><input type="radio" value="2" name="wgl"  <?php if ($option['wgl']==2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="2" name="wgl"  <?php if ($option['wgl']==2) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="1" name="wgl"  <?php if ($option['wgl']!=2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable Dashboard widget for administrators only ( recommended for security )
+<input type="radio" value="1" name="wgl"  <?php if ($option['wgl']!=2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Enable Dashboard widget for administrators only ( recommended for security )",'hitsteps-visitor-manager');?>
 
 </p>
 <?php } ?>
-<p><input type="radio" value="1" name="tkn" <?php if ($option['tkn']!=2) echo "checked"; ?>>Yes&nbsp;
+<p><input type="radio" value="1" name="tkn" <?php if ($option['tkn']!=2) echo "checked"; ?>><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="2" name="tkn" <?php if ($option['tkn']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Track visitors name ( using name they enter when commenting )?
-
-</p>
-
-<p><input type="radio" value="1" name="iga" <?php if (round($option['iga'])==1) echo "checked"; ?>>Yes&nbsp;
-
-<input type="radio" value="2" name="iga" <?php if (round($option['iga'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Ignore admin visits? (Don't put tracking code for admin)
+<input type="radio" value="2" name="tkn" <?php if ($option['tkn']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Track visitors name ( using name they enter when commenting )?",'hitsteps-visitor-manager');?>
 
 </p>
 
+<p><input type="radio" value="1" name="iga" <?php if (round($option['iga'])==1) echo "checked"; ?>><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<p><input type="radio" value="1" name="igac" <?php if (round($option['igac'])==1) echo "checked"; ?>>Yes&nbsp;
-
-<input type="radio" value="2" name="igac" <?php if (round($option['igac'])!=1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enforce ignoring admin visits via cookie method blocking in dashboard widget?
-
-</p>
-
-<p><input type="radio" value="1" name="allowchat"  <?php if ($option['allowchat']!=2) echo "checked"; ?> checked>Yes&nbsp;
-
-<input type="radio" value="2" name="allowchat"  <?php if ($option['allowchat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable "chat with your visitors feature"
+<input type="radio" value="2" name="iga" <?php if (round($option['iga'])!=1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Ignore admin visits? (Don't put tracking code for admin)",'hitsteps-visitor-manager');?>
 
 </p>
 
-<p><input type="radio" value="1" name="allowfloat"  <?php if ($option['allowfloat']!=2) echo "checked"; ?> checked>Yes&nbsp;
 
-<input type="radio" value="2" name="allowfloat"  <?php if ($option['allowfloat']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Enable floating chat widget on bottom right of site
+<p><input type="radio" value="1" name="igac" <?php if (round($option['igac'])==1) echo "checked"; ?>><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+
+<input type="radio" value="2" name="igac" <?php if (round($option['igac'])!=1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Enforce ignoring admin visits via cookie method blocking in dashboard widget?",'hitsteps-visitor-manager');?>
 
 </p>
 
-<p><input type="radio" value="2" name="xtheme"  <?php if ($option['xtheme']==2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="1" name="allowchat"  <?php if ($option['allowchat']!=2) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="1" name="xtheme"  <?php if ($option['xtheme']!=2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Use the compact Theme for wordpress dashboard widget?
+<input type="radio" value="2" name="allowchat"  <?php if ($option['allowchat']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Enable \"chat with your visitors feature\"",'hitsteps-visitor-manager');?>
+
+</p>
+
+<p><input type="radio" value="1" name="allowfloat"  <?php if ($option['allowfloat']!=2) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+
+<input type="radio" value="2" name="allowfloat"  <?php if ($option['allowfloat']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Enable floating chat widget on bottom right of site",'hitsteps-visitor-manager');?>
+
+</p>
+
+<p><input type="radio" value="2" name="xtheme"  <?php if ($option['xtheme']==2) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+
+<input type="radio" value="1" name="xtheme"  <?php if ($option['xtheme']!=2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Use the compact Theme for wordpress dashboard widget?",'hitsteps-visitor-manager');?>
 
 </p>
 
@@ -1080,40 +1119,40 @@ if (current_user_can('manage_options')){
 
 
 
-<input type="radio" value="2" name="wpdash"  <?php if ($option['wpdash']==2) echo "checked"; ?>>Yes&nbsp;
-<input type="radio" value="1" name="wpdash"  <?php if ($option['wpdash']==1) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Show mini hitsteps dashboard (Recent visitors) in wordpress admin dashboard?
+<input type="radio" value="2" name="wpdash"  <?php if ($option['wpdash']==2) echo "checked"; ?>><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+<input type="radio" value="1" name="wpdash"  <?php if ($option['wpdash']==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Show mini hitsteps dashboard (Recent visitors) in wordpress admin dashboard?",'hitsteps-visitor-manager');?>
 </p>
 
 
-<p><input type="radio" value="1" name="woo"  <?php if ($option['woo']!=2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="1" name="woo"  <?php if ($option['woo']!=2) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="2" name="woo"  <?php if ($option['woo']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Integrate with WooCommerce: Receive buyer detail and pageview path within "New Order" emails
+<input type="radio" value="2" name="woo"  <?php if ($option['woo']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Integrate with WooCommerce: Receive buyer detail and pageview path within \"New Order\" emails",'hitsteps-visitor-manager');?>
 
 </p>
 
 
 
-<p><input type="radio" value="1" name="jetpack"  <?php if ($option['jetpack']!=2) echo "checked"; ?> checked>Yes&nbsp;
+<p><input type="radio" value="1" name="jetpack"  <?php if ($option['jetpack']!=2) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="2" name="jetpack"  <?php if ($option['jetpack']==2) echo "checked"; ?>>No&nbsp;&nbsp;&nbsp;Integrate with Jetpack Contact form: Receive visitors full detail when they contact you.
+<input type="radio" value="2" name="jetpack"  <?php if ($option['jetpack']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Integrate with Jetpack Contact form: Receive visitors full detail when they contact you.",'hitsteps-visitor-manager');?>
 <small style="
     display: block;
     padding: 7px;
     border: 1px solid #f0f0f0;
     background: #f9f9f9;
     margin-top: 10px;
-">We also do support: Contact form 7, Ninja Forms and Gravity forms (enable Hitsteps through their form builder)</small>
+"><?php echo __("We also do support: Contact form 7, Ninja Forms and Gravity forms (enable Hitsteps through their form builder)",'hitsteps-visitor-manager');?></small>
 
 </p>
 
 
 
 <p>
-Show Visitor Map in wordpress admin dashboard?
+<?php echo __("Show Visitor Map in wordpress admin dashboard?",'hitsteps-visitor-manager');?>
 <br>
-<input type="radio" value="1" name="wpmap"  <?php if ($option['wpmap']==1) echo "checked"; ?>>Online Visitors&nbsp;&nbsp;
-<input type="radio" value="2" name="wpmap"  <?php if ($option['wpmap']==2) echo "checked"; ?>>Today&nbsp;&nbsp;
-<input type="radio" value="3" name="wpmap"  <?php if ($option['wpmap']==3) echo "checked"; ?>>Disable Map Widget in admin dashboard&nbsp;&nbsp;
+<input type="radio" value="1" name="wpmap"  <?php if ($option['wpmap']==1) echo "checked"; ?>><?php echo __("Online Visitors",'hitsteps-visitor-manager');?>&nbsp;&nbsp;
+<input type="radio" value="2" name="wpmap"  <?php if ($option['wpmap']==2) echo "checked"; ?>><?php echo __("Today",'hitsteps-visitor-manager');?>&nbsp;&nbsp;
+<input type="radio" value="3" name="wpmap"  <?php if ($option['wpmap']==3) echo "checked"; ?>><?php echo __("Disable Map Widget in admin dashboard",'hitsteps-visitor-manager');?>&nbsp;&nbsp;
 </p>
 
 
@@ -1134,7 +1173,7 @@ Show Visitor Map in wordpress admin dashboard?
 </div>
 
 <div style="  margin: 0 20px 20px 0;">
-	<input type="submit" value="Save Changes" class='button button-primary button-large' style="width:100%; margin-bottom: 15px; font-size: 13pt; height: 50px;  line-height: 50px; " >
+	<input type="submit" value="<?php echo __("Save Changes",'hitsteps-visitor-manager');?>" class='button button-primary button-large' style="width:100%; margin-bottom: 15px; font-size: 13pt; height: 50px;  line-height: 50px; " >
 </div>
 
 
@@ -1158,15 +1197,15 @@ Show Visitor Map in wordpress admin dashboard?
 
 
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>How to setup Hitsteps on Wordpress?</span></h3>
+<h3 class="hndle"><span><?php echo __("How to setup Hitsteps on Wordpress?",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
 
-<a href="https://www.hitsteps.com/register.php?tag=wordpress-to-ht-reg">Simply sign up for a Hitsteps account</a> and follow our <a href="https://www.hitsteps.com/plugin/?type=api" target="_blank">extremely simple instructions to get your API Key</a>.<br><br>
+<a href="https://www.hitsteps.com/register.php?tag=wordpress-to-ht-reg"><?php echo __("Simply sign up for a Hitsteps account</a> and follow our <a href=\"https://www.hitsteps.com/plugin/?type=api\" target=\"_blank\">extremely simple instructions to get your API Key",'hitsteps-visitor-manager');?></a>.<br><br>
 
-Login to your Hitsteps account and add your website address to your Hitsteps account.<br>Then in the hitsteps.com settings page, you will find your Hitsteps API code.<br>
+<?php echo __("Login to your Hitsteps account and add your website address to your Hitsteps account.<br>Then in the hitsteps.com settings page, you will find your Hitsteps API code.",'hitsteps-visitor-manager');?><br>
 
-Copy and paste the API code into the specified field above and click save changes. That is all!<br>All your visitor information will be tracked and logged in real-time and you can monitor the data realtime in your hitsteps.com dashboard.
+<?php echo __("Copy and paste the API code into the specified field above and click save changes. That is all!<br>All your visitor information will be tracked and logged in real-time and you can monitor the data realtime in your hitsteps.com dashboard.",'hitsteps-visitor-manager');?>
 
 
 </div>
@@ -1182,13 +1221,13 @@ if ($option['code']!=''){ ?>
 
 
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>Tracking non-Wordpress pages?</span></h3>
+<h3 class="hndle"><span><?php echo __("Tracking non-Wordpress pages?",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
 
-If you have a normal website then all you have to do is input the tracking code on each page of your website, ideally at footer of your page.</p>
+<?php echo __("If you have a normal website then all you have to do is input the tracking code on each page of your website, ideally at footer of your page.",'hitsteps-visitor-manager');?></p>
 
-<p class="submit">Javascript Tracking Code:<br>
+<p class="submit"><?php echo __("Javascript Tracking Code:",'hitsteps-visitor-manager');?><br>
 
 <textarea rows="6" name="wcode" style="width:100%;" readonly><!-- HITSTEPS TRACKING CODE - DO NOT CHANGE -->
 <script src="https://www.hitsteps.com/track.php?code=<?php echo substr($option['code'],0,32); ?>" type="text/javascript" ></script>
@@ -1221,12 +1260,12 @@ If you have a normal website then all you have to do is input the tracking code 
 
 
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>Your Hitsteps</span></h3>
+<h3 class="hndle"><span><?php echo __("Your Hitsteps",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
 
 <a target="_blank" href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
-<img border="0" src="<?php echo $x; ?>hitsteps.jpg"  width="169" ><br>Click to see your dashboard</a>
+<img border="0" src="<?php echo $x; ?>hitsteps.jpg"  width="169" ><br><?php echo __("Click to see your dashboard",'hitsteps-visitor-manager');?></a>
 
 
 </div>
@@ -1237,14 +1276,14 @@ If you have a normal website then all you have to do is input the tracking code 
 
 
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>What is Hitsteps?</span></h3>
+<h3 class="hndle"><span><?php echo __("What is Hitsteps?",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
 
-Hitsteps Analytics is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.<br><br>
+<?php echo __("Hitsteps Analytics is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.",'hitsteps-visitor-manager');?><br><br>
 
 <a target="_blank" href="https://www.hitsteps.com/features.php">
-<img border="0" src="<?php echo $x; ?>hitsteps.jpg"width="169"><br>Click here to see features</a>
+<img border="0" src="<?php echo $x; ?>hitsteps.jpg"width="169"><br><?php echo __("Click here to see features",'hitsteps-visitor-manager');?></a>
 
 
 </div>
@@ -1255,13 +1294,15 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 
 
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>Want more of Hitsteps?</span></h3>
+<h3 class="hndle"><span><?php echo __("Want more of Hitsteps?",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
 
-<ul><li><a href="https://chrome.google.com/webstore/detail/hitsteps-visitor-manager/faidpebiglhmilmbidibmepbhpojkkoc?hl=en" target="_blank">Install Hitsteps Google Chrome Extension.</a></li><li><a href="https://www.hitsteps.com/plugin/" target="_blank">Use it on other CMS and platforms</a></li>
-<li><a href="https://www.hitsteps.com/wl/" target="_blank">Join our Whitelabel program.</a></li>
-<li><a href="https://www.hitsteps.com/contact.php" target="_blank">Contact Hitsteps team or Provide feedback.</a></li>
+<ul><li><a href="https://chrome.google.com/webstore/detail/hitsteps-visitor-manager/faidpebiglhmilmbidibmepbhpojkkoc" target="_blank"><?php echo __("Install Hitsteps Google Chrome Extension.",'hitsteps-visitor-manager');?></a></li>
+<li><a href="https://addons.mozilla.org/en-us/firefox/addon/hitsteps-analytics/" target="_blank"><?php echo __("Install Hitsteps Firefox Add-on.",'hitsteps-visitor-manager');?></a></li>
+<li><a href="https://www.hitsteps.com/plugin/" target="_blank"><?php echo __("Use it on other CMS and platforms.",'hitsteps-visitor-manager');?></a></li>
+<li><a href="https://www.hitsteps.com/wl/" target="_blank"><?php echo __("Join our Whitelabel program.",'hitsteps-visitor-manager');?></a></li>
+<li><a href="https://www.hitsteps.com/contact.php" target="_blank"><?php echo __("Contact Hitsteps team or Provide feedback.",'hitsteps-visitor-manager');?></a></li>
 </ul>
 
 
@@ -1270,10 +1311,10 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 
 					
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>Like Hitsteps?</span></h3>
+<h3 class="hndle"><span><?php echo __("Like Hitsteps?",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
-<p>Why not do help us to spread the word:</p><ul><li><a href="https://www.hitsteps.com/features.php" target="_blank">Link to us so other can know about it.</a></li><li><a href="https://wordpress.org/support/view/plugin-reviews/hitsteps-visitor-manager?rate=5#postform" target="_blank">Give it a 5 star rating on WordPress.org.</a></li><li><a href="https://www.hitsteps.com/stats/aff.php" target="_blank">Join Hitsteps affiliate team.</a></li></ul>
+<p><?php echo __("Why not do help us to spread the word:",'hitsteps-visitor-manager');?></p><ul><li><a href="https://www.hitsteps.com/features.php" target="_blank"><?php echo __("Link to us so other can know about it.",'hitsteps-visitor-manager');?></a></li><li><a href="https://wordpress.org/support/view/plugin-reviews/hitsteps-visitor-manager?rate=5#postform" target="_blank"><?php echo __("Give it a 5 star rating on WordPress.org.",'hitsteps-visitor-manager');?></a></li><li><a href="https://www.hitsteps.com/stats/aff.php" target="_blank"><?php echo __("Join Hitsteps affiliate team.",'hitsteps-visitor-manager');?></a></li></ul>
 
 
 </div>
@@ -1282,7 +1323,7 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
 	
 					
 <div id="hitsteps_features" class="postbox">
-<h3 class="hndle"><span>Follow us</span></h3>
+<h3 class="hndle"><span><?php echo __("Follow us",'hitsteps-visitor-manager');?></span></h3>
 
 <div class="inside">
 
@@ -1312,7 +1353,7 @@ Hitsteps Analytics is a powerful real time website visitor manager, it allow you
   data-size="large"
   data-width="150px"
   data-lang="en">
-Follow @hitsteps
+<?php echo __("Follow",'hitsteps-visitor-manager');?> @hitsteps
 </a>
 <script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
 
@@ -1412,7 +1453,7 @@ if ($mapmode==1) $mapmode="";
 
 		<p align="center">
 		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
-		<span><font face="Verdana" style="font-size: 12pt">Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually.</font></span></a></iframe></td>
+		<span><font face="Verdana" style="font-size: 12pt"><?php echo __("Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually.",'hitsteps-visitor-manager');?></font></span></a></iframe></td>
 
 	</tr>
 
@@ -1430,8 +1471,8 @@ if ($mapmode==1) $mapmode="";
 
 		<td>
 
-		<p align="left">hitsteps API Code is not installed. Please open Wordpress settings -> hitsteps for instructions.<br>
-You need get your free Hitsteps account to get an API key.</td>
+		<p align="left"><?php echo __("hitsteps API Code is not installed. Please open Wordpress settings -> hitsteps for instructions.",'hitsteps-visitor-manager');?><br>
+<?php echo __("You need get your free Hitsteps account to get an API key.",'hitsteps-visitor-manager');?></td>
 
 	</tr>
 
@@ -1488,7 +1529,7 @@ if (round($option['xtheme'])==2){
 		<p align="center">
 		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
 		<span>
-		<font face="Verdana" style="font-size: 12pt">Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually.</font></span></a></iframe></td>
+		<font face="Verdana" style="font-size: 12pt"><?php echo __("Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually.",'hitsteps-visitor-manager');?></font></span></a></iframe></td>
 
 	</tr>
 
@@ -1503,8 +1544,8 @@ if (round($option['xtheme'])==2){
 
 		<td>
 
-		<p align="left">hitsteps API Code is not installed. Please open Wordpress settings -> hitsteps for instructions.<br>
-You need get your free Hitsteps account to get an API key.</td>
+		<p align="left"><?php echo __("hitsteps API Code is not installed. Please open Wordpress settings -> hitsteps for instructions.",'hitsteps-visitor-manager');?><br>
+<?php echo __("You need get your free Hitsteps account to get an API key.",'hitsteps-visitor-manager');?></td>
 
 	</tr>
 
@@ -1549,7 +1590,7 @@ $htssl=" - SSL";
 		<p align="center">
 		<a href="https://www.hitsteps.com/login-code.php?code=<?php echo $option['code']; ?>">
 		<span>
-		<font face="Verdana" style="font-size: 12pt">Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually by clicking here.</font></span></a></iframe></td>
+		<font face="Verdana" style="font-size: 12pt"><?php echo __("Your Browser don't show our widget's iframe. Please Open Hitsteps Dashboard manually by clicking here.",'hitsteps-visitor-manager');?></font></span></a></iframe></td>
 
 	</tr>
 
@@ -1564,8 +1605,8 @@ $htssl=" - SSL";
 
 		<td>
 
-		<p align="left">hitsteps API Code is not installed. Please open Wordpress settings -> hitsteps for instructions.<br>
-You need get your free Hitsteps account to get an API key.</td>
+		<p align="left"><?php echo __("hitsteps API Code is not installed. Please open Wordpress settings -> hitsteps for instructions.",'hitsteps-visitor-manager');?><br>
+<?php echo __("You need get your free Hitsteps account to get an API key.",'hitsteps-visitor-manager');?></td>
 
 	</tr>
 
@@ -1594,7 +1635,7 @@ if ($option['wgd']!=2){
     if (function_exists('wp_add_dashboard_widget')){
     if (current_user_can('manage_options')||$option['wgl']!=2) {
 
-      wp_add_dashboard_widget('hitsteps_dashboard_widget', 'Hitsteps - Your Analytics Summary', 'hitsteps_dashboard_widget_function');	
+      wp_add_dashboard_widget('hitsteps_dashboard_widget', __("Hitsteps - Your Analytics Summary",'hitsteps-visitor-manager'), 'hitsteps_dashboard_widget_function');	
     }
     }
 }
@@ -1602,16 +1643,16 @@ if ($option['wgd']!=2){
 if ($option['wpmap']!=3){
     if (function_exists('wp_add_dashboard_widget')){
     if (current_user_can('manage_options')||$option['wgl']!=2) {
-    $mapmode='Online';
-    if ($option['wpmap']=='2') $mapmode='Today';
-      wp_add_dashboard_widget('hitsteps_dashboard_map_widget', 'Hitsteps - Your '.$mapmode.' Visitors Map', 'hitsteps_dashboard_map_widget_function');	
+    $mapmode=__("Online",'hitsteps-visitor-manager');
+    if ($option['wpmap']=='2') $mapmode=__("Today",'hitsteps-visitor-manager');
+      wp_add_dashboard_widget('hitsteps_dashboard_map_widget', 'Hitsteps - '.$mapmode.' '. __("Visitors Map",'hitsteps-visitor-manager'), 'hitsteps_dashboard_map_widget_function');	
     }
     }
 }
 if ($option['wpdash']!=1){
     if (function_exists('wp_add_dashboard_widget')){
     if (current_user_can('manage_options')||$option['wgl']!=2) {
-      wp_add_dashboard_widget('hitsteps_minidashboard_widget', 'Hitsteps - Recent visitors', 'hitsteps_minidashboard_widget_function');	
+      wp_add_dashboard_widget('hitsteps_minidashboard_widget', 'Hitsteps - '. __("Recent visitors",'hitsteps-visitor-manager'), 'hitsteps_minidashboard_widget_function');	
     }
     }
 }
@@ -1640,7 +1681,7 @@ class hst_SUPPORT extends WP_Widget {
 
    function __construct() {
 
-        parent::__construct(false, $name = 'Hitsteps Live Chat Support');	
+        parent::__construct(false, $name = __("Hitsteps Live Chat Support",'hitsteps-visitor-manager'));	
 
     }
 
@@ -1702,7 +1743,7 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- HITSTEPS ONLINE SUPPORT CODE v4.00 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
+<!-- HITSTEPS ONLINE SUPPORT CODE v4.66 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
 
 var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&lang=<?php echo urlencode($instance['lang']); ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
 document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'ipt>');
@@ -1761,12 +1802,12 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
 
         ?>
 
-            <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:','hitsteps-visitor-manager'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
 
-            <p><label for="<?php echo $this->get_field_id('comment'); ?>"><?php _e('Your Comment:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('comment'); ?>" name="<?php echo $this->get_field_name('comment'); ?>" type="text" value="<?php echo $widget_comments_title; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('comment'); ?>"><?php _e('Your Comment:','hitsteps-visitor-manager'); ?> <input class="widefat" id="<?php echo $this->get_field_id('comment'); ?>" name="<?php echo $this->get_field_name('comment'); ?>" type="text" value="<?php echo $widget_comments_title; ?>" /></label></p>
 
-            <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
-				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>>Auto-Detect</option>
+            <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:','hitsteps-visitor-manager'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
+				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>><?php echo __("Auto-Detect",'hitsteps-visitor-manager');?></option>
 				<option value="en"<?php if ($widget_lang=='en'){ echo " selected"; } ?>>English</option>
 				<option value="es"<?php if ($widget_lang=='es'){ echo " selected"; } ?>>Español</option>
 				<option value="de"<?php if ($widget_lang=='de'){ echo " selected"; } ?>>Deutsch</option>
@@ -1775,14 +1816,14 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
 				<option value="tr"<?php if ($widget_lang=='tr'){ echo " selected"; } ?>>Türkçe</option>
             </select></label></p>
 
-            <p><label for="<?php echo $this->get_field_id('img'); ?>"><?php _e('Custom Online Icon: (optional)'); ?> <input class="widefat" id="<?php echo $this->get_field_id('img'); ?>" name="<?php echo $this->get_field_name('img'); ?>" type="text" value="<?php echo $img; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('img'); ?>"><?php _e('Custom Online Icon: (optional)','hitsteps-visitor-manager'); ?> <input class="widefat" id="<?php echo $this->get_field_id('img'); ?>" name="<?php echo $this->get_field_name('img'); ?>" type="text" value="<?php echo $img; ?>" /></label></p>
 
-            <p><label for="<?php echo $this->get_field_id('off'); ?>"><?php _e('Custom Offline Icon: (optional)'); ?> <input class="widefat" id="<?php echo $this->get_field_id('off'); ?>" name="<?php echo $this->get_field_name('off'); ?>" type="text" value="<?php echo $off; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('off'); ?>"><?php _e('Custom Offline Icon: (optional)','hitsteps-visitor-manager'); ?> <input class="widefat" id="<?php echo $this->get_field_id('off'); ?>" name="<?php echo $this->get_field_name('off'); ?>" type="text" value="<?php echo $off; ?>" /></label></p>
 
-		<p>What is this widget?</p><span>Hitsteps offers a built-in live chat feature. The widget shows an online support icon whenever you are online and shows a leave a message contact form icon when you are not online.</span>
+		<p><?php echo __("What is this widget?",'hitsteps-visitor-manager');?></p><span><?php echo __("Hitsteps offers a built-in live chat feature. The widget shows an online support icon whenever you are online and shows a leave a message contact form icon when you are not online.",'hitsteps-visitor-manager');?></span>
 
-      <br><a target="_parent" href="https://www.hitsteps.com/widget/" target="_blank">Click here to open Hitsteps Widgets page.</a>
-      <p>With our Firefox addon, you can chat to your visitors direct from a firefox pop up window.
+      <br><a target="_parent" href="https://www.hitsteps.com/widget/" target="_blank"><?php echo __("Click here to open Hitsteps Widgets page.",'hitsteps-visitor-manager');?></a>
+      <p><a href="https://addons.mozilla.org/en-us/firefox/addon/hitsteps-analytics/" target="_blank">Firefox addon</a> <?php echo __("or",'hitsteps-visitor-manager');?> <a href="https://chrome.google.com/webstore/detail/hitsteps-visitor-manager/faidpebiglhmilmbidibmepbhpojkkoc" target="_blank">Chrome extension</a> <?php echo __("allows you tobe be aware of incoming messages and chat with your visitors",'hitsteps-visitor-manager');?>.
 
 </p><?php 
 
@@ -1790,7 +1831,7 @@ document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'i
 
             ?>
 
-            <p>Please configure Hitsteps API Code in your wordpress settings -> Hitsteps before using the chat widget.</p>
+            <p><?php echo __("Please configure Hitsteps API Code in your wordpress settings -> Hitsteps before using the chat widget.",'hitsteps-visitor-manager');?></p>
 
         <?php 
 
@@ -1852,7 +1893,7 @@ class hst_STATS extends WP_Widget {
 
     function __construct() {
 
-        parent::__construct(false, $name = 'Hitsteps Statistics');	
+        parent::__construct(false, $name = __("Hitsteps Statistics",'hitsteps-visitor-manager'));	
 
     }
 
@@ -2054,45 +2095,45 @@ if (!isset($instance['lang'])) $instance['lang']='';
 
 
 
-            <p><label for="<?php echo $this->get_field_id('widget_title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('widget_title'); ?>" name="<?php echo $this->get_field_name('widget_title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
-            <p><label for="<?php echo $this->get_field_id('widget_comments_title'); ?>"><?php _e('Your Comment:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('widget_comments_title'); ?>" name="<?php echo $this->get_field_name('widget_comments_title'); ?>" type="text" value="<?php echo $widget_comments_title; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('widget_title'); ?>"><?php _e('Title:','hitsteps-visitor-manager'); ?> <input class="widefat" id="<?php echo $this->get_field_id('widget_title'); ?>" name="<?php echo $this->get_field_name('widget_title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('widget_comments_title'); ?>"><?php _e('Your Comment:','hitsteps-visitor-manager'); ?> <input class="widefat" id="<?php echo $this->get_field_id('widget_comments_title'); ?>" name="<?php echo $this->get_field_name('widget_comments_title'); ?>" type="text" value="<?php echo $widget_comments_title; ?>" /></label></p>
             
-            <p>This widget allow you to show your visitors statistics in your sidebar for public.</p>
+            <p><?php echo __("This widget allow you to show your visitors statistics in your sidebar for public.",'hitsteps-visitor-manager');?></p>
             
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  <?php if ($hitsteps_online==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  <?php if ($hitsteps_online==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Online Counts</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  <?php if ($hitsteps_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  <?php if ($hitsteps_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Visits Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  <?php if ($hitsteps_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  <?php if ($hitsteps_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Pageviews Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  <?php if ($hitsteps_unique==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  <?php if ($hitsteps_unique==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visitors Count for Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  <?php if ($hitsteps_returning==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  <?php if ($hitsteps_returning==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Returning Visitors Today</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  <?php if ($hitsteps_new_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  <?php if ($hitsteps_new_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visits % Today</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  <?php if ($hitsteps_online==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_online'); ?>"  <?php if ($hitsteps_online==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Online Counts",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  <?php if ($hitsteps_visit==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_visit'); ?>"  <?php if ($hitsteps_visit==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Visits Today",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  <?php if ($hitsteps_pageview==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_pageview'); ?>"  <?php if ($hitsteps_pageview==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Pageviews Today",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  <?php if ($hitsteps_unique==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_unique'); ?>"  <?php if ($hitsteps_unique==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show New Visitors Count for Today",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  <?php if ($hitsteps_returning==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_returning'); ?>"  <?php if ($hitsteps_returning==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Returning Visitors Today",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  <?php if ($hitsteps_new_visit==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_new_visit'); ?>"  <?php if ($hitsteps_new_visit==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show New Visits % Today",'hitsteps-visitor-manager');?></p>
 ---
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  <?php if ($hitsteps_yesterday_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  <?php if ($hitsteps_yesterday_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Vists Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  <?php if ($hitsteps_yesterday_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  <?php if ($hitsteps_yesterday_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Pageviews Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  <?php if ($hitsteps_yesterday_unique==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  <?php if ($hitsteps_yesterday_unique==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visitors Count for Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  <?php if ($hitsteps_yesterday_return==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  <?php if ($hitsteps_yesterday_return==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Returning Visitors Yesterday</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  <?php if ($hitsteps_yesterday_new_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  <?php if ($hitsteps_yesterday_new_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show New Visits % Yesterday</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  <?php if ($hitsteps_yesterday_visit==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_visit'); ?>"  <?php if ($hitsteps_yesterday_visit==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Vists Yesterday",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  <?php if ($hitsteps_yesterday_pageview==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_pageview'); ?>"  <?php if ($hitsteps_yesterday_pageview==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Pageviews Yesterday",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  <?php if ($hitsteps_yesterday_unique==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_unique'); ?>"  <?php if ($hitsteps_yesterday_unique==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show New Visitors Count for Yesterday",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  <?php if ($hitsteps_yesterday_return==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_return'); ?>"  <?php if ($hitsteps_yesterday_return==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Returning Visitors Yesterday",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  <?php if ($hitsteps_yesterday_new_visit==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_yesterday_new_visit'); ?>"  <?php if ($hitsteps_yesterday_new_visit==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show New Visits % Yesterday",'hitsteps-visitor-manager');?></p>
 ---
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  <?php if ($hitsteps_total_pageview==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  <?php if ($hitsteps_total_pageview==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Total Pageviews</p>
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  <?php if ($hitsteps_total_visit==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  <?php if ($hitsteps_total_visit==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Show Total Visits</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  <?php if ($hitsteps_total_pageview==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_pageview'); ?>"  <?php if ($hitsteps_total_pageview==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Total Pageviews",'hitsteps-visitor-manager');?></p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  <?php if ($hitsteps_total_visit==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('hitsteps_total_visit'); ?>"  <?php if ($hitsteps_total_visit==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Show Total Visits",'hitsteps-visitor-manager');?></p>
 ---              
-            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('use_theme'); ?>"  <?php if ($use_theme==0) echo "checked"; ?> checked>Yes&nbsp;
-               <input type="radio" value="1" name="<?php echo $this->get_field_name('use_theme'); ?>"  <?php if ($use_theme==1) echo "checked"; ?>>No&nbsp;&nbsp;<br>Use Custom Theme?</p>
+            <p><input type="radio" value="0" name="<?php echo $this->get_field_name('use_theme'); ?>"  <?php if ($use_theme==0) echo "checked"; ?> checked><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
+               <input type="radio" value="1" name="<?php echo $this->get_field_name('use_theme'); ?>"  <?php if ($use_theme==1) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;<br><?php echo __("Use Custom Theme?",'hitsteps-visitor-manager');?></p>
 ---            
-             <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
-				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>>Auto-Detect</option>
+             <p><label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language:','hitsteps-visitor-manager'); ?>  <select class="widefat" id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" >
+				<option value="auto"<?php if ($widget_lang=='auto'){ echo " selected"; } ?>><?php echo __("Auto-Detect",'hitsteps-visitor-manager');?></option>
 				<option value="en"<?php if ($widget_lang=='en'){ echo " selected"; } ?>>English</option>
 				<option value="es"<?php if ($widget_lang=='es'){ echo " selected"; } ?>>Español</option>
 				<option value="de"<?php if ($widget_lang=='de'){ echo " selected"; } ?>>Deutsch</option>
@@ -2110,7 +2151,7 @@ if (!isset($instance['lang'])) $instance['lang']='';
 
             ?>
 
-            <p>Please configure your  hitsteps API Code in your "wordpress Settings -> Hitsteps" before using the statistics widget.</p>
+            <p><?php echo __("Please configure your hitsteps API Code in your \"wordpress Settings -> Hitsteps\" before using the statistics widget.",'hitsteps-visitor-manager');?></p>
 
         <?php 
 
@@ -2170,7 +2211,7 @@ add_action('widgets_init', create_function('', 'return register_widget("hst_STAT
 	add_filter('plugin_action_links', 'hitsteps_settingsLink', 0, 2);
 	function hitsteps_settingsLink($actionLinks, $file) {
  		if (($file == 'hitsteps-visitor-manager/hitsteps.php') && function_exists('admin_url')) {
-			$settingsLink = '<a href="' . admin_url('options-general.php?page=hitsteps-visitor-manager/hitsteps.php') . '">' . __('Settings') . '</a>';
+			$settingsLink = '<a href="' . admin_url('options-general.php?page=hitsteps-visitor-manager/hitsteps.php') . '">' . __('Settings','hitsteps-visitor-manager') . '</a>';
 
 			# Add 'Settings' link to plugin's action links
 			array_unshift($actionLinks, $settingsLink);

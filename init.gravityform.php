@@ -4,7 +4,7 @@ if (!class_exists('HITSTEPS_GF_hitsteps')) {
     class HITSTEPS_GF_hitsteps
     {
     
-	private static $name = 'Gravity Forms - Hitsteps tracker';
+	private static $name = "Gravity Forms - Hitsteps tracker";
     private static $slug = 'hitsteps_gf_hitsteps_field';
 	private static $version = '1.2.4';
         /**
@@ -42,7 +42,7 @@ if (!class_exists('HITSTEPS_GF_hitsteps')) {
                 if ($group["name"] == "standard_fields") {
                     $group["fields"][] = array(
                         "class" => "button",
-                        "value" => __("Hitsteps Tracker", "gravityforms"),
+                        "value" => __("Hitsteps Tracker", "hitsteps-visitor-manager"),
                         "onclick" => "StartAddField('hitsteps');"
                     );
                     break;
@@ -103,7 +103,7 @@ if (!class_exists('HITSTEPS_GF_hitsteps')) {
 												
 												
 												
-Label won't be visible to your visitors, it is just for your reference in this page.
+<?php echo __("Label won't be visible to your visitors, it is just for your reference in this page.",'hitsteps-visitor-manager');?>
 
 
 
@@ -138,7 +138,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
 												
 												
 
-												<input type="checkbox" name="hitsteps_field_visitor_ip" id="hitsteps_field_visitor_ip" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_ip', this.checked);"  />  <?php _e("Show Visitor IP and Details", "gravityforms"); ?>
+												<input type="checkbox" name="hitsteps_field_visitor_ip" id="hitsteps_field_visitor_ip" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_ip', this.checked);"  />  <?php _e("Show Visitor IP and Details", "hitsteps-visitor-manager"); ?>
 												<?php gform_tooltip("hitsteps_field_visitor_ip_tooltip");?></label>
 												
 												
@@ -153,7 +153,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
         } // END hitsteps_settings_visitor_ip
         
 		public static function hitsteps_settings_visitor_ip_tooltip($tooltips){
-			$tooltips["hitsteps_field_visitor_ip_tooltip"] = "Visitor IP, ISP, Name and details will be shown in email";
+			$tooltips["hitsteps_field_visitor_ip_tooltip"] = __("Visitor IP, ISP, Name and details will be shown in email",'hitsteps-visitor-manager');
 			return $tooltips;
 		}
 
@@ -178,7 +178,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
 												
 												
 
-												<input type="checkbox" name="hitsteps_field_visitor_path" id="hitsteps_field_visitor_path" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_path', this.checked);"  />  <?php _e("Show Visitor Path", "gravityforms"); ?>
+												<input type="checkbox" name="hitsteps_field_visitor_path" id="hitsteps_field_visitor_path" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_path', this.checked);"  />  <?php _e("Show Visitor Path", "hitsteps-visitor-manager"); ?>
 												<?php gform_tooltip("hitsteps_field_visitor_path_tooltip");?></label>
 												
 												
@@ -193,7 +193,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
         } // END hitsteps_settings_visitor_path
         
 		public static function hitsteps_settings_visitor_path_tooltip($tooltips){
-			$tooltips["hitsteps_field_visitor_path_tooltip"] = "Recent visitor pageviews path and their referrers will be shown in email";
+			$tooltips["hitsteps_field_visitor_path_tooltip"] = __("Recent visitor pageviews path and their referrers will be shown in email",'hitsteps-visitor-manager');
 			return $tooltips;
 		}
 
@@ -215,7 +215,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
 												
 												
 
-												<input type="checkbox" name="hitsteps_field_visitor_base" id="hitsteps_field_visitor_base" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_base', this.checked);"  />  <?php _e("Show Visitor Base", "gravityforms"); ?>
+												<input type="checkbox" name="hitsteps_field_visitor_base" id="hitsteps_field_visitor_base" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_base', this.checked);"  />  <?php _e("Show Visitor Base", "hitsteps-visitor-manager"); ?>
 												<?php gform_tooltip("hitsteps_field_visitor_base_tooltip");?></label>
 												
 												
@@ -230,7 +230,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
         } // END hitsteps_settings_visitor_base
         
 		public static function hitsteps_settings_visitor_base_tooltip($tooltips){
-			$tooltips["hitsteps_field_visitor_base_tooltip"] = "Visitor first landing time, landing page and landing referrer will be shown";
+			$tooltips["hitsteps_field_visitor_base_tooltip"] = __("Visitor first landing time, landing page and landing referrer will be shown",'hitsteps-visitor-manager');
 			return $tooltips;
 		}
 
@@ -253,7 +253,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
 												
 												
 
-												<input type="checkbox" name="hitsteps_field_visitor_link" id="hitsteps_field_visitor_link" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_link', this.checked);"  />  <?php _e("Show Visitor Link", "gravityforms"); ?>
+												<input type="checkbox" name="hitsteps_field_visitor_link" id="hitsteps_field_visitor_link" value="1"  onchange="SetFieldProperty('hitsteps_field_visitor_link', this.checked);"  />  <?php _e("Show Visitor Link", "hitsteps-visitor-manager"); ?>
 												<?php gform_tooltip("hitsteps_field_visitor_link_tooltip");?></label>
 												
 												
@@ -265,7 +265,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
 												 {
 												 ?>
 												<div class="highlight" style="background:lightyellow; padding:10px; ">
-												You need to install Hitsteps API code for this function to work. Please use hitsteps menu under setting.
+												<?php echo __("You need to install Hitsteps API code for this function to work. Please use hitsteps menu under setting.",'hitsteps-visitor-manager');?>
 												</div>
 												<?php
 												}
@@ -287,7 +287,7 @@ Label won't be visible to your visitors, it is just for your reference in this p
         
         
 		public static function hitsteps_settings_visitor_link_tooltip($tooltips){
-			$tooltips["hitsteps_field_visitor_link_tooltip"] = "Contain a link to click and view visitor profile in web dashboard";
+			$tooltips["hitsteps_field_visitor_link_tooltip"] = __("Contain a link to click and view visitor profile in web dashboard",'hitsteps-visitor-manager');
 			return $tooltips;
 		}
 

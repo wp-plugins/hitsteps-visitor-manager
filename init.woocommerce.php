@@ -72,7 +72,7 @@ $html='';
 	}
 
 }else{
-echo "Please enable Hitsteps API code in WordPress setting page to enable WooCommerce Email Analytics.";
+echo __("Please enable Hitsteps API code in WordPress setting page to enable WooCommerce Email Analytics.",'hitsteps-visitor-manager');
 }
 }
 }

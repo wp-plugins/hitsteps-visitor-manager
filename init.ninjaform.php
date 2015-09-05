@@ -65,7 +65,7 @@ public function ninja_forms_register_hitsteps_hook_process(){
 		
 		
 	}else{
-	$_hs_tracking_info="Please enable Hitsteps API code in WordPress setting page to enable Contact form Analytics.";
+	$_hs_tracking_info=__("Please enable Hitsteps API code in WordPress setting page to enable Contact form Analytics.",'hitsteps-visitor-manager');
 	}
 	
 
@@ -78,13 +78,13 @@ public function ninja_forms_register_hitsteps_hook_process(){
 
 	public function Hitsteps_NFA_setup_license() {
 		if ( class_exists( 'NF_Extension_Updater' ) ) {
-			$NF_Extension_Updater = new NF_Extension_Updater( 'Hitsteps Ultimate Web Analytics', '4.14', 'hitsteps', __FILE__, 'option_prefix' );
+			$NF_Extension_Updater = new NF_Extension_Updater( 'Hitsteps Ultimate Web Analytics', '4.66', 'hitsteps', __FILE__, 'option_prefix' );
 		}
 	}
 
 	public function register_ninja_form_fields() {
 		$argsIp = array(
-			'name' => __( 'Hitsteps Tracker', 'hitsteps'),
+			'name' => __( 'Hitsteps Tracker', 'hitsteps-visitor-manager'),
 			'display_function' => array($this, 'collect_hitsteps_data'),
 			'edit_function' => array($this, 'ninja_forms_hitsteps_edit'),
 			'sidebar' => 'template_fields',
@@ -117,11 +117,11 @@ public function ninja_forms_register_hitsteps_hook_process(){
 
 		
 		
-<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_ip]" class="option" value="1" <?php if( $vi){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_ip]" class="option" value="0" <?php if( !$vi){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor IP, Name, ISP and Country information', 'hitsteps' ) ); ?>
+<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_ip]" class="option" value="1" <?php if( $vi){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_ip]" class="option" value="0" <?php if( !$vi){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor IP, Name, ISP and Country information', 'hitsteps-visitor-manager' ) ); ?>
 <br>
-<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_path]" class="option" value="1" <?php if( $vp){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_path]" class="option" value="0" <?php if( !$vp){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor Viewed Pages Path', 'hitsteps' ) ); ?>
-<br><input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_link]" class="option" value="1" <?php if( $vl){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_link]" class="option" value="0" <?php if(! $vl){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor More Information Link', 'hitsteps' ) ); ?>
-<br><input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_base]" class="option" value="1" <?php if( $vb){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_base]" class="option" value="0" <?php if( !$vb){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor Base Visits', 'hitsteps' ) ); ?>
+<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_path]" class="option" value="1" <?php if( $vp){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_path]" class="option" value="0" <?php if( !$vp){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor Viewed Pages Path', 'hitsteps-visitor-manager' ) ); ?>
+<br><input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_link]" class="option" value="1" <?php if( $vl){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_link]" class="option" value="0" <?php if(! $vl){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor More Information Link', 'hitsteps-visitor-manager' ) ); ?>
+<br><input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_base]" class="option" value="1" <?php if( $vb){ echo 'checked';}?> />&nbsp;Yes&nbsp;<input type="radio" name="ninja_forms_field_<?php echo $field_id;?>[disable_visitor_base]" class="option" value="0" <?php if( !$vb){ echo 'checked';}?> />&nbsp;No&nbsp;&nbsp;<?php echo esc_html( __( 'Disable Visitor Base Visits', 'hitsteps-visitor-manager' ) ); ?>
 
 
 		
@@ -209,7 +209,7 @@ public function ninja_forms_register_hitsteps_hook_process(){
 		{
 			?>
 				<div class="field-wrap text-wrap label-above">
-					<label for="ninja_forms_field_<?php echo $field_id;?>"><?php _e( 'Hitsteps Analytics', 'hitsteps' ); ?></label>
+					<label for="ninja_forms_field_<?php echo $field_id;?>"><?php _e( 'Hitsteps Analytics', 'hitsteps-visitor-manager' ); ?></label>
 					<input type="text" name="ninja_forms_field_<?php echo $field_id;?>" value="<?php echo $data;?>">
 					<?php echo $data;?>
 				</div>
