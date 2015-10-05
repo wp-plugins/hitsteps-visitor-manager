@@ -56,8 +56,7 @@ if (!class_exists('HITSTEPS_GF_hitsteps')) {
          */        
         public static function hitsteps_title($title, $field_type)
         {
-            if ($field_type == "hitsteps")
-                return "hitsteps";
+            if ($field_type == "hitsteps") return "hitsteps";
         } // END hitsteps_title
         
         /**
@@ -388,6 +387,281 @@ if (!class_exists('HITSTEPS_GF_hitsteps')) {
     add_action( 'gform_after_submission', '_hits_gf_after_submission', 10, 2 );
     
 }
+
+
+
+
+if (!class_exists('HITSTEPS_GFRD_hitsteps')){
+    class HITSTEPS_GFRD_hitsteps
+    {
+    
+	private static $name = "Gravity Forms - Hitsteps tracker - Base Referral (RAW)";
+    private static $slug = 'HITSTEPS_GFRD_hitsteps_field';
+	private static $version = '1.2.4';
+        /**
+         * Construct the plugin object
+         */
+        public function __construct()
+        {
+            // register actions
+            if (self::is_gravityforms_installed()) {
+                //start plug in
+                add_filter('gform_add_field_buttons', array(&$this,'hitsteps_add_field') );
+				add_filter('gform_field_type_title' , array(&$this,'hitsteps_title'), 10, 2);
+				add_action('gform_editor_js', array(&$this,'hitsteps_editor_js'));
+				add_action('gform_enqueue_scripts', array(&$this,'hitsteps_custom_js'), 90, 3);
+				add_filter('gform_field_content', array(&$this,'hitsteps_display_field'), 10, 5);
+            }
+        } // END __construct
+        
+        /**
+         * Add hitsteps field to 'standard fields' group in Gravity Forms forms editor
+         */        
+        public static function hitsteps_add_field($field_groups)
+        {
+            foreach ($field_groups as &$group) {
+                if ($group["name"] == "standard_fields") {
+                    $group["fields"][] = array(
+                        "class" => "button",
+                        "value" => __("Hitsteps Base Referral (RAW)", "hitsteps-visitor-manager"),
+                        "onclick" => "StartAddField('hitstepsraw');"
+                    );
+                    break;
+                }
+            }
+            return $field_groups;
+        } // END hitsteps_add_field
+        
+        /**
+         * Add title to hitsteps field, displayed in Gravity Forms forms editor
+         */        
+        public static function hitsteps_title($title, $field_type)
+        {
+            if ($field_type == "hitstepsraw") return "hitstepsraw";
+        } // END hitsteps_title
+        
+        /**
+         * JavaSript to add field options to infoxbox field in the Gravity forms editor
+         */
+        public static function hitsteps_editor_js()
+        {
+?>
+		<script type='text/javascript'>
+			jQuery(document).ready(function($) {
+				// standard field options
+				fieldSettings["hitstepsraw"] = ".hitsteps_field_visitor_title_setting, .label_setting, .conditional_logic_field_setting"; 
+		 
+				//custom field options				
+				jQuery(document).bind("gform_load_field_settings", function(event, field, form){
+
+				});
+			});
+		 
+		</script>
+		<?php
+        } // END hitsteps_editor_js
+        
+ 
+		/**
+         * Add hitsteps 'Visitor Title' field, displayed in Gravity Forms emails 
+         */
+        public static function hitsteps_settings_visitor_title($position, $form_id)
+        {
+            // Create settings on position
+            if ($position == 50) {
+?>
+		 
+			<li class="hitsteps_field_visitor_title_setting field_setting">
+												<label for="hitsteps_field_visitor_title">
+												
+												
+												
+<?php echo __("Label won't be visible to your visitors, it is just for your reference in this page.",'hitsteps-visitor-manager');?>
+
+
+
+</label>
+												
+												
+												
+												
+											</li>
+											
+											
+			<?php
+                
+            }
+        } // END
+        
+
+
+        /**
+         * Queue JavaScript and stylesheet for front end
+         */
+        public function hitsteps_custom_js()
+        {
+            //add_action('wp_footer', array(&$this,'hitsteps_custom_js_script'));
+        } // END hitsteps_custom_js
+        
+
+		/**
+         * Displays hitsteps field
+         */
+        public static function hitsteps_display_field($content, $field, $value, $lead_id, $form_id)
+        {     
+        
+        
+
+        $option=get_hst_conf();
+        
+         if ((!is_admin()) && ($field['type'] == 'hitstepsraw') && $option['code'] !='') {
+            
+            
+            
+                $content = "<input type='hidden' name='_hs_post_data_raw' value='1' />
+                <input type='hidden' value='' name='_hs_uid_data' id='_hs_data_uid_auto_fill' />
+
+                <script>
+                //Load hitsteps script once page fully loaded.
+                function _hs_data_uid_auto_fill_raw_func(){
+                _hs_uidset=0;
+                var _hs_uid_data_fields = document.getElementsByName('_hs_uid_data');
+                for (_hs_uid_data_i = 0; _hs_uid_data_i < _hs_uid_data_fields.length; _hs_uid_data_i++) {
+				if (_hs_uid_data_fields[_hs_uid_data_i].value !='') {_hs_uidset=1;}
+				}
+                if (_hs_uidset==0){
+                var hstc=document.createElement('script');
+				hstc.src='//www.hitsteps.com/api/getUID.php?code=".$option['code']."';
+				var htssc = document.getElementsByTagName('script')[0];
+				htssc.parentNode.insertBefore(hstc, htssc);        
+				}        
+                }
+                //load it after 1 second
+				(function(){
+				setTimeout(function(){ _hs_data_uid_auto_fill_raw_func(); }, 1000);
+				})();
+                //load it after 5 second
+				(function(){
+				setTimeout(function(){ _hs_data_uid_auto_fill_raw_func(); }, 5000);
+				})();
+				//load it after 10 second
+				(function(){
+				setTimeout(function(){ _hs_data_uid_auto_fill_raw_func(); }, 10000);
+				})();
+				//load it now first, maybe user is already registered.
+				_hs_data_uid_auto_fill_raw_func();
+                </script>";
+          
+                
+            } 
+            return $content;
+        } // END hitsteps_display_field
+        
+
+        /*
+         * Check if GF is installed
+         */
+        private static function is_gravityforms_installed()
+        {
+            return class_exists('GFAPI');
+        } // END is_gravityforms_installed
+    }
+    $HITSTEPS_GFRD_hitsteps = new HITSTEPS_GFRD_hitsteps();
+    
+    
+    
+    add_filter("gform_pre_send_email", "_hits_gf_before_email_raw");
+    add_action( 'gform_after_submission', '_hits_gf_after_submission_raw', 10, 2 );
+    
+}
+
+
+
+
+
+
+
+
+
+function _hits_gf_before_email_raw($email){
+global $_POST, $_hs_uid_data_cache_raw;
+
+if (round($_POST['_hs_post_data_raw'])>0){
+
+if (!isset($_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])])) $_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])]=='';
+if ($_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])]==''){
+
+
+$input=array("input_UID"=>round($_POST['_hs_uid_data']),
+	"output_visitor_ip"=>0,
+	"output_visitor_path"=>0,
+	"output_visitor_base"=>1,
+	"output_visitor_baseraw"=>1,
+	"output_visitor_link"=>0
+	);
+	$_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])]=_hs_contact_form_query_base_raw($input);
+
+}
+
+$email['message'].=$_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])];
+}
+
+
+return $email;
+}
+
+
+function _hits_gf_after_submission_raw( $entry, $form ) {
+global $_POST, $_hs_uid_data_cache_raw;
+if (round($_POST['_hs_uid_data'])>0){
+
+//get hitstep's field input ID in gravity form
+$inputID=0;
+	foreach ($form['fields'] as $field){
+		if ($field->type=='hitstepsraw'){
+		$inputID=$field->id;
+		}
+	}
+
+
+
+//entry ID: $entry['id']
+//input ID: $inputID?
+
+if (!isset($_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])])) $_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])]=='';
+if ($_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])]==''){
+
+$input=array("input_UID"=>round($_POST['_hs_uid_data']),
+	"output_visitor_ip"=>0,
+	"output_visitor_path"=>0,
+	"output_visitor_base"=>1,
+	"output_visitor_baseraw"=>1,
+	"output_visitor_link"=>0
+	);
+	$_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])]=_hs_contact_form_query_base_raw($input);
+
+}
+
+$success = GFAPI::update_entry_field( $entry['id'],  $inputID, $_hs_uid_data_cache_raw[round($_POST['_hs_uid_data'])] );
+
+}
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function _hits_gf_before_email($email){
 global $_POST, $_hs_uid_data_cache;

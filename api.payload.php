@@ -170,6 +170,59 @@ return $render;
 
 
 
+function _hs_contact_form_query_base_raw($input){
+$render='';
+$input['action']='contact_form_data_1';
+
+//visitor data
+$input['user_ip']=_hitsteps_get_ip();
+$input['user_agent']=$_SERVER['HTTP_USER_AGENT'];
+
+$data=hitsteps_public_query($input);
+$hs_option=get_hst_conf();
+if ($hs_option['code']!=''){
+if ($data['error']>0){
+$render="<small><i>Hitsteps error #".$data['error'].": ".$data['msg']."</i></small>";
+}else{
+
+
+
+
+
+if ($input['output_visitor_base']){
+if (is_array($data['visitor_base'])){
+
+$render.= __("First Visited From",'hitsteps-visitor-manager').": ".$data['visitor_base']['baseland']."";
+}
+
+
+
+}
+}
+}
+
+
+return $render;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -266,7 +319,7 @@ $render.="</div>";
 
 
 return $render;
-}
+ }
 
 
 	 function _hitsteps_get_ip()
