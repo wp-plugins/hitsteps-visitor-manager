@@ -339,7 +339,7 @@ if (!class_exists('HITSTEPS_GF_hitsteps')) {
 				}
                 if (_hs_uidset==0){
                 var hstc=document.createElement('script');
-				hstc.src='//www.hitsteps.com/api/getUID.php?code=".$option['code']."';
+				hstc.src='//www.hitsteps.com/api/getUID.php?code=".substr($option['code'],0,32)."';
 				var htssc = document.getElementsByTagName('script')[0];
 				htssc.parentNode.insertBefore(hstc, htssc);        
 				}        
@@ -531,7 +531,7 @@ if (!class_exists('HITSTEPS_GFRD_hitsteps')){
 				}
                 if (_hs_uidset==0){
                 var hstc=document.createElement('script');
-				hstc.src='//www.hitsteps.com/api/getUID.php?code=".$option['code']."';
+				hstc.src='//www.hitsteps.com/api/getUID.php?code=".substr($option['code'],0,32)."';
 				var htssc = document.getElementsByTagName('script')[0];
 				htssc.parentNode.insertBefore(hstc, htssc);        
 				}        
