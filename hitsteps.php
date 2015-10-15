@@ -4,15 +4,13 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.75
+Version: 4.76
 Author URI: http://www.hitsteps.com/
 */ 
 
 add_action('admin_menu', 'hst_admin_menu');
 add_action('wp_footer', 'hitsteps');
 add_action('wp_head', 'hitsteps');
-
-
 
 function hitsteps_load_plugin_textdomain() {
 	$domain = 'hitsteps-visitor-manager';
@@ -65,7 +63,7 @@ $htssl='';
   }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.74 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.76 - DO NOT CHANGE --><?php
 
 
 
@@ -79,10 +77,9 @@ if (round($hitsteps_tracker)==0){
 
 }
 
+
 $htmlpar.='&MySearch='.urlencode(addslashes(get_search_query()));
-
 } ?><?php
-
 	if( $option['tkn']!=2 ) {
 ?><?php if (round($hitsteps_tracker)==0){ ?>
 
@@ -95,29 +92,15 @@ $htmlpar.='&MySearch='.urlencode(addslashes(get_search_query()));
 		if (typeof hs_cookie_split[i] == "undefined"){}else{
 			if( hs_cookie_split[i].indexOf( name+'=' ) != -1 )
 				return decodeURIComponent( hs_cookie_split[i].split('=')[1] );
-		}
-		}
-		}
-		}
+		}}}}
 		return '';
 	}
 
 
 
-ipname='<?php
-
-
-
-global $current_user;
-
-      get_currentuserinfo();
-
-      echo $current_user->user_login
-
-?>';
+ipname='<?php global $current_user;      get_currentuserinfo();       echo $current_user->user_login ?>';
 
 		ipnames=hitsteps_gc( 'comment_author_<?php echo md5( get_option("siteurl") ); ?>' );
-
 		if (ipnames!='') ipname=ipnames;
 
   	</script><?php } ?>
