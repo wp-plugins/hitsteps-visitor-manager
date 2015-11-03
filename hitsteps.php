@@ -4,7 +4,7 @@ Plugin Name: Hitsteps Ultimate Web Analytics
 Plugin URI: https://www.hitsteps.com/
 Description: Hitsteps is a powerful real time website visitor manager, it allow you to view and interact with your visitors in real time.
 Author: hitsteps
-Version: 4.80
+Version: 4.81
 Author URI: http://www.hitsteps.com/
 */ 
 
@@ -63,7 +63,7 @@ $htssl='';
   }
   }
 
-?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.76 - DO NOT CHANGE --><?php
+?><!-- HITSTEPS TRACKING CODE<?php echo $htssl; ?> v4.81 - DO NOT CHANGE --><?php
 
 
 
@@ -84,45 +84,60 @@ $htmlpar.='&MySearch='.urlencode(addslashes(get_search_query()));
 ?><?php if (round($hitsteps_tracker)==0){ ?>
 
 	<script type='text/javascript'>
-	function hitsteps_gc( name ) {
-		if (document.cookie){
-		var hs_cookie_split = document.cookie.split(';');
-		if (hs_cookie_split){
-		for( var i in hs_cookie_split ) {
-		if (typeof hs_cookie_split[i] == "undefined"){}else{
-			if( hs_cookie_split[i].indexOf( name+'=' ) != -1 )
-				return decodeURIComponent( hs_cookie_split[i].split('=')[1] );
-		}}}}
-		return '';
-	}
-
-
-
-ipname='<?php global $current_user;      get_currentuserinfo();       echo $current_user->user_login ?>';
-
-		ipnames=hitsteps_gc( 'comment_author_<?php echo md5( get_option("siteurl") ); ?>' );
-		if (ipnames!='') ipname=ipnames;
-
-  	</script><?php } ?>
-
+	function hitsteps_gc( name ) { if (document.cookie){ var hs_cookie_split = document.cookie.split(';'); if (hs_cookie_split){ for( var i in hs_cookie_split ) { if (typeof hs_cookie_split[i] == "undefined"){}else{ if( hs_cookie_split[i].indexOf( name+'=' ) != -1 ) return decodeURIComponent( hs_cookie_split[i].split('=')[1] ); }}}} return '';}
 <?php
+global $current_user; 
 
-
+//visitor name
 if (isset($_COOKIE['comment_author_'.md5( get_option("siteurl"))])){
 $ipname=$_COOKIE['comment_author_'.md5( get_option("siteurl"))]; 
 }else{
 $ipname='';
 }
 
-if ($ipname=='') {@$ipname=$current_user->user_login;}
-
-
+if ($ipname=='') {
+@get_currentuserinfo(); 
+@$ipname=$current_user->user_login;
+}
 
 if ($ipname!=''){
-
 $htmlpar.='&amp;ipname='.urlencode(addslashes($ipname));
-
 }
+
+
+//visitor aliasing
+
+if (isset($_COOKIE['comment_author_email_'.md5( get_option("siteurl"))])){
+$ipemail=$_COOKIE['comment_author_email_'.md5( get_option("siteurl"))]; 
+}else{
+$ipemail='';
+}
+
+if ($ipemail=='') {
+@get_currentuserinfo(); 
+@$ipemail=$current_user->user_email;
+}
+
+if ($ipemail!=''){
+$htmlpar.='&amp;uniqueid='.urlencode(addslashes($ipemail));
+}	
+
+
+?>
+
+		_hs_uniqueid='<?php echo addslashes($ipemail); ?>';
+		ipname='<?php echo addslashes($ipname); ?>';
+
+		ipnames=hitsteps_gc( 'comment_author_<?php echo md5( get_option("siteurl") ); ?>' );
+		ipemails=hitsteps_gc( 'comment_author_email_<?php echo md5( get_option("siteurl") ); ?>' );
+		if (ipnames!=''&&ipname=='') ipname=ipnames;
+		if (ipemails!=''&&_hs_uniqueid=='') _hs_uniqueid=ipemails;
+
+  	</script><?php } ?>
+
+<?php
+
+
 
 	
 
@@ -1041,7 +1056,7 @@ if (current_user_can('manage_options')){
 <?php } ?>
 <p><input type="radio" value="1" name="tkn" <?php if ($option['tkn']!=2) echo "checked"; ?>><?php echo __("Yes",'hitsteps-visitor-manager');?>&nbsp;
 
-<input type="radio" value="2" name="tkn" <?php if ($option['tkn']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Track visitors name ( using name they enter when commenting )?",'hitsteps-visitor-manager');?>
+<input type="radio" value="2" name="tkn" <?php if ($option['tkn']==2) echo "checked"; ?>><?php echo __("No",'hitsteps-visitor-manager');?>&nbsp;&nbsp;&nbsp;<?php echo __("Detect Visitors identity and do 'Visitor Aliasing' (using email they enter when commenting and username they login)",'hitsteps-visitor-manager');?>
 
 </p>
 
@@ -1704,7 +1719,7 @@ $htssl=" - SSL";
                         echo $before_title . $title . $after_title; ?>
 
 <div style="text-align: center;" class="hs-wordpress-chat-placeholder">
-<!-- HITSTEPS ONLINE SUPPORT CODE v4.74 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
+<!-- HITSTEPS ONLINE SUPPORT CODE v4.81 - DO NOT CHANGE --><div id="hs-live-chat-pos"><script type="text/javascript">
 
 var hschatcs='www.';if (document.location.protocol=='https:') hschatcs='';hschatcsrc=document.location.protocol+'//'+hschatcs+'hitsteps.com/online.php?code=<?php echo $option['code']; ?>&lang=<?php echo urlencode($instance['lang']); ?>&img=<?php echo urlencode($instance['wd_img']); ?>&off=<?php echo urlencode($instance['wd_off']); ?>';
 document.write('<scri'+'pt type="text/javascript" src="'+hschatcsrc+'"></scr'+'ipt>');
